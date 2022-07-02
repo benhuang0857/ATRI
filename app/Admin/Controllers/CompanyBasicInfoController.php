@@ -10,6 +10,8 @@ use Encore\Admin\Show;
 Use Encore\Admin\Widgets\Table;
 use Grid\Displayers\Actions;
 use App\GroupCategory;
+use App\OtherMemo;
+use App\Admin\Actions\CompanyBasicInfo\OtherMemoAction;
 
 class CompanyBasicInfoController extends AdminController
 {
@@ -56,6 +58,7 @@ class CompanyBasicInfoController extends AdminController
         });
 
         // $grid->column('id', __('Id'));
+        
         $grid->column('group_category', '進駐單位')->display(function($slug){
             $reault = GroupCategory::where('slug', $slug)->first()->name;
             return '<span class="badge badge-primary" style="background:blue">'.$reault.'</span>';
@@ -93,8 +96,12 @@ class CompanyBasicInfoController extends AdminController
         $grid->column('contact_name', '聯絡人');
         $grid->column('contact_email', '聯絡人Email');
         $grid->column('contact_phone', '聯絡人電話');
-        $grid->column('id', '添加紀錄')->display(function($id){
-            return '<a href="/add-note/'.$id.'"><span class="badge badge-primary" style="background:blue">添加紀錄</span></a>';
+        // $grid->column('id', '添加紀錄')->display(function($id){
+        //     return '<a href="/add-note/'.$id.'"><span class="badge badge-primary" style="background:blue">添加紀錄</span></a>';
+        // });
+
+        $grid->actions(function ($actions) {
+            $actions->add(new OtherMemoAction);
         });
 
         // $grid->column('owner_name', __('Owner name'));
