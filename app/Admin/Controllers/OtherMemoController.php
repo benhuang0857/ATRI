@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\OtherMemo;
+use App\CompanyBasicInfo;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -15,7 +16,7 @@ class OtherMemoController extends AdminController
      *
      * @var string
      */
-    protected $title = 'OtherMemo';
+    protected $title = '歷史紀錄管理';
 
     /**
      * Make a grid builder.
@@ -23,14 +24,17 @@ class OtherMemoController extends AdminController
      * @return Grid
      */
     protected function grid()
-    {
+    {        
         $grid = new Grid(new OtherMemo());
 
-        $grid->column('id', __('Id'));
-        $grid->column('cid', __('Cid'));
-        $grid->column('note', __('Note'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
+        // $grid->column('id', __('Id'));
+        $grid->column('cid', '公司/會員名稱')->display(function($cid){
+            $company = CompanyBasicInfo::where('id', $cid)->firstOrFail();
+            return $company->company_name;
+        });
+        $grid->column('note', '歷史紀錄');
+        $grid->column('created_at', '創建時間');
+        // $grid->column('updated_at', __('Updated at'));
 
         return $grid;
     }

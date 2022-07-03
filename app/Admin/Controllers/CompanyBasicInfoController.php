@@ -12,6 +12,7 @@ use Grid\Displayers\Actions;
 use App\GroupCategory;
 use App\OtherMemo;
 use App\Admin\Actions\CompanyBasicInfo\OtherMemoAction;
+use App\Admin\Actions\CompanyBasicInfo\CounselingMemoAction;
 
 class CompanyBasicInfoController extends AdminController
 {
@@ -102,6 +103,7 @@ class CompanyBasicInfoController extends AdminController
 
         $grid->actions(function ($actions) {
             $actions->add(new OtherMemoAction);
+            $actions->add(new CounselingMemoAction);
         });
 
         // $grid->column('owner_name', __('Owner name'));

@@ -14,14 +14,16 @@ class OtherMemoAction extends RowAction
     public function handle(Model $model, Request $request)
     {
         $OtherMemo = new OtherMemo();
-        $OtherMemo->cid = $model->OtherMemoAction()->id;
+        $OtherMemo->cid = $request->get('cid');
         $OtherMemo->note = $request->get('note');
+        $OtherMemo->save();
 
         return $this->response()->success('添加成功')->refresh();
     }
 
-    public function form()
+    public function form(Model $model)
     {
+        $this->hidden('cid', '公司ID')->value($model->id);
         $this->textarea('note', '添加歷史紀錄')->rules('required');
     }
 
