@@ -16,7 +16,7 @@ class CapitalMemoAction extends RowAction
         $CapitalMemo = new CapitalMemo();
         $CapitalMemo->cid = $request->get('cid');
         $CapitalMemo->create_month = $request->get('create_month');
-        $CapitalMemo->staff = $request->get('capital');
+        $CapitalMemo->capital = $request->get('capital');
         $CapitalMemo->note = $request->get('note');
         $CapitalMemo->save();
 

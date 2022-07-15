@@ -16,7 +16,7 @@ class RevenueMemoAction extends RowAction
         $RevenueMemo = new RevenueMemo();
         $RevenueMemo->cid = $request->get('cid');
         $RevenueMemo->create_month = $request->get('create_month');
-        $RevenueMemo->staff = $request->get('revenue');
+        $RevenueMemo->revenue = $request->get('revenue');
         $RevenueMemo->note = $request->get('note');
         $RevenueMemo->save();
 
