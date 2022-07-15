@@ -27,7 +27,7 @@ class CapitalMemoController extends AdminController
         $grid = new Grid(new CapitalMemo());
 
         $grid->column('id', __('Id'));
-        $grid->column('month', __('Month'));
+        $grid->column('create_month', __('Month'));
         $grid->column('capital', __('Capital'));
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'));
@@ -46,7 +46,7 @@ class CapitalMemoController extends AdminController
         $show = new Show(CapitalMemo::findOrFail($id));
 
         $show->field('id', __('Id'));
-        $show->field('month', __('Month'));
+        $show->field('create_month', __('Month'));
         $show->field('capital', __('Capital'));
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
@@ -63,7 +63,7 @@ class CapitalMemoController extends AdminController
     {
         $form = new Form(new CapitalMemo());
 
-        $form->text('month', __('Month'));
+        $form->text('create_month', __('Month'));
         $form->text('capital', __('Capital'));
 
         return $form;
