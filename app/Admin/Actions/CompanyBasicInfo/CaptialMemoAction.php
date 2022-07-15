@@ -5,7 +5,7 @@ namespace App\Admin\Actions\CompanyBasicInfo;
 use Illuminate\Http\Request;
 use Encore\Admin\Actions\RowAction;
 use Illuminate\Database\Eloquent\Model;
-use App\CaptialMemo;
+use App\CapitalMemo;
 
 class CaptialMemoAction extends RowAction
 {
