@@ -31,7 +31,6 @@ class OtherMemoAction extends RowAction
             '05月-06月',
             '07月-08月',
             '09月-10月',
-            '11月-12月',
         ]);
         $this->textarea('note', '添加歷史紀錄')->rules('required');
     }

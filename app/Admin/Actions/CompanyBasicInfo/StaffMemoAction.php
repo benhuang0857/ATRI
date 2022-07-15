@@ -27,12 +27,12 @@ class StaffMemoAction extends RowAction
     {
         $this->hidden('cid', '公司ID')->value($model->id);
         $this->select('create_month','時間')->options([
-            '11月-12月' => '11月-12月',
-            '01月-02月' => '01月-02月',
-            '03月-04月' => '03月-04月',
-            '05月-06月' => '05月-06月',
-            '07月-08月' => '07月-08月',
-            '09月-10月' => '09月-10月'
+            '11月-12月',
+            '01月-02月',
+            '03月-04月',
+            '05月-06月',
+            '07月-08月',
+            '09月-10月',
         ]);
         $this->text('staff', '員工數')->rules('required');
         $this->textarea('note', '備註')->rules('required');

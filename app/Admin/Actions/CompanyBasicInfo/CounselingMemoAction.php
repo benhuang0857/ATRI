@@ -32,7 +32,6 @@ class CounselingMemoAction extends RowAction
             '05月-06月',
             '07月-08月',
             '09月-10月',
-            '11月-12月',
         ]);
         $this->text('name', '輔導歷程名稱')->rules('required');
         $this->textarea('note', '輔導歷程記錄')->rules('required');
