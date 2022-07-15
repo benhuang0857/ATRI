@@ -18,4 +18,7 @@ Route::group([
     $router->resource('group-categories', GroupCategoryController::class);
     $router->resource('other-memos', OtherMemoController::class);
     $router->resource('status-categories', StatusCategoryController::class);
+    $router->resource('capital-memos', CapitalMemoController::class);
+    $router->resource('revenue-memos', RevenueMemoController::class);
+    $router->resource('staff-memos', StaffMemoController::class);
 });

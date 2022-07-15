@@ -13,6 +13,9 @@ use App\GroupCategory;
 use App\OtherMemo;
 use App\Admin\Actions\CompanyBasicInfo\OtherMemoAction;
 use App\Admin\Actions\CompanyBasicInfo\CounselingMemoAction;
+use App\Admin\Actions\CompanyBasicInfo\CaptialMemoAction;
+use App\Admin\Actions\CompanyBasicInfo\RevenueMemoAction;
+use App\Admin\Actions\CompanyBasicInfo\StaffMemoAction;
 
 class CompanyBasicInfoController extends AdminController
 {
@@ -104,6 +107,9 @@ class CompanyBasicInfoController extends AdminController
         $grid->actions(function ($actions) {
             $actions->add(new OtherMemoAction);
             $actions->add(new CounselingMemoAction);
+            $actions->add(new CaptialMemoAction);
+            $actions->add(new RevenueMemoAction);
+            $actions->add(new StaffMemoAction);
         });
 
         // $grid->column('owner_name', __('Owner name'));

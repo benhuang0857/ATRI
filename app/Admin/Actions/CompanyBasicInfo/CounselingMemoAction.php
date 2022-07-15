@@ -25,6 +25,15 @@ class CounselingMemoAction extends RowAction
     public function form(Model $model)
     {
         $this->hidden('cid', '公司ID')->value($model->id);
+        $this->select('create_month','時間')->options([
+            '11月-12月',
+            '01月-02月',
+            '03月-04月',
+            '05月-06月',
+            '07月-08月',
+            '09月-10月',
+            '11月-12月',
+        ]);
         $this->text('name', '輔導歷程名稱')->rules('required');
         $this->textarea('note', '輔導歷程記錄')->rules('required');
     }
