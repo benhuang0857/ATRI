@@ -82,7 +82,8 @@ class AwardController extends AdminController
         {
             $_companiesArr[$item->id] = $item->company_name;
         }
-
+        
+        $form->select('cid', '自然人/組織/公司名稱')->options($_companiesArr);
         $form->text('award_name', '獎項名稱');
         $form->datetime('application_time', '申請日期')->default(date('Y-m-d H:i:s'));
         $form->select('application_status', '申請狀態')->options([
