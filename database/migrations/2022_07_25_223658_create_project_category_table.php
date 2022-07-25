@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCapitalMemoTable extends Migration
+class CreateProjectCategoryTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateCapitalMemoTable extends Migration
      */
     public function up()
     {
-        Schema::create('capital_memo', function (Blueprint $table) {
+        Schema::create('project_category', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('cid');
-            $table->string('create_month')->comment('月份');
-            $table->integer('capital')->comment('資本額');
-            $table->string('note');
+            $table->string('name');
+            $table->string('slug');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ class CreateCapitalMemoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('capital_memo');
+        Schema::dropIfExists('project_category');
     }
 }

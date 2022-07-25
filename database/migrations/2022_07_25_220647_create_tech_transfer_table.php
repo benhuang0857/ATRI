@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCounselingMemoTable extends Migration
+class CreateTechTransferTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,14 @@ class CreateCounselingMemoTable extends Migration
      */
     public function up()
     {
-        Schema::create('counseling_memo', function (Blueprint $table) {
+        Schema::create('tech_transfer', function (Blueprint $table) {
             $table->increments('id');
             $table->string('cid');
-            $table->string('name')->comment('輔導事項');
-            $table->string('note');
+            $table->string('tech_transfer_name');
+            $table->integer('price')->default(0);
+            $table->datetime('start_time');
+            $table->datetime('end_time');
+            $table->string('document');
             $table->timestamps();
         });
     }
@@ -29,6 +32,6 @@ class CreateCounselingMemoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('counseling_memo');
+        Schema::dropIfExists('tech_transfer');
     }
 }

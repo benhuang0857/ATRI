@@ -12,10 +12,6 @@ use Grid\Displayers\Actions;
 use App\GroupCategory;
 use App\OtherMemo;
 use App\Admin\Actions\CompanyBasicInfo\OtherMemoAction;
-use App\Admin\Actions\CompanyBasicInfo\CounselingMemoAction;
-use App\Admin\Actions\CompanyBasicInfo\CapitalMemoAction;
-use App\Admin\Actions\CompanyBasicInfo\RevenueMemoAction;
-use App\Admin\Actions\CompanyBasicInfo\StaffMemoAction;
 
 class CompanyBasicInfoController extends AdminController
 {
@@ -77,9 +73,9 @@ class CompanyBasicInfoController extends AdminController
                     'project_name',
                     'service',
                     'contract_time',
-                    'capital',
-                    'revenue',
-                    'staff'
+                    'capital_checkin',
+                    'revenue_checkin',
+                    'staff_checkin'
                 ]);
             });
         
@@ -106,10 +102,6 @@ class CompanyBasicInfoController extends AdminController
 
         $grid->actions(function ($actions) {
             $actions->add(new OtherMemoAction);
-            $actions->add(new CounselingMemoAction);
-            $actions->add(new CapitalMemoAction);
-            $actions->add(new RevenueMemoAction);
-            $actions->add(new StaffMemoAction);
         });
 
         // $grid->column('owner_name', __('Owner name'));
@@ -189,9 +181,12 @@ class CompanyBasicInfoController extends AdminController
         $form->text('project_name', '營運專案名稱');
         $form->text('service', '主要產品/服務項目');
         $form->datetime('contract_time', '合約日期')->default(date('Y-m-d H:i:s'));
-        $form->text('capital', '進駐時實收資本額');
-        $form->text('revenue', '進駐時年營業額');
-        $form->text('staff', '進駐時員工人數');
+        $form->text('capital_checkin', '進駐時實收資本額');
+        $form->text('revenue_checkin', '進駐時年營業額');
+        $form->text('staff_checkin', '進駐時員工人數');
+        // $form->text('capital_checkout', '畢業時實收資本額');
+        // $form->text('revenue_checkout', '畢業時年營業額');
+        // $form->text('staff_checkout', '畢業時員工人數');
 
         return $form;
     }

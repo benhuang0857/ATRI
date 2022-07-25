@@ -28,9 +28,12 @@ class CreateCompanyBasicInfoTable extends Migration
             $table->string('project_name')->comment('營運專案名稱');
             $table->string('service')->comment('服務項目');
             $table->datetime('contract_time')->comment('合約時間');
-            $table->string('capital')->comment('資本額');
-            $table->string('revenue')->comment('年營業額');
-            $table->string('staff')->comment('員工人數');
+            $table->string('capital_checkin')->comment('資本額');
+            $table->string('capital_checkout')->nullable()->comment('資本額(畢業)');
+            $table->string('revenue_checkin')->comment('年營業額');
+            $table->string('revenue_checkout')->nullable()->comment('年營業額(畢業)');
+            $table->string('staff_checkin')->comment('員工人數');
+            $table->string('staff_checkout')->nullable()->comment('員工人數(畢業)');
             
             $table->timestamps();
         });

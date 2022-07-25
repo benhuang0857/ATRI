@@ -62,7 +62,12 @@ return [
             'region' => env('AWS_REGION'),
             'bucket' => env('AWS_BUCKET'),
         ],
-
+        'admin' => [
+            'driver' => 'local',
+            'root' => public_path('upload'),
+            'visibility' => 'public',
+            'url' => env('APP_URL') . '/upload/',
+        ],
     ],
 
 ];

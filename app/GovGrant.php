@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class StaffMemo extends Model
+class GovGrant extends Model
 {
-    protected $table = 'staff_memo';
+    protected $table = 'gov_grant';
 }

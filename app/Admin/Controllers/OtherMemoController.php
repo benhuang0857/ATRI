@@ -66,9 +66,16 @@ class OtherMemoController extends AdminController
     protected function form()
     {
         $form = new Form(new OtherMemo());
+        $_companies = CompanyBasicInfo::all();
 
-        $form->text('cid', __('Cid'));
-        $form->text('note', __('Note'));
+        $_companiesArr = array();
+        foreach($_companies as $item)
+        {
+            $_companiesArr[$item->id] = $item->company_name;
+        }
+
+        $form->select('cid', '自然人/組織/公司名稱')->options($_companiesArr);
+        $form->text('note', '紀錄');
 
         return $form;
     }

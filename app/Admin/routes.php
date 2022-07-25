@@ -13,12 +13,13 @@ Route::group([
 
     $router->get('/', 'HomeController@index')->name('home');
     $router->resource('company-basic-infos', CompanyBasicInfoController::class);
-    $router->resource('change-memos', ChangeMemoController::class);
-    $router->resource('counseling-memos', CounselingMemoController::class);
     $router->resource('group-categories', GroupCategoryController::class);
-    $router->resource('other-memos', OtherMemoController::class);
     $router->resource('status-categories', StatusCategoryController::class);
-    $router->resource('capital-memos', CapitalMemoController::class);
-    $router->resource('revenue-memos', RevenueMemoController::class);
-    $router->resource('staff-memos', StaffMemoController::class);
+    $router->resource('other-memos', OtherMemoController::class);
+
+    $router->resource('project-categories', ProjectCategoryController::class);
+    $router->resource('awards', AwardController::class);
+    $router->resource('gov-grants', GovGrantController::class);
+    $router->resource('industry-academia-coops', IndustryAcademiaCoopController::class);
+    $router->resource('tech-transfers', TechTransferController::class);
 });

@@ -2,20 +2,20 @@
 
 namespace App\Admin\Controllers;
 
-use App\StaffMemo;
+use App\ProjectCategory;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 
-class StaffMemoController extends AdminController
+class ProjectCategoryController extends AdminController
 {
     /**
      * Title for current resource.
      *
      * @var string
      */
-    protected $title = 'StaffMemo';
+    protected $title = 'ProjectCategory';
 
     /**
      * Make a grid builder.
@@ -24,13 +24,11 @@ class StaffMemoController extends AdminController
      */
     protected function grid()
     {
-        $grid = new Grid(new StaffMemo());
+        $grid = new Grid(new ProjectCategory());
 
         $grid->column('id', __('Id'));
-        $grid->column('cid', __('Cid'));
-        $grid->column('create_month', __('Create month'));
-        $grid->column('staff', __('Staff'));
-        $grid->column('note', __('Note'));
+        $grid->column('name', __('Name'));
+        $grid->column('slug', __('Slug'));
         $grid->column('created_at', __('Created at'));
         $grid->column('updated_at', __('Updated at'));
 
@@ -45,13 +43,11 @@ class StaffMemoController extends AdminController
      */
     protected function detail($id)
     {
-        $show = new Show(StaffMemo::findOrFail($id));
+        $show = new Show(ProjectCategory::findOrFail($id));
 
         $show->field('id', __('Id'));
-        $show->field('cid', __('Cid'));
-        $show->field('create_month', __('Create month'));
-        $show->field('staff', __('Staff'));
-        $show->field('note', __('Note'));
+        $show->field('name', __('Name'));
+        $show->field('slug', __('Slug'));
         $show->field('created_at', __('Created at'));
         $show->field('updated_at', __('Updated at'));
 
@@ -65,12 +61,10 @@ class StaffMemoController extends AdminController
      */
     protected function form()
     {
-        $form = new Form(new StaffMemo());
+        $form = new Form(new ProjectCategory());
 
-        $form->text('cid', __('Cid'));
-        $form->text('create_month', __('Create month'));
-        $form->number('staff', __('Staff'));
-        $form->text('note', __('Note'));
+        $form->text('name', __('Name'));
+        $form->text('slug', __('Slug'));
 
         return $form;
     }
