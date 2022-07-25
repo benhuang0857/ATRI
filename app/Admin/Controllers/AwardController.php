@@ -28,9 +28,12 @@ class AwardController extends AdminController
         $grid = new Grid(new Award());
 
         $grid->column('id', __('Id'));
+        $grid->column('cid', '企業統編/身分證字號')->display(function($cid){
+            return CompanyBasicInfo::where('id', $cid)->first()->identity_code;
+        });
         $grid->column('cid', '自然人/組織/公司名稱')->display(function($cid){
             return CompanyBasicInfo::where('id', $cid)->first()->company_name;
-        });;
+        });
         $grid->column('award_name', '獎項名稱');
         $grid->column('application_time', '申請日期');
         $grid->column('application_status', '申請狀態');
