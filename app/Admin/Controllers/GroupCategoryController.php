@@ -15,7 +15,7 @@ class GroupCategoryController extends AdminController
      *
      * @var string
      */
-    protected $title = 'GroupCategory';
+    protected $title = '進駐單位設定';
 
     /**
      * Make a grid builder.
@@ -27,10 +27,10 @@ class GroupCategoryController extends AdminController
         $grid = new Grid(new GroupCategory());
 
         $grid->column('id', __('Id'));
-        $grid->column('name', __('Name'));
-        $grid->column('slug', __('Slug'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
+        $grid->column('name', __('進駐單位名稱'));
+        $grid->column('slug', __('進駐單位英文簡稱'));
+        $grid->column('created_at', __('建立時間'));
+        $grid->column('updated_at', __('更新時間'));
 
         return $grid;
     }
@@ -63,8 +63,8 @@ class GroupCategoryController extends AdminController
     {
         $form = new Form(new GroupCategory());
 
-        $form->text('name', __('Name'));
-        $form->text('slug', __('Slug'));
+        $form->text('name', __('進駐單位名稱'));
+        $form->text('slug', __('進駐單位英文簡稱'));
 
         return $form;
     }

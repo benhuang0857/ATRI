@@ -13,11 +13,12 @@ Route::group([
 
     $router->get('/', 'HomeController@index')->name('home');
     $router->resource('company-basic-infos', CompanyBasicInfoController::class);
+    $router->resource('foster-lists', FosterListController::class);
     $router->resource('group-categories', GroupCategoryController::class);
-    $router->resource('status-categories', StatusCategoryController::class);
-    $router->resource('other-memos', OtherMemoController::class);
-
     $router->resource('project-categories', ProjectCategoryController::class);
+    $router->resource('company-statuses', CompanyStatusController::class);
+    $router->resource('addition-invests', AdditionInvestController::class);
+    
     $router->resource('awards', AwardController::class);
     $router->resource('gov-grants', GovGrantController::class);
     $router->resource('industry-academia-coops', IndustryAcademiaCoopController::class);

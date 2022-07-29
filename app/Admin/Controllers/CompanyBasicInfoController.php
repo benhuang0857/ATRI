@@ -3,6 +3,7 @@
 namespace App\Admin\Controllers;
 
 use App\CompanyBasicInfo;
+use App\CompanyStatus;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
@@ -10,8 +11,6 @@ use Encore\Admin\Show;
 Use Encore\Admin\Widgets\Table;
 use Grid\Displayers\Actions;
 use App\GroupCategory;
-use App\OtherMemo;
-use App\Admin\Actions\CompanyBasicInfo\OtherMemoAction;
 
 class CompanyBasicInfoController extends AdminController
 {
@@ -41,6 +40,10 @@ class CompanyBasicInfoController extends AdminController
 
             $filter->disableIdFilter();
             $filter->equal('group_category', '進駐單位')->select($_option);
+            $filter->equal('real_or_virtula', '進駐方式')->select([
+                'real' => '實質進駐',
+                'virtual' => '虛擬進駐'
+            ]);
             $filter->like('company_name', '自然人/組織/公司名稱');
             $filter->like('identity_code', '身分證/統一編號');
             $filter->where(function ($query) {
@@ -63,6 +66,9 @@ class CompanyBasicInfoController extends AdminController
             $reault = GroupCategory::where('slug', $slug)->first()->name;
             return '<span class="badge badge-primary" style="background:blue">'.$reault.'</span>';
         });
+        
+        #暫時先不使用彈出效果，因會影響前端Excel輸出故關閉
+        /*
         $grid->column('company_name', '自然人/組織/公司名稱')->expand(function ($model) {
 
             $row = CompanyBasicInfo::where('id', $this->id)->get()->map(function ($row) {
@@ -91,28 +97,27 @@ class CompanyBasicInfoController extends AdminController
                 '進駐時員工人數'
                 ], $row->toArray());
         });
+        */
         $grid->column('identity_code', '身分證/統一編號');
         $grid->column('established_time', '設立日期');
+        $grid->column('real_or_virtula', '進駐方式')->using([
+            'real'      => '實質進駐', 
+            'virtual'    => '虛擬進駐'
+        ]);
         $grid->column('contact_name', '聯絡人');
         $grid->column('contact_email', '聯絡人Email');
         $grid->column('contact_phone', '聯絡人電話');
-        // $grid->column('id', '添加紀錄')->display(function($id){
-        //     return '<a href="/add-note/'.$id.'"><span class="badge badge-primary" style="background:blue">添加紀錄</span></a>';
-        // });
+        $grid->column('owner_name', __('負責人'));
+        $grid->column('owner_email', __('負責人Email'));
+        $grid->column('owner_phone', __('負責人電話'));
+        $grid->column('project_name', __('營運專案名稱'));
+        $grid->column('service', __('主要產品/服務項目'));
+        $grid->column('contract_start_time', __('合約開始日期'));
+        $grid->column('contract_end_time', __('合約結束日期'));
+        $grid->column('capital', __('進駐時實收資本額'));
+        $grid->column('revenue', __('進駐時年營業額'));
+        $grid->column('staff', __('進駐時員工人數'));
 
-        $grid->actions(function ($actions) {
-            $actions->add(new OtherMemoAction);
-        });
-
-        // $grid->column('owner_name', __('Owner name'));
-        // $grid->column('owner_email', __('Owner email'));
-        // $grid->column('owner_phone', __('Owner phone'));
-        // $grid->column('project_name', __('Project name'));
-        // $grid->column('service', __('Service'));
-        // $grid->column('contract_time', __('Contract time'));
-        // $grid->column('capital', __('Capital'));
-        // $grid->column('revenue', __('Revenue'));
-        // $grid->column('staff', __('Staff'));
         // $grid->column('created_at', __('Created at'));
         // $grid->column('updated_at', __('Updated at'));
 
@@ -161,14 +166,17 @@ class CompanyBasicInfoController extends AdminController
     {
         $form = new Form(new CompanyBasicInfo());
 
-        $_option = array();
+        $_groupOption = array();
         $GroupOptions = GroupCategory::all();
         foreach ($GroupOptions as $item) {
-            $_option[$item->slug] = $item->name;
+            $_groupOption[$item->slug] = $item->name;
         }
-
-        $form->select('group_category','進駐單位')->options($_option);
-        
+        $form->text('cid')->default(uniqid());
+        $form->select('group_category','進駐單位')->options($_groupOption);
+        $form->select('real_or_virtula','進駐方式')->options([
+            'real' => '實質進駐',
+            'virtual' => '虛擬進駐'
+        ]);
         $form->text('company_name', '自然人/組織/公司名稱');
         $form->text('identity_code', '身分證/統一編號');
         $form->datetime('established_time', '設立日期')->default(date('Y-m-d H:i:s'));
@@ -180,13 +188,19 @@ class CompanyBasicInfoController extends AdminController
         $form->text('owner_phone', '負責人電話');
         $form->text('project_name', '營運專案名稱');
         $form->text('service', '主要產品/服務項目');
-        $form->datetime('contract_time', '合約日期')->default(date('Y-m-d H:i:s'));
-        $form->text('capital_checkin', '進駐時實收資本額');
-        $form->text('revenue_checkin', '進駐時年營業額');
-        $form->text('staff_checkin', '進駐時員工人數');
-        // $form->text('capital_checkout', '畢業時實收資本額');
-        // $form->text('revenue_checkout', '畢業時年營業額');
-        // $form->text('staff_checkout', '畢業時員工人數');
+        $form->datetime('contract_start_time', '合約開始日期')->default(date('Y-m-d H:i:s'));
+        $form->datetime('contract_end_time', '合約結束日期')->default(date('Y-m-d H:i:s'));
+        $form->number('capital', '進駐時實收資本額');
+        $form->number('revenue', '進駐時年營業額');
+        $form->number('staff', '進駐時員工人數');
+
+        $form->saving(function (Form $form) {
+            $companyStatus = new CompanyStatus();
+            $companyStatus->cid = strval($form->cid);
+            $companyStatus->note = '初次進駐';
+            $companyStatus->date_time = $form->contract_start_time;
+            $companyStatus->save();
+        });
 
         return $form;
     }
