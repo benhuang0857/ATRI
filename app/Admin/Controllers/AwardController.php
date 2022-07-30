@@ -28,8 +28,21 @@ class AwardController extends AdminController
         $grid = new Grid(new Award());
 
         $grid->column('id', __('Id'));
+        $grid->column('CompanyBasicInfo.group_category', '進駐單位')->using([
+            'farmer'        => '農試所',
+            'forestry'      => '林試所',
+            'water'         => '水試所',
+            'livestock'     => '畜試所',
+            'agricultural'  => '農科院',
+        ], '未知')->dot([
+            'livestock'     => 'danger',
+            'agricultural'  => 'success',
+            'forestry'      => 'info',
+            'water'         => 'primary',
+            'farmer'        => 'success',
+        ], 'warning');
         $grid->column('cid', '自然人/組織/公司名稱')->display(function($cid){
-            return CompanyBasicInfo::where('id', $cid)->first()->company_name;
+            return CompanyBasicInfo::where('cid', $cid)->first()->company_name;
         });
         $grid->column('award_name', '獎項名稱');
         $grid->column('application_time', '申請日期');
@@ -80,12 +93,12 @@ class AwardController extends AdminController
         $_companiesArr = array();
         foreach($_companies as $item)
         {
-            $_companiesArr[$item->id] = $item->company_name;
+            $_companiesArr[$item->cid] = $item->company_name;
         }
 
         $form->select('cid', '自然人/組織/公司名稱')->options($_companiesArr);
         $form->text('award_name', '獎項名稱');
-        $form->datetime('application_time', '申請日期')->default(date('Y-m-d H:i:s'));
+        $form->datetime('application_time', '申請日期')->default(date('Y-m-d'));
         $form->select('application_status', '申請狀態')->options([
             'no' => '未通過',
             'yes' => '通過'

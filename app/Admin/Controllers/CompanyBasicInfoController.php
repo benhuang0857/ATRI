@@ -4,13 +4,13 @@ namespace App\Admin\Controllers;
 
 use App\CompanyBasicInfo;
 use App\CompanyStatus;
+use App\GroupCategory;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 Use Encore\Admin\Widgets\Table;
 use Grid\Displayers\Actions;
-use App\GroupCategory;
 
 class CompanyBasicInfoController extends AdminController
 {
@@ -60,12 +60,43 @@ class CompanyBasicInfoController extends AdminController
             }, '聯絡人/負責人電話');
         });
 
-        // $grid->column('id', __('Id'));
-        
-        $grid->column('group_category', '進駐單位')->display(function($slug){
-            $reault = GroupCategory::where('slug', $slug)->first()->name;
-            return '<span class="badge badge-primary" style="background:blue">'.$reault.'</span>';
+        $grid->export(function ($export) {
+            // $export->originalValue(['group_category', 'company_name']);
+            $export->column('group_category', function ($value, $original) {
+                if ($original == 'farmer') 
+                    return '農試所';
+                if ($original == 'forestry') 
+                    return '林試所';
+                if ($original == 'water') 
+                    return '水試所';
+                if ($original == 'livestock') 
+                    return '畜試所';
+                if ($original == 'agricultural') 
+                    return '農科院';
+            });
+            $export->column('company_name', function ($value, $original) {
+                return $original;
+            });
         });
+
+        $grid->column('group_category', '進駐單位')->using([
+            'farmer'        => '農試所',
+            'forestry'      => '林試所',
+            'water'         => '水試所',
+            'livestock'     => '畜試所',
+            'agricultural'  => '農科院',
+        ], '未知')->dot([
+            'livestock'     => 'danger',
+            'agricultural'  => 'success',
+            'forestry'      => 'info',
+            'water'         => 'primary',
+            'farmer'        => 'success',
+        ], 'warning');
+        
+        // $grid->column('group_category', '進駐單位')->display(function($slug){
+        //     $reault = GroupCategory::where('slug', $slug)->first()->name;
+        //     return '<span class="badge badge-primary" style="background:blue">'.$reault.'</span>';
+        // });
         
         #暫時先不使用彈出效果，因會影響前端Excel輸出故關閉
         /*
@@ -98,6 +129,9 @@ class CompanyBasicInfoController extends AdminController
                 ], $row->toArray());
         });
         */
+        $grid->column('company_name', '自然人/組織/公司名稱')->display(function($company_name){
+            return "<a href=/company-info-view/".$this->cid.">".$company_name."</a>";
+        });
         $grid->column('identity_code', '身分證/統一編號');
         $grid->column('established_time', '設立日期');
         $grid->column('real_or_virtula', '進駐方式')->using([
@@ -166,34 +200,55 @@ class CompanyBasicInfoController extends AdminController
     {
         $form = new Form(new CompanyBasicInfo());
 
-        $_groupOption = array();
-        $GroupOptions = GroupCategory::all();
-        foreach ($GroupOptions as $item) {
-            $_groupOption[$item->slug] = $item->name;
-        }
-        $form->text('cid')->default(uniqid());
-        $form->select('group_category','進駐單位')->options($_groupOption);
-        $form->select('real_or_virtula','進駐方式')->options([
-            'real' => '實質進駐',
-            'virtual' => '虛擬進駐'
-        ]);
-        $form->text('company_name', '自然人/組織/公司名稱');
-        $form->text('identity_code', '身分證/統一編號');
-        $form->datetime('established_time', '設立日期')->default(date('Y-m-d H:i:s'));
-        $form->text('contact_name', '聯絡人');
-        $form->text('contact_email', '聯絡人Email');
-        $form->text('contact_phone', '聯絡人電話');
-        $form->text('owner_name', '負責人');
-        $form->text('owner_email', '負責人Email');
-        $form->text('owner_phone', '負責人電話');
-        $form->text('project_name', '營運專案名稱');
-        $form->text('service', '主要產品/服務項目');
-        $form->datetime('contract_start_time', '合約開始日期')->default(date('Y-m-d H:i:s'));
-        $form->datetime('contract_end_time', '合約結束日期')->default(date('Y-m-d H:i:s'));
-        $form->number('capital', '進駐時實收資本額');
-        $form->number('revenue', '進駐時年營業額');
-        $form->number('staff', '進駐時員工人數');
+        $form->column(1/2, function ($form) {
 
+            $_groupOption = array();
+            $GroupOptions = GroupCategory::all();
+            foreach ($GroupOptions as $item) {
+                $_groupOption[$item->slug] = $item->name;
+            }
+
+            $form->hidden('cid')->default(uniqid());
+            $form->select('group_category','進駐單位')->options($_groupOption);
+            
+            $form->text('company_name', '自然人/組織/公司名稱');
+            
+            $form->text('contact_name', '聯絡人');
+            $form->text('contact_email', '聯絡人Email');
+            $form->text('contact_phone', '聯絡人電話');
+            $form->text('project_name', '營運專案名稱');
+            $form->number('capital', '進駐時實收資本額');
+            $form->number('revenue', '進駐時年營業額');
+            $form->number('staff', '進駐時員工人數');
+
+        });
+
+        $form->column(1/2, function ($form) {
+            $form->select('real_or_virtula','進駐方式')->options([
+                'real' => '實質進駐',
+                'virtual' => '虛擬進駐'
+            ]);
+
+            $form->text('identity_code', '身分證/統一編號');
+            $form->text('owner_name', '負責人');
+            $form->text('owner_email', '負責人Email');
+            $form->text('owner_phone', '負責人電話');
+            $form->text('service', '主要產品/服務項目');
+            $form->datetime('established_time', '設立日期')->default(date('Y-m-d'));
+            $form->datetime('contract_start_time', '合約開始日期')->default(date('Y-m-d'));
+            $form->datetime('contract_end_time', '合約結束日期')->default(date('Y-m-d'));
+        });
+
+        
+        
+        
+       
+        
+
+        
+        
+        
+        
         $form->saving(function (Form $form) {
             $companyStatus = new CompanyStatus();
             $companyStatus->cid = strval($form->cid);

@@ -29,8 +29,21 @@ class IndustryAcademiaCoopController extends AdminController
         $grid = new Grid(new IndustryAcademiaCoop());
 
         $grid->column('id', __('Id'));
+        $grid->column('CompanyBasicInfo.group_category', '進駐單位')->using([
+            'farmer'        => '農試所',
+            'forestry'      => '林試所',
+            'water'         => '水試所',
+            'livestock'     => '畜試所',
+            'agricultural'  => '農科院',
+        ], '未知')->dot([
+            'livestock'     => 'danger',
+            'agricultural'  => 'success',
+            'forestry'      => 'info',
+            'water'         => 'primary',
+            'farmer'        => 'success',
+        ], 'warning');
         $grid->column('cid', '自然人/組織/公司名稱')->display(function($cid){
-            return CompanyBasicInfo::where('id', $cid)->first()->company_name;
+            return CompanyBasicInfo::where('cid', $cid)->first()->company_name;
         });
         $grid->column('project_name', '計畫名稱');
         $grid->column('project_category', '計畫類別');
@@ -82,7 +95,7 @@ class IndustryAcademiaCoopController extends AdminController
         $_companiesArr = array();
         foreach($_companies as $item)
         {
-            $_companiesArr[$item->id] = $item->company_name;
+            $_companiesArr[$item->cid] = $item->company_name;
         }
 
         $_pCategoriesArr = array();

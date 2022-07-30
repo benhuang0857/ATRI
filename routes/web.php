@@ -14,3 +14,6 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('company-info-view/{cid}', 'CompanyBasicInfoController@CompanyInfoView');
+Route::get('company-info-pdf/{cid}', 'CompanyBasicInfoController@CompanyInfoPDF');

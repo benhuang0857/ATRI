@@ -57,10 +57,19 @@ class AdditionInvestController extends AdminController
             }, '聯絡人/負責人電話');
         });
 
-        $grid->column('CompanyBasicInfo.group_category', '進駐單位')->display(function($data){
-            $reault = GroupCategory::where('slug', $data)->first()->name;
-            return '<span class="badge badge-primary" style="background:blue">'.$reault.'</span>';
-        });
+        $grid->column('CompanyBasicInfo.group_category', '進駐單位')->using([
+            'farmer'        => '農試所',
+            'forestry'      => '林試所',
+            'water'         => '水試所',
+            'livestock'     => '畜試所',
+            'agricultural'  => '農科院',
+        ], '未知')->dot([
+            'livestock'     => 'danger',
+            'agricultural'  => 'success',
+            'forestry'      => 'info',
+            'water'         => 'primary',
+            'farmer'        => 'success',
+        ], 'warning');
         $grid->column('cid', '自然人/組織/公司名稱')->display(function($cid){
             return CompanyBasicInfo::where('cid', $cid)->first()->company_name;
         });

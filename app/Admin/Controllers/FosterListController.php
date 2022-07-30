@@ -45,39 +45,50 @@ class FosterListController extends AdminController
             $filter->like('CompanyBasicInfo.company_name', '自然人/組織/公司名稱');
         });
 
+        $grid->export(function ($export) {
+            $export->originalValue(['CompanyBasicInfo.group_category']);
+            $export->column('CompanyBasicInfo.group_category', function ($value, $original) {
+                if ($original == 'farmer') 
+                    return '農試所';
+                if ($original == 'forestry') 
+                    return '林試所';
+                if ($original == 'water') 
+                    return '水試所';
+                if ($original == 'livestock') 
+                    return '畜試所';
+                if ($original == 'agricultural') 
+                    return '農科院';
+            });
+        });
+
         $grid->column('id', __('Id'));
-        $grid->column('CompanyBasicInfo.group_category', '進駐單位')->display(function($data){
-            $reault = GroupCategory::where('slug', $data)->first()->name;
-            return '<span class="badge badge-primary" style="background:blue">'.$reault.'</span>';
-        });
-        $grid->column('cid', '自然人/組織/公司名稱')->display(function($cid){
-            return CompanyBasicInfo::where('cid', $cid)->first()->company_name;
-        });
+        $grid->column('CompanyBasicInfo.group_category', '進駐單位')->using([
+            'farmer'        => '農試所',
+            'forestry'      => '林試所',
+            'water'         => '水試所',
+            'livestock'     => '畜試所',
+            'agricultural'  => '農科院',
+        ], '未知')->dot([
+            'livestock'     => 'danger',
+            'agricultural'  => 'success',
+            'forestry'      => 'info',
+            'water'         => 'primary',
+            'farmer'        => 'success',
+        ], 'warning');
+
+        $grid->column('CompanyBasicInfo.company_name', '自然人/組織/公司名稱');
         $grid->column('CompanyBasicInfo.owner_name', '負責人');
-        $grid->column('CompanyBasicInfo.service', '服務項目');
+        $grid->column('CompanyBasicInfo.service', '主要產品');
+        $grid->column('cid', '進駐時實收資本額/員工人數/營業額')->display(function($cid){
+            $company = CompanyBasicInfo::where('cid', $cid)->first();
+            return $company->capital.'/'.$company->staff.'/'.$company->revenue;
+        });
         $grid->column('CompanyBasicInfo.established_time', '設立日期');
         $grid->column('CompanyBasicInfo.cid', '合約日期')->display(function($cid){
             $company = CompanyBasicInfo::where('cid', $cid)->first();
-            $result = $company->contract_start_time.'<BR>'.$company->contract_end_time;
+            $result = $company->contract_start_time.'至'.$company->contract_end_time;
             return $result;
         });
-        
-        // $grid->column('CompanyBasicInfo.real_or_virtula', '進駐方式')->display(function($data){
-        //     if ($data == 'real') 
-        //         return '實質進駐';
-        //     else
-        //         return '虛擬進駐';
-        // });
-        
-
-        // $grid->column('cid', '自然人/組織/公司名稱')->display(function($cid){
-        //     return 0;
-        // });
-
-        // $grid->model()->cid;
-
-        // $grid->column('created_at', __('Created at'));
-        // $grid->column('updated_at', __('Updated at'));
 
         return $grid;
     }
