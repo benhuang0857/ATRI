@@ -25,6 +25,7 @@ class CreateAwardTable extends Migration
             $table->string('application_status')->default('no')->comment('申請狀態');
             $table->string('award_status')->default('no')->comment('獲獎/未獲獎');
             $table->datetime('award_time')->comment('獲獎日期');
+            $table->text('note')->nullable()->comment('輔導內容');
             $table->string('document')->nullable()->comment('佐證文件');
             $table->timestamps();
         });

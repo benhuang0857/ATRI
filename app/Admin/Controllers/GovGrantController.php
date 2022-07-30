@@ -5,6 +5,7 @@ namespace App\Admin\Controllers;
 use App\GovGrant;
 use App\CompanyBasicInfo;
 use Encore\Admin\Controllers\AdminController;
+use Illuminate\Database\Eloquent\Collection;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
@@ -27,32 +28,39 @@ class GovGrantController extends AdminController
     {
         $grid = new Grid(new GovGrant());
 
-        $grid->column('id', __('Id'));
+        $grid->model()->collection(function (Collection $collection) {
+            foreach($collection as $index => $item) {
+                $item->tmp = $index + 1;
+            }
+            return $collection;
+        });
+        
+        $grid->column('tmp', '編號');
+
         $grid->column('CompanyBasicInfo.group_category', '進駐單位')->using([
             'farmer'        => '農試所',
             'forestry'      => '林試所',
             'water'         => '水試所',
             'livestock'     => '畜試所',
             'agricultural'  => '農科院',
-        ], '未知')->dot([
-            'livestock'     => 'danger',
-            'agricultural'  => 'success',
-            'forestry'      => 'info',
-            'water'         => 'primary',
-            'farmer'        => 'success',
-        ], 'warning');
+        ], '未知');
         $grid->column('cid', '自然人/組織/公司名稱')->display(function($cid){
             return CompanyBasicInfo::where('cid', $cid)->first()->company_name;
         });
         $grid->column('gov_grant_name', '政府補助資源名稱');
         $grid->column('plan_name', '計畫名稱');
-        $grid->column('application_time', '申請日期');
-        $grid->column('application_status', '申請狀態');
-        $grid->column('grant_time', '補助核定日期');
+        $grid->column('application_time', '申請日期')->display(function($application_time){
+            return date("Y-m-d", strtotime($application_time));  
+        });
+        $grid->column('application_status', '申請狀態')->using([
+            'no'        => '未通過',
+            'yes'       => '通過'
+        ]);
+        $grid->column('grant_time', '補助核定日期')->display(function($grant_time){
+            return date("Y-m-d", strtotime($grant_time));  
+        });
         $grid->column('grant_price', '核定補助金額');
         $grid->column('document', '佐證文件');
-        // $grid->column('created_at', __('Created at'));
-        // $grid->column('updated_at', __('Updated at'));
 
         return $grid;
     }
@@ -108,6 +116,7 @@ class GovGrantController extends AdminController
         ]);
         $form->datetime('grant_time', '補助核定日期')->default(date('Y-m-d H:i:s'));
         $form->number('grant_price', '核定補助金額');
+        $form->textarea('note', __('輔導內容'));
         $form->file('document', '佐證文件');
 
         return $form;

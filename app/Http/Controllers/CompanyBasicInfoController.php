@@ -78,7 +78,7 @@ class CompanyBasicInfoController extends Controller
                         <td>".$case->plan_name."</td>
                         <td>".$case->application_time."</td>
                         <td>".$case->grant_time."</td>
-                        <td>".$case->gov_grant_name."</td>
+                        <td>".$case->note."</td>
                     </tr>";
             }
 
@@ -114,7 +114,7 @@ class CompanyBasicInfoController extends Controller
                         <td>".$case->award_name."</td>
                         <td>".$case->application_time."</td>
                         <td>".$case->award_time."</td>
-                        <td>".$case->award_name."</td>
+                        <td>".$case->note."</td>
                     </tr>";
             }
 
@@ -152,7 +152,7 @@ class CompanyBasicInfoController extends Controller
                         <td>".$case->price."</td>
                         <td>".$case->start_time."</td>
                         <td>".$case->end_time."</td>
-                        <td>".$case->tech_transfer_name."</td>
+                        <td>".$case->note."</td>
                     </tr>";
             }
 
@@ -192,7 +192,7 @@ class CompanyBasicInfoController extends Controller
                         <td>".$case->price."</td>
                         <td>".$case->start_time."</td>
                         <td>".$case->end_time."</td>
-                        <td>".$case->project_name."</td>
+                        <td>".$case->note."</td>
                     </tr>";
             }
 
@@ -246,7 +246,19 @@ class CompanyBasicInfoController extends Controller
         } catch (\Throwable $th) {
             //throw $th;
         }
-        return view('companypdf', array(
+        // return view('companypdf', array(
+        //     'company'           => $company,
+        //     'groupName'         => $group_name,
+        //     'graduateDate'      => $graduate_date,
+        //     'leaveDate'         => $leave_date,
+        //     'investTable'       => $invest_table,
+        //     'govgrantTable'     => $govgrant_table,
+        //     'awardTable'        => $award_table,
+        //     'techTransferTable' => $techtransfer_table,
+        //     'industryAcademiaTable' => $industryAcademia_table
+        // ));     
+
+        $pdf = PDF::loadView('companypdf', array(
             'company'           => $company,
             'groupName'         => $group_name,
             'graduateDate'      => $graduate_date,
@@ -256,7 +268,8 @@ class CompanyBasicInfoController extends Controller
             'awardTable'        => $award_table,
             'techTransferTable' => $techtransfer_table,
             'industryAcademiaTable' => $industryAcademia_table
-        ));     
+        ));
+        return $pdf->stream('atri.pdf');
 
     }
 
@@ -313,7 +326,7 @@ class CompanyBasicInfoController extends Controller
             'techTransferTable' => $techtransfer_table,
             'industryAcademiaTable' => $industryAcademia_table
         ));
-        return $pdf->download('atri.pdf');
+        return $pdf->stream('atri.pdf');
         
 
     }

@@ -14,10 +14,6 @@
     <body>
 
     <div style="text-align:center">
-        <a class="btn btn-primary" href="/company-info-pdf/{{$company->cid}}">輸出PDF</a>
-    </div>
-
-    <div style="text-align:center">
         <h2>農業創新育成中心</h2>
         <h4>{{$company->company_name}}基本資料表暨輔導歷程</h4>
     </div>

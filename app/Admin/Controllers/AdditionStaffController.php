@@ -8,6 +8,7 @@ use App\CompanyBasicInfo;
 use App\CompanyStatus;
 use App\GroupCategory;
 use Encore\Admin\Controllers\AdminController;
+use Illuminate\Database\Eloquent\Collection;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
@@ -60,23 +61,35 @@ class AdditionStaffController extends AdminController
             }, '聯絡人/負責人電話');
         });
 
-        $grid->column('id', __('Id'));
+        $grid->model()->collection(function (Collection $collection) {
+            
+            foreach($collection as $index => $item) {
+
+                $company = CompanyBasicInfo::where('cid', $item->cid)->first();
+                $oStaff = $company->staff;
+
+                $item->tmp = $index + 1;
+                $item->cid = $item->staff - $oStaff;
+            }
+
+            return $collection;
+        });
+        
+        $grid->column('tmp', '編號');
+        
         $grid->column('CompanyBasicInfo.group_category', '進駐單位')->using([
             'farmer'        => '農試所',
             'forestry'      => '林試所',
             'water'         => '水試所',
             'livestock'     => '畜試所',
             'agricultural'  => '農科院',
-        ], '未知')->dot([
-            'livestock'     => 'danger',
-            'agricultural'  => 'success',
-            'forestry'      => 'info',
-            'water'         => 'primary',
-            'farmer'        => 'success',
-        ], 'warning');
+        ], '未知');
         $grid->column('CompanyBasicInfo.company_name', '自然人/組織/公司名稱');
         $grid->column('staff', __('員工人數'));
-        $grid->column('date_time', __('日期'));
+        $grid->column('cid', __('員工人數異動'));
+        $grid->column('date_time', __('日期'))->display(function($date_time){
+            return date("Y-m-d", strtotime($date_time));  
+        });
         $grid->column('note', __('輔導內容'));
 
         return $grid;

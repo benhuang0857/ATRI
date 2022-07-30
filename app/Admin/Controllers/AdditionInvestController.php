@@ -6,6 +6,7 @@ use App\AdditionInvest;
 use App\CompanyBasicInfo;
 use App\GroupCategory;
 use Encore\Admin\Controllers\AdminController;
+use Illuminate\Database\Eloquent\Collection;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
@@ -56,6 +57,19 @@ class AdditionInvestController extends AdminController
                     ->orWhere('owner_phone', 'like', "%{$this->input}%");
             }, '聯絡人/負責人電話');
         });
+        
+        $grid->export(function ($export) {
+            $export->except(['tmp']);
+        });
+
+        $grid->model()->collection(function (Collection $collection) {
+            foreach($collection as $index => $item) {
+                $item->tmp = $index + 1;
+            }
+            return $collection;
+        });
+        
+        $grid->column('tmp', '編號');
 
         $grid->column('CompanyBasicInfo.group_category', '進駐單位')->using([
             'farmer'        => '農試所',
@@ -63,13 +77,7 @@ class AdditionInvestController extends AdminController
             'water'         => '水試所',
             'livestock'     => '畜試所',
             'agricultural'  => '農科院',
-        ], '未知')->dot([
-            'livestock'     => 'danger',
-            'agricultural'  => 'success',
-            'forestry'      => 'info',
-            'water'         => 'primary',
-            'farmer'        => 'success',
-        ], 'warning');
+        ], '未知');
         $grid->column('cid', '自然人/組織/公司名稱')->display(function($cid){
             return CompanyBasicInfo::where('cid', $cid)->first()->company_name;
         });
@@ -79,11 +87,11 @@ class AdditionInvestController extends AdminController
         ]);
         $grid->column('price', __('金額'));
         $grid->column('reason', __('用途'));
-        $grid->column('date_time', __('日期'));
+        $grid->column('date_time', __('日期'))->display(function($date_time){
+            return date("Y-m-d", strtotime($date_time));  
+        });
         $grid->column('document', __('佐證文件'));
         $grid->column('note', __('輔導內容'));
-        // $grid->column('created_at', __('Created at'));
-        // $grid->column('updated_at', __('Updated at'));
 
         return $grid;
     }

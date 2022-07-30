@@ -5,6 +5,7 @@ namespace App\Admin\Controllers;
 use App\Award;
 use App\CompanyBasicInfo;
 use Encore\Admin\Controllers\AdminController;
+use Illuminate\Database\Eloquent\Collection;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
@@ -27,7 +28,15 @@ class AwardController extends AdminController
     {
         $grid = new Grid(new Award());
 
-        $grid->column('id', __('Id'));
+        $grid->model()->collection(function (Collection $collection) {
+            foreach($collection as $index => $item) {
+                $item->tmp = $index + 1;
+            }
+            return $collection;
+        });
+        
+        $grid->column('tmp', '編號');
+
         $grid->column('CompanyBasicInfo.group_category', '進駐單位')->using([
             'farmer'        => '農試所',
             'forestry'      => '林試所',
@@ -41,17 +50,26 @@ class AwardController extends AdminController
             'water'         => 'primary',
             'farmer'        => 'success',
         ], 'warning');
+
         $grid->column('cid', '自然人/組織/公司名稱')->display(function($cid){
             return CompanyBasicInfo::where('cid', $cid)->first()->company_name;
         });
         $grid->column('award_name', '獎項名稱');
-        $grid->column('application_time', '申請日期');
-        $grid->column('application_status', '申請狀態');
-        $grid->column('award_status', '獲獎狀態');
-        $grid->column('award_time', '獲獎日期');
+        $grid->column('application_time', '申請日期')->display(function($application_time){
+            return date("Y-m-d", strtotime($application_time));  
+        });
+        $grid->column('application_status', '申請狀態')->using([
+            'no'    => '未通過',
+            'yes'   => '通過',
+        ]);
+        $grid->column('award_status', '獲獎狀態')->using([
+            'no'    => '未獲獎',
+            'yes'   => '獲獎',
+        ]);
+        $grid->column('award_time', '獲獎日期')->display(function($award_time){
+            return date("Y-m-d", strtotime($award_time));  
+        });
         $grid->column('document', '佐證文件');
-        // $grid->column('created_at', __('Created at'));
-        // $grid->column('updated_at', __('Updated at'));
 
         return $grid;
     }
@@ -108,6 +126,7 @@ class AwardController extends AdminController
             'yes' => '獲獎'
         ]);
         $form->datetime('award_time', '獲獎日期')->default(date('Y-m-d H:i:s'));
+        $form->textarea('note', __('輔導內容'));
         $form->file('document', '佐證文件');
 
         return $form;

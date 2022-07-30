@@ -26,6 +26,7 @@ class CreateGovGrantTable extends Migration
             $table->string('application_status')->default('no')->comment('申請狀態');
             $table->datetime('grant_time')->nullable()->comment('核定補助時間');
             $table->integer('grant_price')->default(0)->comment('核定補助金額');
+            $table->text('note')->nullable()->comment('輔導內容');
             $table->string('document')->nullable()->comment('佐證文件');
             $table->timestamps();
         });

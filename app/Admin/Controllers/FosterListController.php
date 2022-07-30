@@ -6,10 +6,11 @@ use App\FosterList;
 use App\CompanyBasicInfo;
 use App\GroupCategory;
 use Encore\Admin\Controllers\AdminController;
+use Illuminate\Database\Eloquent\Collection;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
-use Illuminate\Database\Eloquent\Collection;
+
 
 class FosterListController extends AdminController
 {
@@ -43,38 +44,30 @@ class FosterListController extends AdminController
                 'virtual' => '虛擬進駐'
             ]);
             $filter->like('CompanyBasicInfo.company_name', '自然人/組織/公司名稱');
-        });
-
+        });        
         $grid->export(function ($export) {
-            $export->originalValue(['CompanyBasicInfo.group_category']);
-            $export->column('CompanyBasicInfo.group_category', function ($value, $original) {
-                if ($original == 'farmer') 
-                    return '農試所';
-                if ($original == 'forestry') 
-                    return '林試所';
-                if ($original == 'water') 
-                    return '水試所';
-                if ($original == 'livestock') 
-                    return '畜試所';
-                if ($original == 'agricultural') 
-                    return '農科院';
-            });
+            $export->except(['tmp']);
         });
 
-        $grid->column('id', __('Id'));
+        $grid->model()->collection(function (Collection $collection) {
+            
+            foreach($collection as $index => $item) {
+                $company = CompanyBasicInfo::where('cid', $item->cid)->first();
+                $group = $company->group_category;
+                $item->tmp = $index + 1;
+                $item->tmp_group = $group;
+            }
+            return $collection;
+        });
+        
+        $grid->column('tmp', '編號');
         $grid->column('CompanyBasicInfo.group_category', '進駐單位')->using([
             'farmer'        => '農試所',
             'forestry'      => '林試所',
             'water'         => '水試所',
             'livestock'     => '畜試所',
             'agricultural'  => '農科院',
-        ], '未知')->dot([
-            'livestock'     => 'danger',
-            'agricultural'  => 'success',
-            'forestry'      => 'info',
-            'water'         => 'primary',
-            'farmer'        => 'success',
-        ], 'warning');
+        ], '未知');
 
         $grid->column('CompanyBasicInfo.company_name', '自然人/組織/公司名稱');
         $grid->column('CompanyBasicInfo.owner_name', '負責人');
@@ -83,10 +76,12 @@ class FosterListController extends AdminController
             $company = CompanyBasicInfo::where('cid', $cid)->first();
             return $company->capital.'/'.$company->staff.'/'.$company->revenue;
         });
-        $grid->column('CompanyBasicInfo.established_time', '設立日期');
+        $grid->column('CompanyBasicInfo.established_time', '設立日期')->display(function($established_time){
+            return date("Y-m-d", strtotime($established_time));  
+        });
         $grid->column('CompanyBasicInfo.cid', '合約日期')->display(function($cid){
             $company = CompanyBasicInfo::where('cid', $cid)->first();
-            $result = $company->contract_start_time.'至'.$company->contract_end_time;
+            $result = date("Y-m-d", strtotime($company->contract_start_time)).'至'.date("Y-m-d", strtotime($company->contract_end_time));
             return $result;
         });
 

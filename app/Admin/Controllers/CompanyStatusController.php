@@ -6,6 +6,7 @@ use App\CompanyStatus;
 use App\CompanyBasicInfo;
 use App\GroupCategory;
 use Encore\Admin\Controllers\AdminController;
+use Illuminate\Database\Eloquent\Collection;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
@@ -45,7 +46,15 @@ class CompanyStatusController extends AdminController
             $filter->like('CompanyBasicInfo.company_name', '自然人/組織/公司名稱');
         });
 
-        $grid->column('id', __('Id'));
+        $grid->model()->collection(function (Collection $collection) {
+            foreach($collection as $index => $item) {
+                $item->tmp = $index + 1;
+            }
+            return $collection;
+        });
+        
+        $grid->column('tmp', '編號');
+        
         $grid->column('cid', '自然人/組織/公司名稱')->display(function($cid){
             return CompanyBasicInfo::where('cid', $cid)->first()->company_name;
         });
@@ -57,7 +66,9 @@ class CompanyStatusController extends AdminController
             'leave'     => '離駐'
         ]);
         $grid->column('note', __('異動原因'));
-        $grid->column('date_time', __('異動日期'));
+        $grid->column('date_time', __('異動日期'))->display(function($date_time){
+            return date("Y-m-d", strtotime($date_time));  
+        });
         // $grid->column('created_at', __('Created at'));
         // $grid->column('updated_at', __('Updated at'));
 

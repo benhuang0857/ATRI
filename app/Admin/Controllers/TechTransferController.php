@@ -5,6 +5,7 @@ namespace App\Admin\Controllers;
 use App\TechTransfer;
 use App\CompanyBasicInfo;
 use Encore\Admin\Controllers\AdminController;
+use Illuminate\Database\Eloquent\Collection;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
@@ -27,30 +28,34 @@ class TechTransferController extends AdminController
     {
         $grid = new Grid(new TechTransfer());
 
-        $grid->column('id', __('Id'));
+        $grid->model()->collection(function (Collection $collection) {
+            foreach($collection as $index => $item) {
+                $item->tmp = $index + 1;
+            }
+            return $collection;
+        });
+        
+        $grid->column('tmp', '編號');
+        
         $grid->column('CompanyBasicInfo.group_category', '進駐單位')->using([
             'farmer'        => '農試所',
             'forestry'      => '林試所',
             'water'         => '水試所',
             'livestock'     => '畜試所',
             'agricultural'  => '農科院',
-        ], '未知')->dot([
-            'livestock'     => 'danger',
-            'agricultural'  => 'success',
-            'forestry'      => 'info',
-            'water'         => 'primary',
-            'farmer'        => 'success',
-        ], 'warning');
+        ], '未知');
         $grid->column('cid', '自然人/組織/公司名稱')->display(function($cid){
             return CompanyBasicInfo::where('cid', $cid)->first()->company_name;
         });
         $grid->column('tech_transfer_name', '技轉名稱');
         $grid->column('price', '技轉金額(千)');
-        $grid->column('start_time', '合約起始日期');
-        $grid->column('end_time', '合約終止日期');
+        $grid->column('start_time', '合約起始日期')->display(function($start_time){
+            return date("Y-m-d", strtotime($start_time));  
+        });
+        $grid->column('end_time', '合約終止日期')->display(function($end_time){
+            return date("Y-m-d", strtotime($end_time));  
+        });
         $grid->column('document', '佐證文件');
-        // $grid->column('created_at', __('Created at'));
-        // $grid->column('updated_at', __('Updated at'));
 
         return $grid;
     }
@@ -99,6 +104,7 @@ class TechTransferController extends AdminController
         $form->number('price', '技轉金額(千)');
         $form->datetime('start_time', '合約起始日期')->default(date('Y-m-d H:i:s'));
         $form->datetime('end_time', '合約終止日期')->default(date('Y-m-d H:i:s'));
+        $form->textarea('note', __('輔導內容'));
         $form->file('document', '佐證文件');
 
         return $form;

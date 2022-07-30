@@ -24,6 +24,7 @@ class CreateTechTransferTable extends Migration
             $table->integer('price')->default(0)->comment('金額(千元單位)');
             $table->datetime('start_time')->comment('開始時間');
             $table->datetime('end_time')->comment('結束時間');
+            $table->text('note')->nullable()->comment('輔導內容');
             $table->string('document')->nullable()->comment('佐證文件');
             $table->timestamps();
         });

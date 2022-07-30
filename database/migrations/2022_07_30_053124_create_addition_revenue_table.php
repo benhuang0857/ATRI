@@ -20,6 +20,7 @@ class CreateAdditionRevenueTable extends Migration
         Schema::create('addition_revenue', function (Blueprint $table) {
             $table->increments('id');
             $table->string('cid');
+            $table->string('group_category')->nullable()->comment('進駐單位');
             $table->integer('price')->default(0)->comment('金額');
             $table->datetime('date_time')->comment('日期');
             $table->text('note')->nullable()->comment('輔導內容');

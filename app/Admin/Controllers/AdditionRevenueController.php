@@ -4,9 +4,9 @@ namespace App\Admin\Controllers;
 
 use App\AdditionRevenue;
 use App\CompanyBasicInfo;
-use App\CompanyStatus;
 use App\GroupCategory;
 use Encore\Admin\Controllers\AdminController;
+use Illuminate\Database\Eloquent\Collection;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
@@ -58,27 +58,28 @@ class AdditionRevenueController extends AdminController
                     ->orWhere('owner_phone', 'like', "%{$this->input}%");
             }, '聯絡人/負責人電話');
         });
-
-        $grid->column('id', __('Id'));
+        
+        $grid->model()->collection(function (Collection $collection) {
+            foreach($collection as $index => $item) {
+                $item->tmp = $index + 1;
+            }
+            return $collection;
+        });
+        
+        $grid->column('tmp', '編號');
         $grid->column('CompanyBasicInfo.group_category', '進駐單位')->using([
             'farmer'        => '農試所',
             'forestry'      => '林試所',
             'water'         => '水試所',
             'livestock'     => '畜試所',
             'agricultural'  => '農科院',
-        ], '未知')->dot([
-            'livestock'     => 'danger',
-            'agricultural'  => 'success',
-            'forestry'      => 'info',
-            'water'         => 'primary',
-            'farmer'        => 'success',
-        ], 'warning');
+        ], '未知');
         $grid->column('CompanyBasicInfo.company_name', '自然人/組織/公司名稱');
         $grid->column('price', __('營業額'));
-        $grid->column('date_time', __('日期'));
+        $grid->column('date_time', __('日期'))->display(function($date_time){
+            return date("Y-m-d", strtotime($date_time));  
+        });
         $grid->column('note', __('註記'));
-        // $grid->column('created_at', __('Created at'));
-        // $grid->column('updated_at', __('Updated at'));
 
         return $grid;
     }
@@ -94,6 +95,7 @@ class AdditionRevenueController extends AdminController
         $show = new Show(AdditionRevenue::findOrFail($id));
 
         $show->field('id', __('Id'));
+        // $form->field('group_category');
         $show->field('cid', __('Cid'));
         $show->field('price', __('Price'));
         $show->field('date_time', __('Date time'));
@@ -119,10 +121,17 @@ class AdditionRevenueController extends AdminController
         {
             $_companiesArr[$item->cid] = $item->company_name;
         }
+        
+        $form->hidden('group_category');
         $form->select('cid', '自然人/組織/公司名稱')->options($_companiesArr);
         $form->number('price', __('營業額'))->default(0);
         $form->datetime('date_time', __('日期'))->default(date('Y-m-d'));
         $form->textarea('note', __('註記'));
+
+        $form->saving(function (Form $form) {
+            $_company = CompanyBasicInfo::where('cid', $form->cid)->first();
+            $form->group_category = $_company->group_category;
+        });
 
         return $form;
     }

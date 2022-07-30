@@ -6,6 +6,7 @@ use App\CompanyBasicInfo;
 use App\CompanyStatus;
 use App\GroupCategory;
 use Encore\Admin\Controllers\AdminController;
+use Illuminate\Database\Eloquent\Collection;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
@@ -61,37 +62,28 @@ class CompanyBasicInfoController extends AdminController
         });
 
         $grid->export(function ($export) {
-            // $export->originalValue(['group_category', 'company_name']);
-            $export->column('group_category', function ($value, $original) {
-                if ($original == 'farmer') 
-                    return '農試所';
-                if ($original == 'forestry') 
-                    return '林試所';
-                if ($original == 'water') 
-                    return '水試所';
-                if ($original == 'livestock') 
-                    return '畜試所';
-                if ($original == 'agricultural') 
-                    return '農科院';
-            });
+            $export->except(['tmp']);
             $export->column('company_name', function ($value, $original) {
                 return $original;
             });
         });
 
+        $grid->model()->collection(function (Collection $collection) {
+            foreach($collection as $index => $item) {
+                $item->tmp = $index + 1;
+            }
+            return $collection;
+        });
+        
+        $grid->column('tmp', '編號');
+        
         $grid->column('group_category', '進駐單位')->using([
             'farmer'        => '農試所',
             'forestry'      => '林試所',
             'water'         => '水試所',
             'livestock'     => '畜試所',
             'agricultural'  => '農科院',
-        ], '未知')->dot([
-            'livestock'     => 'danger',
-            'agricultural'  => 'success',
-            'forestry'      => 'info',
-            'water'         => 'primary',
-            'farmer'        => 'success',
-        ], 'warning');
+        ], '未知');
         
         // $grid->column('group_category', '進駐單位')->display(function($slug){
         //     $reault = GroupCategory::where('slug', $slug)->first()->name;
@@ -130,10 +122,12 @@ class CompanyBasicInfoController extends AdminController
         });
         */
         $grid->column('company_name', '自然人/組織/公司名稱')->display(function($company_name){
-            return "<a href=/company-info-view/".$this->cid.">".$company_name."</a>";
+            return "<a target='_blank' href=/company-info-view/".$this->cid.">".$company_name."</a>";
         });
         $grid->column('identity_code', '身分證/統一編號');
-        $grid->column('established_time', '設立日期');
+        $grid->column('established_time', '設立日期')->display(function($established_time){
+            return date("Y-m-d", strtotime($established_time));  
+        });
         $grid->column('real_or_virtula', '進駐方式')->using([
             'real'      => '實質進駐', 
             'virtual'    => '虛擬進駐'
@@ -146,8 +140,12 @@ class CompanyBasicInfoController extends AdminController
         $grid->column('owner_phone', __('負責人電話'));
         $grid->column('project_name', __('營運專案名稱'));
         $grid->column('service', __('主要產品/服務項目'));
-        $grid->column('contract_start_time', __('合約開始日期'));
-        $grid->column('contract_end_time', __('合約結束日期'));
+        $grid->column('contract_start_time', __('合約開始日期'))->display(function($contract_start_time){
+            return date("Y-m-d", strtotime($contract_start_time));  
+        });
+        $grid->column('contract_end_time', __('合約結束日期'))->display(function($contract_end_time){
+            return date("Y-m-d", strtotime($contract_end_time));  
+        });
         $grid->column('capital', __('進駐時實收資本額'));
         $grid->column('revenue', __('進駐時年營業額'));
         $grid->column('staff', __('進駐時員工人數'));
@@ -210,9 +208,7 @@ class CompanyBasicInfoController extends AdminController
 
             $form->hidden('cid')->default(uniqid());
             $form->select('group_category','進駐單位')->options($_groupOption);
-            
             $form->text('company_name', '自然人/組織/公司名稱');
-            
             $form->text('contact_name', '聯絡人');
             $form->text('contact_email', '聯絡人Email');
             $form->text('contact_phone', '聯絡人電話');
@@ -239,19 +235,10 @@ class CompanyBasicInfoController extends AdminController
             $form->datetime('contract_end_time', '合約結束日期')->default(date('Y-m-d'));
         });
 
-        
-        
-        
-       
-        
-
-        
-        
-        
-        
         $form->saving(function (Form $form) {
             $companyStatus = new CompanyStatus();
-            $companyStatus->cid = strval($form->cid);
+            $companyStatus->cid = $form->cid;
+            $companyStatus->status = 'stationed';
             $companyStatus->note = '初次進駐';
             $companyStatus->date_time = $form->contract_start_time;
             $companyStatus->save();

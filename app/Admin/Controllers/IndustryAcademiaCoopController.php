@@ -6,6 +6,7 @@ use App\IndustryAcademiaCoop;
 use App\CompanyBasicInfo;
 use App\ProjectCategory;
 use Encore\Admin\Controllers\AdminController;
+use Illuminate\Database\Eloquent\Collection;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
@@ -28,28 +29,37 @@ class IndustryAcademiaCoopController extends AdminController
     {
         $grid = new Grid(new IndustryAcademiaCoop());
 
-        $grid->column('id', __('Id'));
+        $grid->model()->collection(function (Collection $collection) {
+            foreach($collection as $index => $item) {
+                $item->tmp = $index + 1;
+            }
+            return $collection;
+        });
+        
+        $grid->column('tmp', '編號');
+        
         $grid->column('CompanyBasicInfo.group_category', '進駐單位')->using([
             'farmer'        => '農試所',
             'forestry'      => '林試所',
             'water'         => '水試所',
             'livestock'     => '畜試所',
             'agricultural'  => '農科院',
-        ], '未知')->dot([
-            'livestock'     => 'danger',
-            'agricultural'  => 'success',
-            'forestry'      => 'info',
-            'water'         => 'primary',
-            'farmer'        => 'success',
-        ], 'warning');
+        ], '未知');
         $grid->column('cid', '自然人/組織/公司名稱')->display(function($cid){
             return CompanyBasicInfo::where('cid', $cid)->first()->company_name;
         });
         $grid->column('project_name', '計畫名稱');
-        $grid->column('project_category', '計畫類別');
+        $grid->column('project_category', '計畫類別')->using([
+            'industry_academia' => '產學',
+            'entrust' => '委託'
+        ]);
         $grid->column('price', '金額(千元)');
-        $grid->column('start_time', '開始時間');
-        $grid->column('end_time', '結束時間');
+        $grid->column('start_time', '開始時間')->display(function($start_time){
+            return date("Y-m-d", strtotime($start_time));  
+        });
+        $grid->column('end_time', '結束時間')->display(function($end_time){
+            return date("Y-m-d", strtotime($end_time));  
+        });
         $grid->column('document', '佐證文件');
         // $grid->column('created_at', __('Created at'));
         // $grid->column('updated_at', __('Updated at'));
@@ -110,6 +120,7 @@ class IndustryAcademiaCoopController extends AdminController
         $form->number('price', '金額(千元)');
         $form->datetime('start_time', '開始時間')->default(date('Y-m-d H:i:s'));
         $form->datetime('end_time', '結束時間')->default(date('Y-m-d H:i:s'));
+        $form->textarea('note', __('輔導內容'));
         $form->file('document', '佐證文件');
 
         return $form;
