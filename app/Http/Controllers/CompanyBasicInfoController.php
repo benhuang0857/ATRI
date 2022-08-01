@@ -281,8 +281,8 @@ class CompanyBasicInfoController extends Controller
 
         $pdf = PDF::loadView('govproject', ['case' => $govProject]);
         $pdf->setPaper('A4', 'portrait');
-        // return $pdf->stream('gov-project.pdf');
-        return view('govproject', ['case' => $govProject]);
+        return $pdf->stream('gov-project.pdf');
+        // return view('govproject', ['case' => $govProject]);
 
     }
 

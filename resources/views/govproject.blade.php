@@ -10,7 +10,7 @@
                 /*font-size: 12px;*/
             }
             td {
-                font-size: 13px;
+                font-size: 12px;
             }
         </style>
     </head>
@@ -20,7 +20,7 @@
         <h2>政府補助資源</h2>
         <h4>{{$case->company_name}}</h4>
     </div>
-    <table border=1 cellspacing=0 cellpadding=0 style="table-layout:fixed; width:800px;margin:auto">
+    <table border=1 cellspacing=0 cellpadding=0 style="table-layout:fixed; width:700px;margin:auto">
         <tr style="text-align:center">
             <td width=30 rowspan=11 style="border: 0px;padding:20px" >
                 <p>農<br>業<br>科<br>技<br>產<br>學<br>合<br>作<br>計<br>畫<br><br><br></p>
@@ -73,7 +73,7 @@
                 <p>申請資格/<br>申請對象</p>
             </td>
             <td colspan=3 style="padding-left:10px">
-                <p>{{$case->qualification_description}}<p>
+                <p>{!!$case->qualification_description!!}<p>
             </td>
         </tr>
         <tr>
@@ -81,7 +81,7 @@
                 <p>標的</p>
             </td>
             <td colspan=3 style="padding-left:10px">
-                <p>{{$case->plan_description}}</p>
+                <p>{!!$case->plan_description!!}</p>
             </td>
         </tr>
         <tr>
@@ -89,7 +89,7 @@
                 <p>產業別/<br>屬性</p>
             </td>
             <td colspan=3 style="padding-left:10px">
-                <p>{{$case->industry_description}}</p>
+                <p>{!!$case->industry_description!!}</p>
             </td>
         </tr>
         <tr>
@@ -97,7 +97,7 @@
                 <p>審查重點</p>
             </td>
             <td colspan=3 style="padding-left:10px">
-                <p>{{$case->review_point_description}}</p>
+                <p>{!!$case->review_point_description!!}</p>
             </td>
         </tr>
         <tr>
@@ -105,7 +105,7 @@
                 <p>研提額度</p>
             </td>
             <td colspan=3 style="padding-left:10px">
-                <p>{{$case->amount_description}}</p>
+                <p>{!!$case->amount_description!!}</p>
             </td>
         </tr>
         <tr>

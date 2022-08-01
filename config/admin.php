@@ -405,6 +405,28 @@ return [
     |
     */
     'extensions' => [
+        'tinymce' => [
+            // Set to false if you want to disable this extension
+            'enable' => true,
+            // Editor configuration
+            'config' => [
+                'resize'=> false,
+                'plugins' => 'advlist AutoLink image lists preview code help fullscreen table autoresize ', // plug in
+                'Toolbar' => 'images [upload]',
+                'URL' => '/ API / V1 / images', // the return format of the image upload interface is: {location: "/ demo / image / 1. JPG"}
+            ]
+        ],
+        'ckeditor' => [
+        
+            //Set to false if you want to disable this extension
+            'enable' => true,
+            
+            // Editor configuration
+            'config' => [
+                'lang'   => 'zh-CN',
+                'height' => 500,
+            ]
+        ]
 
     ],
 ];

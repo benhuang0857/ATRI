@@ -182,7 +182,7 @@ class GovSupportProjectController extends AdminController
             'yes' => '通過'
         ]);
 
-        $form->textarea('qualification_description', __('申請資格說明'));
+        $form->ckeditor('qualification_description', __('申請資格說明'));
         $form->textarea('plan_description', __('計畫標的說明'));
         $form->textarea('industry_description', __('產業屬性說明'));
         $form->textarea('review_point_description', __('審查種點說明'));
