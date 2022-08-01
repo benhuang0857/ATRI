@@ -22,9 +22,11 @@
     </div>
     <table border=1 cellspacing=0 cellpadding=0 style="table-layout:fixed; width:700px;margin:auto">
         <tr style="text-align:center">
+        <!--
             <td width=30 rowspan=11 style="border: 0px;padding:20px" >
                 <p>農<br>業<br>科<br>技<br>產<br>學<br>合<br>作<br>計<br>畫<br><br><br></p>
             </td>
+        -->
             <td>
                 <p>計畫名稱</p>
             </td>
