@@ -183,10 +183,10 @@ class GovSupportProjectController extends AdminController
         ]);
 
         $form->ckeditor('qualification_description', __('申請資格說明'));
-        $form->textarea('plan_description', __('計畫標的說明'));
-        $form->textarea('industry_description', __('產業屬性說明'));
-        $form->textarea('review_point_description', __('審查種點說明'));
-        $form->textarea('amount_description', __('研擬額度說明'));
+        $form->ckeditor('plan_description', __('計畫標的說明'));
+        $form->ckeditor('industry_description', __('產業屬性說明'));
+        $form->ckeditor('review_point_description', __('審查種點說明'));
+        $form->ckeditor('amount_description', __('研擬額度說明'));
 
         return $form;
     }
