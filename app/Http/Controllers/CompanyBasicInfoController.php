@@ -270,6 +270,7 @@ class CompanyBasicInfoController extends Controller
             'techTransferTable' => $techtransfer_table,
             'industryAcademiaTable' => $industryAcademia_table
         ));
+        $pdf->setPaper('A4', 'portrait');
         return $pdf->stream('atri.pdf');
 
     }
@@ -279,9 +280,9 @@ class CompanyBasicInfoController extends Controller
         $govProject = GovSupportProject::where('id', $cid)->first();
 
         $pdf = PDF::loadView('govproject', ['case' => $govProject]);
-        return $pdf->stream('gov-project.pdf');
-
-        return view('govproject', ['case' => $govProject]);     
+        $pdf->setPaper('A4', 'portrait');
+        // return $pdf->stream('gov-project.pdf');
+        return view('govproject', ['case' => $govProject]);
 
     }
 

@@ -18,7 +18,7 @@
         <h4>{{$company->company_name}}基本資料表暨輔導歷程</h4>
     </div>
 
-    <table style="text-align: center;width: 100%;font-size:10px" border=1 cellspacing=0 cellpadding=0>
+    <table style="text-align: center;table-layout:fixed; width:700px;font-size:10px" border=1 cellspacing=0 cellpadding=0>
         <tr style="height:35px">
             <td style="background-color:#D9D8D8" width=113 rowspan=2 valign=center>
                 進駐育成中心

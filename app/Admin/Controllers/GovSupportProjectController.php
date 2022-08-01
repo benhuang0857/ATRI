@@ -68,7 +68,9 @@ class GovSupportProjectController extends AdminController
             'no' => '未通過',
             'yes' => '通過'
         ]);
-        $grid->column('plan_title', __('計畫名稱'));
+        $grid->column('plan_title', __('計畫名稱'))->display(function($plan_title){
+            return "<a target='_blank' href=/gov-project-view/".$this->id.">".$plan_title."</a>";
+        });
         $grid->column('plan_group', __('執行單位'));
         $grid->column('region', __('地區'))->display(function($slug){
             $reault = Region::where('slug', $slug)->first()->name;
