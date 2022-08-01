@@ -25,4 +25,6 @@ Route::group([
     $router->resource('gov-grants', GovGrantController::class);
     $router->resource('industry-academia-coops', IndustryAcademiaCoopController::class);
     $router->resource('tech-transfers', TechTransferController::class);
+    $router->resource('gov-support-projects', GovSupportProjectController::class);
+    $router->resource('regions', RegionController::class);
 });

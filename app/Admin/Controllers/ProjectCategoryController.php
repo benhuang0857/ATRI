@@ -15,7 +15,7 @@ class ProjectCategoryController extends AdminController
      *
      * @var string
      */
-    protected $title = 'ProjectCategory';
+    protected $title = '計畫類型設定';
 
     /**
      * Make a grid builder.
@@ -26,11 +26,9 @@ class ProjectCategoryController extends AdminController
     {
         $grid = new Grid(new ProjectCategory());
 
-        $grid->column('id', __('Id'));
-        $grid->column('name', __('Name'));
-        $grid->column('slug', __('Slug'));
-        $grid->column('created_at', __('Created at'));
-        $grid->column('updated_at', __('Updated at'));
+        $grid->column('name', __('計畫類型'));
+        $grid->column('slug', __('計畫類型英文名稱'));
+        $grid->column('created_at', __('建立時間'));
 
         return $grid;
     }
@@ -63,8 +61,8 @@ class ProjectCategoryController extends AdminController
     {
         $form = new Form(new ProjectCategory());
 
-        $form->text('name', __('Name'));
-        $form->text('slug', __('Slug'));
+        $form->text('name', __('計畫類型'));
+        $form->text('slug', __('計畫類型英文名稱'));
 
         return $form;
     }

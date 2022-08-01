@@ -2,20 +2,20 @@
 
 namespace App\Admin\Controllers;
 
-use App\GroupCategory;
+use App\Region;
 use Encore\Admin\Controllers\AdminController;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 
-class GroupCategoryController extends AdminController
+class RegionController extends AdminController
 {
     /**
      * Title for current resource.
      *
      * @var string
      */
-    protected $title = '進駐單位設定';
+    protected $title = '區域設定';
 
     /**
      * Make a grid builder.
@@ -24,10 +24,10 @@ class GroupCategoryController extends AdminController
      */
     protected function grid()
     {
-        $grid = new Grid(new GroupCategory());
+        $grid = new Grid(new Region());
 
-        $grid->column('name', __('進駐單位名稱'));
-        $grid->column('slug', __('進駐單位英文簡稱'));
+        $grid->column('name', __('區域'));
+        $grid->column('slug', __('區域英文簡稱'));
         $grid->column('created_at', __('建立時間'));
 
         return $grid;
@@ -41,7 +41,7 @@ class GroupCategoryController extends AdminController
      */
     protected function detail($id)
     {
-        $show = new Show(GroupCategory::findOrFail($id));
+        $show = new Show(Region::findOrFail($id));
 
         $show->field('id', __('Id'));
         $show->field('name', __('Name'));
@@ -59,10 +59,10 @@ class GroupCategoryController extends AdminController
      */
     protected function form()
     {
-        $form = new Form(new GroupCategory());
+        $form = new Form(new Region());
 
-        $form->text('name', __('進駐單位名稱'));
-        $form->text('slug', __('進駐單位英文簡稱'));
+        $form->text('name', __('區域'));
+        $form->text('slug', __('區域英文簡稱'));
 
         return $form;
     }

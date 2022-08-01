@@ -9,6 +9,7 @@ use App\CompanyBasicInfo;
 use App\CompanyStatus;
 use App\GroupCategory;
 use App\GovGrant;
+use App\GovSupportProject;
 use App\IndustryAcademiaCoop;
 use App\TechTransfer;
 
@@ -273,61 +274,15 @@ class CompanyBasicInfoController extends Controller
 
     }
 
-    public function CompanyInfoPDF($cid)
+    public function GovProjectView($cid)
     {       
-        $group_name         = '';
-        $graduate_date      = '';
-        $leave_date         = '';
-        $invest_table       = '';
-        $govgrant_table     = '';
-        $award_table        = '';
-        $techtransfer_table = '';
-        $industryAcademia_table = '';
+        $govProject = GovSupportProject::where('id', $cid)->first();
 
-        $graduateStatus = CompanyStatus::where('cid', $cid)
-                                        ->where('status', 'graduate')->first();
-        $leaveStatus    = CompanyStatus::where('cid', $cid)
-                                        ->where('status', 'leave')->first();
-        $company        = CompanyBasicInfo::where('cid', $cid)->first();
-        $groupCategory  = GroupCategory::where('slug', $company->group_category)->first();
+        $pdf = PDF::loadView('govproject', ['case' => $govProject]);
+        return $pdf->stream('gov-project.pdf');
 
-        /**
-         * 條列式 列出投資、增資額明細表、申請暨取得政府補助資源、獎項、技術移轉、產學合作等績效資料表
-         */
-        $additionInvest         = AdditionInvest::where('cid', $cid)->get();
-        $additionGovGrant       = GovGrant::where('cid', $cid)->get();
-        $additionAward          = Award::where('cid', $cid)->get();
-        $additionTechTransfer   = TechTransfer::where('cid', $cid)->get();
-        $additionIndustryAcademiaCoop = IndustryAcademiaCoop::where('cid', $cid)->get();
-
-        // 將表資料注入
-        $invest_table       = $this->InvestTableRender($additionInvest);
-        $govgrant_table     = $this->GovGrantTableRender($additionGovGrant);
-        $award_table        = $this->AwardTableRender($additionAward);
-        $techtransfer_table = $this->TechTransferTableRender($additionTechTransfer);
-        $industryAcademia_table = $this->IndustryAcademiaCoopTableRender($additionIndustryAcademiaCoop);
-
-        try {
-            $group_name  = $groupCategory->name;
-            $graduate_date  = $graduateStatus->date_time;
-            $leave_date     = $leaveStatus->date_time;
-        } catch (\Throwable $th) {
-            //throw $th;
-        }
-     
-        $pdf = PDF::loadView('companypdf', array(
-            'company'           => $company,
-            'groupName'         => $group_name,
-            'graduateDate'      => $graduate_date,
-            'leaveDate'         => $leave_date,
-            'investTable'       => $invest_table,
-            'govgrantTable'     => $govgrant_table,
-            'awardTable'        => $award_table,
-            'techTransferTable' => $techtransfer_table,
-            'industryAcademiaTable' => $industryAcademia_table
-        ));
-        return $pdf->stream('atri.pdf');
-        
+        return view('govproject', ['case' => $govProject]);     
 
     }
+
 }
