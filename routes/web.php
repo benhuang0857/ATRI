@@ -17,4 +17,4 @@ Route::get('/', function () {
 
 Route::get('company-info-view/{cid}', 'CompanyBasicInfoController@CompanyInfoView');
 Route::get('gov-project-view/{cid}', 'CompanyBasicInfoController@GovProjectView');
-// Route::get('company-info-pdf/{cid}', 'CompanyBasicInfoController@CompanyInfoPDF');
+Route::get('excel/addition-invest', 'AdditionInvestController@Export');
