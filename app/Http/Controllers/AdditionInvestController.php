@@ -46,7 +46,7 @@ class AdditionInvestController extends Controller
             ORDER BY Y.group_category DESC
         ");
 
-        if($req->start_time == null || $req->end_time == null)
+        if($start_time == null || $end_time == null)
         {
             $cases1 = DB::select("
                 SELECT 
