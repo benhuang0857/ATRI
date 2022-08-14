@@ -107,7 +107,7 @@ class AdditionInvestController extends AdminController
                 var date_time_start = $("#date_time_start").val();
                 var date_time_end = $("#date_time_end").val();
 
-                $("#advexcel").attr("href", "/excel/addition-invest?start_time="+date_time_start+"&date_time_end="+date_time_end+"")
+                $("#advexcel").attr("href", "/excel/addition-invest?start_time="+date_time_start+"&end_time="+date_time_end+"")
             })
         ');
 
