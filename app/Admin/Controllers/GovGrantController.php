@@ -53,6 +53,7 @@ class GovGrantController extends AdminController
             return date("Y-m-d", strtotime($application_time));  
         });
         $grid->column('application_status', '申請狀態')->using([
+            'pending'   => '申請中',
             'no'        => '未通過',
             'yes'       => '通過'
         ]);
@@ -111,8 +112,9 @@ class GovGrantController extends AdminController
         $form->text('plan_name', '計畫名稱');
         $form->datetime('application_time', '申請日期')->default(date('Y-m-d H:i:s'));
         $form->select('application_status', '申請狀態')->options([
-            'no' => '未通過',
-            'yes' => '通過'
+            'pending'   => '申請中',
+            'no'        => '未通過',
+            'yes'       => '通過'
         ]);
         $form->datetime('grant_time', '補助核定日期')->default(date('Y-m-d H:i:s'));
         $form->number('grant_price', '核定補助金額');

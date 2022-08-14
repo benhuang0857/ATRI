@@ -53,7 +53,7 @@ class IndustryAcademiaCoopController extends AdminController
             'industry_academia' => '產學',
             'entrust' => '委託'
         ]);
-        $grid->column('price', '金額(千元)');
+        $grid->column('price', '金額(元)');
         $grid->column('start_time', '開始時間')->display(function($start_time){
             return date("Y-m-d", strtotime($start_time));  
         });
@@ -117,7 +117,7 @@ class IndustryAcademiaCoopController extends AdminController
         $form->select('cid', '自然人/組織/公司名稱')->options($_companiesArr);
         $form->text('project_name', '計畫名稱');
         $form->select('project_category', '計畫類別')->options($_pCategoriesArr);
-        $form->number('price', '金額(千元)');
+        $form->number('price', '金額(元)');
         $form->datetime('start_time', '開始時間')->default(date('Y-m-d H:i:s'));
         $form->datetime('end_time', '結束時間')->default(date('Y-m-d H:i:s'));
         $form->textarea('note', __('輔導內容'));

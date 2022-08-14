@@ -160,7 +160,7 @@ class AdditionInvestController extends AdminController
         ]);
         $form->number('price', __('金額'));
         $form->textarea('reason', __('用途'));
-        $form->datetime('date_time', __('日期'))->default(date('Y-m-d H:i:s'));
+        $form->datetime('date_time', __('日期'))->default(date('Y-m-d'));
         $form->file('document', __('佐證文件'));
         $form->textarea('note', __('輔導內容'));
 

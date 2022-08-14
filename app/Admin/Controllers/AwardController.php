@@ -53,8 +53,9 @@ class AwardController extends AdminController
             return date("Y-m-d", strtotime($application_time));  
         });
         $grid->column('application_status', '申請狀態')->using([
-            'no'    => '未通過',
-            'yes'   => '通過',
+            'pending'   => '申請中',
+            'no'        => '未通過',
+            'yes'       => '通過'
         ]);
         $grid->column('award_status', '獲獎狀態')->using([
             'no'    => '未獲獎',
@@ -112,8 +113,9 @@ class AwardController extends AdminController
         $form->text('award_name', '獎項名稱');
         $form->datetime('application_time', '申請日期')->default(date('Y-m-d'));
         $form->select('application_status', '申請狀態')->options([
-            'no' => '未通過',
-            'yes' => '通過'
+            'pending'   => '申請中',
+            'no'        => '未通過',
+            'yes'       => '通過'
         ]);
         $form->select('award_status', '獲獎狀態')->options([
             'no' => '未獲獎',

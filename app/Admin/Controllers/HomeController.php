@@ -46,33 +46,42 @@ class HomeController extends Controller
             }
             $revenuesStr .= ']';
 
+            $group = GroupCategory::where('slug', $group->group_category)->first();
+            
             $jscode .= "{
+                            label: '".$group->name."',
                             type: 'line',
                             data: ".$revenuesStr.",
                             backgroundColor: 'transparent',
                             borderColor: '".$colorSet[$key]."',
+                            //pointBorderColor: '#007bff',
+                            fill: false
                         },";
-            //dd($jscode);
 
-            $datasetsArray = [
-                'type' => 'line',
-                'data' => $revenuesQueue,
-                'backgroundColor' => 'transparent',
-                'borderColor' => '#007bff',
-                'pointBorderColor' => '#007bff',
-                'pointBackgroundColor' => '#007bff',
-                'fill' => false
-            ];
+            // $datasetsArray = [
+            //     'type' => 'line',
+            //     'data' => $revenuesQueue,                
+            //     'backgroundColor' => 'transparent',
+            //     'borderColor' => '#007bff',
+            //     'pointBorderColor' => '#007bff',
+            //     'pointBackgroundColor' => '#007bff',
+            //     'fill' => false
+            // ];
 
-            array_push($datasets, json_encode($datasetsArray));
+            // array_push($datasets, json_encode($datasetsArray));
         }
 
         $jscode .= "
                     ]},
                     options: {
                         maintainAspectRatio: false,
+                        responsive: true,
+                        title: {
+                            display: true,
+                            text: '營業額明細表'
+                        },
                         legend: {
-                            display: false
+                            display: true
                         },
                         scales: {
                             yAxes: [{}],

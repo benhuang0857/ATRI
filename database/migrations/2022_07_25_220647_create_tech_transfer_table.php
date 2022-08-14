@@ -21,7 +21,7 @@ class CreateTechTransferTable extends Migration
             $table->increments('id');
             $table->string('cid')->comment('廠商ID');
             $table->string('tech_transfer_name')->comment('技術移轉名稱');
-            $table->integer('price')->default(0)->comment('金額(千元單位)');
+            $table->integer('price')->default(0)->comment('金額(元單位)');
             $table->datetime('start_time')->comment('開始時間');
             $table->datetime('end_time')->comment('結束時間');
             $table->text('note')->nullable()->comment('輔導內容');

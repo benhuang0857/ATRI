@@ -48,7 +48,7 @@ class TechTransferController extends AdminController
             return CompanyBasicInfo::where('cid', $cid)->first()->company_name;
         });
         $grid->column('tech_transfer_name', '技轉名稱');
-        $grid->column('price', '技轉金額(千)');
+        $grid->column('price', '技轉金額(元)');
         $grid->column('start_time', '合約起始日期')->display(function($start_time){
             return date("Y-m-d", strtotime($start_time));  
         });
@@ -101,7 +101,7 @@ class TechTransferController extends AdminController
 
         $form->select('cid', '自然人/組織/公司名稱')->options($_companiesArr);
         $form->text('tech_transfer_name', '技轉名稱');
-        $form->number('price', '技轉金額(千)');
+        $form->number('price', '技轉金額(元)');
         $form->datetime('start_time', '合約起始日期')->default(date('Y-m-d H:i:s'));
         $form->datetime('end_time', '合約終止日期')->default(date('Y-m-d H:i:s'));
         $form->textarea('note', __('輔導內容'));

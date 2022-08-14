@@ -137,7 +137,7 @@ class CompanyBasicInfoController extends Controller
                 <thead>
                     <tr>
                         <th>技轉名稱</th>
-                        <th>技轉金額(千)</th>
+                        <th>技轉金額(元)</th>
                         <th>合約起始日期</th>
                         <th>合約終止日期</th>
                         <th>輔導內容說明</th>
