@@ -18,8 +18,6 @@ class AdditionInvestController extends Controller
         $start_time = $req->start_time;
         $end_time   = $req->end_time;
 
-        dd($start_time);
-
         $cases1 = DB::select("
             SELECT 
                 *
