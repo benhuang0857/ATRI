@@ -7,6 +7,7 @@ use App\CompanyBasicInfo;
 use App\GroupCategory;
 use Encore\Admin\Controllers\AdminController;
 use Illuminate\Database\Eloquent\Collection;
+Use Encore\Admin\Admin;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
@@ -28,6 +29,11 @@ class AdditionInvestController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new AdditionInvest());
+
+        $grid->tools(function ($tools) {
+            $tools->append('<a href="" target="_blank" id="advexcel" class="btn btn-sm btn-info" ><i class="fa fa-download"></i>彙總匯出</a>');
+        });
+        
         $grid->filter(function($filter){
 
             $_option = array();
@@ -37,25 +43,27 @@ class AdditionInvestController extends AdminController
             }
 
             $filter->disableIdFilter();
-            $filter->equal('group_category', '進駐單位')->select($_option);
-            $filter->equal('real_or_virtula', '進駐方式')->select([
+            $filter->in('CompanyBasicInfo.group_category', '進駐單位')->multipleSelect($_option);
+            $filter->equal('CompanyBasicInfo.real_or_virtula', '進駐方式')->select([
                 'real' => '實質進駐',
                 'virtual' => '虛擬進駐'
             ]);
-            $filter->like('company_name', '自然人/組織/公司名稱');
-            $filter->like('identity_code', '身分證/統一編號');
+            $filter->like('CompanyBasicInfo.company_name', '自然人/組織/公司名稱');
+            $filter->like('CompanyBasicInfo.identity_code', '身分證/統一編號');
             $filter->where(function ($query) {
-                $query->where('contact_name', 'like', "%{$this->input}%")
-                    ->orWhere('owner_name', 'like', "%{$this->input}%");
+                $query->where('CompanyBasicInfo.contact_name', 'like', "%{$this->input}%")
+                    ->orWhere('CompanyBasicInfo.owner_name', 'like', "%{$this->input}%");
             }, '聯絡人/負責人姓名');
             $filter->where(function ($query) {
-                $query->where('contact_email', 'like', "%{$this->input}%")
-                    ->orWhere('owner_email', 'like', "%{$this->input}%");
+                $query->where('CompanyBasicInfo.contact_email', 'like', "%{$this->input}%")
+                    ->orWhere('CompanyBasicInfo.owner_email', 'like', "%{$this->input}%");
             }, '聯絡人/負責人Email');
             $filter->where(function ($query) {
-                $query->where('contact_phone', 'like', "%{$this->input}%")
-                    ->orWhere('owner_phone', 'like', "%{$this->input}%");
+                $query->where('CompanyBasicInfo.contact_phone', 'like', "%{$this->input}%")
+                    ->orWhere('CompanyBasicInfo.owner_phone', 'like', "%{$this->input}%");
             }, '聯絡人/負責人電話');
+
+            $filter->between('date_time', '時間')->datetime();
         });
         
         $grid->export(function ($export) {
@@ -92,6 +100,16 @@ class AdditionInvestController extends AdminController
         });
         $grid->column('document', __('佐證文件'));
         $grid->column('note', __('輔導內容'));
+
+        Admin::script('
+            var target = "/excel/addition-invest";
+            $("#advexcel").click(function(){
+                var date_time_start = $("#date_time_start").val();
+                var date_time_end = $("#date_time_end").val();
+
+                $("#advexcel").attr("href", "/excel/addition-invest?start_time="+date_time_start+"&date_time_end="+date_time_end+"")
+            })
+        ');
 
         return $grid;
     }

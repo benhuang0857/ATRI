@@ -40,7 +40,7 @@ class CompanyBasicInfoController extends AdminController
             }
 
             $filter->disableIdFilter();
-            $filter->equal('group_category', '進駐單位')->select($_option);
+            $filter->in('group_category', '進駐單位')->multipleSelect($_option);
             $filter->equal('real_or_virtula', '進駐方式')->select([
                 'real' => '實質進駐',
                 'virtual' => '虛擬進駐'
@@ -146,7 +146,9 @@ class CompanyBasicInfoController extends AdminController
         $grid->column('contract_end_time', __('合約結束日期'))->display(function($contract_end_time){
             return date("Y-m-d", strtotime($contract_end_time));  
         });
-        $grid->column('capital', __('進駐時實收資本額'));
+        $grid->column('capital', __('進駐時實收資本額'))->display(function($capital){
+            return number_format($capital);
+        });
         $grid->column('revenue', __('進駐時年營業額'));
         $grid->column('staff', __('進駐時員工人數'));
 
