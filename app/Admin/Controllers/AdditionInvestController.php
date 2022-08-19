@@ -30,10 +30,6 @@ class AdditionInvestController extends AdminController
     {
         $grid = new Grid(new AdditionInvest());
 
-        $grid->tools(function ($tools) {
-            $tools->append('<a href="" target="_blank" id="advexcel" class="btn btn-sm btn-info" ><i class="fa fa-download"></i>彙總匯出</a>');
-        });
-        
         $grid->filter(function($filter){
 
             $_option = array();
@@ -100,6 +96,10 @@ class AdditionInvestController extends AdminController
         });
         $grid->column('document', __('佐證文件'));
         $grid->column('note', __('輔導內容'));
+
+        $grid->tools(function ($tools) {
+            $tools->append('<a href="" target="_blank" id="advexcel" class="btn btn-sm btn-info" ><i class="fa fa-download"></i>彙總匯出</a>');
+        });
 
         Admin::script('
             var target = "/excel/addition-invest";

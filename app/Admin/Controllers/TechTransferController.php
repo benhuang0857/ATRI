@@ -4,8 +4,10 @@ namespace App\Admin\Controllers;
 
 use App\TechTransfer;
 use App\CompanyBasicInfo;
+use App\GroupCategory;
 use Encore\Admin\Controllers\AdminController;
 use Illuminate\Database\Eloquent\Collection;
+Use Encore\Admin\Admin;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
@@ -27,6 +29,38 @@ class TechTransferController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new TechTransfer());
+
+        $grid->filter(function($filter){
+
+            $_option = array();
+            $GroupOptions = GroupCategory::all();
+            foreach ($GroupOptions as $item) {
+                $_option[$item->slug] = $item->name;
+            }
+
+            $filter->disableIdFilter();
+            $filter->in('CompanyBasicInfo.group_category', '進駐單位')->multipleSelect($_option);
+            $filter->equal('CompanyBasicInfo.real_or_virtula', '進駐方式')->select([
+                'real' => '實質進駐',
+                'virtual' => '虛擬進駐'
+            ]);
+            $filter->like('CompanyBasicInfo.company_name', '自然人/組織/公司名稱');
+            $filter->like('CompanyBasicInfo.identity_code', '身分證/統一編號');
+            $filter->where(function ($query) {
+                $query->where('CompanyBasicInfo.contact_name', 'like', "%{$this->input}%")
+                    ->orWhere('CompanyBasicInfo.owner_name', 'like', "%{$this->input}%");
+            }, '聯絡人/負責人姓名');
+            $filter->where(function ($query) {
+                $query->where('CompanyBasicInfo.contact_email', 'like', "%{$this->input}%")
+                    ->orWhere('CompanyBasicInfo.owner_email', 'like', "%{$this->input}%");
+            }, '聯絡人/負責人Email');
+            $filter->where(function ($query) {
+                $query->where('CompanyBasicInfo.contact_phone', 'like', "%{$this->input}%")
+                    ->orWhere('CompanyBasicInfo.owner_phone', 'like', "%{$this->input}%");
+            }, '聯絡人/負責人電話');
+
+            $filter->between('start_time', '合約開始時間')->datetime();
+        });
 
         $grid->model()->collection(function (Collection $collection) {
             foreach($collection as $index => $item) {
@@ -56,6 +90,20 @@ class TechTransferController extends AdminController
             return date("Y-m-d", strtotime($end_time));  
         });
         $grid->column('document', '佐證文件');
+        
+        $grid->tools(function ($tools) {
+            $tools->append('<a href="" target="_blank" id="advexcel" class="btn btn-sm btn-info" ><i class="fa fa-download"></i>彙總匯出</a>');
+        });
+
+        Admin::script('
+            var target = "/excel/tech-transfer";
+            $("#advexcel").click(function(){
+                var date_time_start = $("#start_time_start").val();
+                var date_time_end = $("#start_time_end").val();
+
+                $("#advexcel").attr("href", "/excel/tech-transfer?start_time="+date_time_start+"&end_time="+date_time_end+"")
+            })
+        ');
 
         return $grid;
     }

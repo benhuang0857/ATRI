@@ -9,6 +9,7 @@ use App\CompanyStatus;
 use App\GroupCategory;
 use Encore\Admin\Controllers\AdminController;
 use Illuminate\Database\Eloquent\Collection;
+Use Encore\Admin\Admin;
 use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
@@ -59,6 +60,8 @@ class AdditionStaffController extends AdminController
                 $query->where('contact_phone', 'like', "%{$this->input}%")
                     ->orWhere('owner_phone', 'like', "%{$this->input}%");
             }, '聯絡人/負責人電話');
+
+            $filter->between('date_time', '時間')->datetime();
         });
 
         $grid->model()->collection(function (Collection $collection) {
@@ -85,12 +88,33 @@ class AdditionStaffController extends AdminController
             'agricultural'  => '農科院',
         ], '未知');
         $grid->column('CompanyBasicInfo.company_name', '自然人/組織/公司名稱');
-        $grid->column('staff', __('員工人數'));
-        $grid->column('cid', __('員工人數異動'));
+        $grid->column('CompanyBasicInfo.staff', __('進駐員工人數'));
+        $grid->column('staff', __('員工人數異動'));
         $grid->column('date_time', __('日期'))->display(function($date_time){
             return date("Y-m-d", strtotime($date_time));  
         });
         $grid->column('note', __('輔導內容'));
+
+        $grid->tools(function ($tools) {
+            $tools->append('<a href="" target="_blank" id="advexcel" class="btn btn-sm btn-info" ><i class="fa fa-download"></i>彙總匯出</a>');
+        });
+
+        Admin::script('
+            var target = "/excel/addition-staff";
+            $("#advexcel").click(function(){
+                var date_time_start = $("#date_time_start").val();
+                var date_time_end = $("#date_time_end").val();
+
+                if(date_time_start == "" || date_time_end == "")
+                {
+                    $("#advexcel").attr("href", "/excel/addition-staff");
+                }
+                else
+                {
+                    $("#advexcel").attr("href", "/excel/addition-staff?start_time="+date_time_start+"&end_time="+date_time_end+"")
+                }                
+            })
+        ');
 
         return $grid;
     }
