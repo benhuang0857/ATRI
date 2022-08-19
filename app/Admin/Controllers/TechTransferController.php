@@ -101,7 +101,14 @@ class TechTransferController extends AdminController
                 var date_time_start = $("#start_time_start").val();
                 var date_time_end = $("#start_time_end").val();
 
-                $("#advexcel").attr("href", "/excel/tech-transfer?start_time="+date_time_start+"&end_time="+date_time_end+"")
+                if(date_time_start == "" || date_time_end == "")
+                {
+                    $("#advexcel").attr("href", "/excel/tech-transfer");
+                }
+                else
+                {
+                    $("#advexcel").attr("href", "/excel/tech-transfer?start_time="+date_time_start+"&end_time="+date_time_end+"")
+                }
             })
         ');
 

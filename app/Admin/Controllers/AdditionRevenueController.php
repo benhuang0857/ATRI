@@ -94,7 +94,14 @@ class AdditionRevenueController extends AdminController
                 var date_time_start = $("#date_time_start").val();
                 var date_time_end = $("#date_time_end").val();
 
-                $("#advexcel").attr("href", "/excel/addition-revenue?start_time="+date_time_start+"&end_time="+date_time_end+"")
+                if(date_time_start == "" || date_time_end == "")
+                {
+                    $("#advexcel").attr("href", "/excel/addition-revenue");
+                }
+                else
+                {
+                    $("#advexcel").attr("href", "/excel/addition-revenue?start_time="+date_time_start+"&end_time="+date_time_end+"")
+                }
             })
         ');
 
