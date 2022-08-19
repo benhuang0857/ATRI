@@ -18,35 +18,7 @@ class TechTransferController extends Controller
         $start_time = $req->start_time;
         $end_time   = $req->end_time;
 
-        $cases1 = DB::select("
-            SELECT 
-                *
-            FROM tech_transfer AS X
-            LEFT JOIN 
-            company_basic_info AS Y 
-            ON X.cid = Y.cid
-            WHERE 1 = 1
-            AND start_time >= '".$start_time."'
-            AND start_time <= '".$end_time."' 
-            ORDER BY Y.group_category DESC
-        ");
-
-        $cases2 = DB::select("
-            SELECT 
-                Y.group_category AS GroupName,
-                SUM(X.price) AS Price
-            FROM tech_transfer AS X
-            LEFT JOIN 
-            company_basic_info AS Y 
-            ON X.cid = Y.cid
-            WHERE 1
-            AND start_time >= '".$start_time."'
-            AND start_time <= '".$end_time."' 
-            GROUP BY Y.group_category
-            ORDER BY Y.group_category DESC
-        ");
-
-        if($start_time == null || $end_time == null)
+        if($start_time == "" || $end_time == "")
         {
             $cases1 = DB::select("
                 SELECT 
@@ -72,6 +44,36 @@ class TechTransferController extends Controller
                 ORDER BY Y.group_category DESC
             ");
 
+        }
+        else
+        {
+            $cases1 = DB::select("
+                SELECT 
+                    *
+                FROM tech_transfer AS X
+                LEFT JOIN 
+                company_basic_info AS Y 
+                ON X.cid = Y.cid
+                WHERE 1 = 1
+                AND start_time >= '".$start_time."'
+                AND start_time <= '".$end_time."' 
+                ORDER BY Y.group_category DESC
+            ");
+
+            $cases2 = DB::select("
+                SELECT 
+                    Y.group_category AS GroupName,
+                    SUM(X.price) AS Price
+                FROM tech_transfer AS X
+                LEFT JOIN 
+                company_basic_info AS Y 
+                ON X.cid = Y.cid
+                WHERE 1
+                AND start_time >= '".$start_time."'
+                AND start_time <= '".$end_time."' 
+                GROUP BY Y.group_category
+                ORDER BY Y.group_category DESC
+            ");
         }
         
         return Excel::download(new TechTransferExport($cases1, $cases2), 'tech-trans.xlsx');
