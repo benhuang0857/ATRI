@@ -84,43 +84,7 @@ class CompanyBasicInfoController extends AdminController
             'livestock'     => '畜試所',
             'agricultural'  => '農科院',
         ], '未知');
-        
-        // $grid->column('group_category', '進駐單位')->display(function($slug){
-        //     $reault = GroupCategory::where('slug', $slug)->first()->name;
-        //     return '<span class="badge badge-primary" style="background:blue">'.$reault.'</span>';
-        // });
-        
-        #暫時先不使用彈出效果，因會影響前端Excel輸出故關閉
-        /*
-        $grid->column('company_name', '自然人/組織/公司名稱')->expand(function ($model) {
 
-            $row = CompanyBasicInfo::where('id', $this->id)->get()->map(function ($row) {
-                return $row->only([
-                    'owner_name', 
-                    'owner_email', 
-                    'owner_phone',
-                    'project_name',
-                    'service',
-                    'contract_time',
-                    'capital_checkin',
-                    'revenue_checkin',
-                    'staff_checkin'
-                ]);
-            });
-        
-            return new Table([
-                '負責人', 
-                '負責人Email',
-                '負責人電話',
-                '營運專案名稱',
-                '主要產品/服務項目',
-                '合約日期',
-                '進駐時實收資本額',
-                '進駐時年營業額',
-                '進駐時員工人數'
-                ], $row->toArray());
-        });
-        */
         $grid->column('company_name', '自然人/組織/公司名稱')->display(function($company_name){
             return "<a target='_blank' href=/company-info-view/".$this->cid.">".$company_name."</a>";
         });
