@@ -145,8 +145,8 @@ class GovSupportProjectController extends AdminController
             'more10M'  => '100萬(含)以下',
         ]);
         $form->select('status', __('狀態'))->options([
-            'no' => '未通過',
-            'yes' => '通過'
+            'no' => '下架',
+            'yes' => '上架'
         ]);
         $form->text('plan_title', __('計畫名稱'));
         $form->text('organizer', __('主辦單位'));
