@@ -91,36 +91,36 @@ class AdditionStaffController extends AdminController
             'livestock'     => '畜試所',
             'agricultural'  => '農科院',
         ], '未知');
-        $grid->column('CompanyBasicInfo.company_name', '自然人/組織/公司名稱');
+        // $grid->column('CompanyBasicInfo.company_name', '自然人/組織/公司名稱');
         // $grid->column('CompanyBasicInfo.staff', __('進駐員工人數'));
         // $grid->column('staff', __('員工人數異動'))->totalRow();
-        $grid->column('date_time', __('日期'))->display(function($date_time){
-            $start_time = date("Y", strtotime($date_time));
-            $start_year = $start_time - 1911;
-            return $start_year.date("-m-d", strtotime($date_time));
-        });
-        $grid->column('note', __('輔導內容'));
+        // $grid->column('date_time', __('日期'))->display(function($date_time){
+        //     $start_time = date("Y", strtotime($date_time));
+        //     $start_year = $start_time - 1911;
+        //     return $start_year.date("-m-d", strtotime($date_time));
+        // });
+        // $grid->column('note', __('輔導內容'));
 
-        $grid->tools(function ($tools) {
-            $tools->append('<a href="" target="_blank" id="advexcel" class="btn btn-sm btn-info" ><i class="fa fa-download"></i>彙總匯出</a>');
-        });
+        // $grid->tools(function ($tools) {
+        //     $tools->append('<a href="" target="_blank" id="advexcel" class="btn btn-sm btn-info" ><i class="fa fa-download"></i>彙總匯出</a>');
+        // });
 
-        Admin::script('
-            var target = "/excel/addition-staff";
-            $("#advexcel").click(function(){
-                var date_time_start = $("#date_time_start").val();
-                var date_time_end = $("#date_time_end").val();
+        // Admin::script('
+        //     var target = "/excel/addition-staff";
+        //     $("#advexcel").click(function(){
+        //         var date_time_start = $("#date_time_start").val();
+        //         var date_time_end = $("#date_time_end").val();
 
-                if(date_time_start == "" || date_time_end == "")
-                {
-                    $("#advexcel").attr("href", "/excel/addition-staff");
-                }
-                else
-                {
-                    $("#advexcel").attr("href", "/excel/addition-staff?start_time="+date_time_start+"&end_time="+date_time_end+"")
-                }                
-            })
-        ');
+        //         if(date_time_start == "" || date_time_end == "")
+        //         {
+        //             $("#advexcel").attr("href", "/excel/addition-staff");
+        //         }
+        //         else
+        //         {
+        //             $("#advexcel").attr("href", "/excel/addition-staff?start_time="+date_time_start+"&end_time="+date_time_end+"")
+        //         }                
+        //     })
+        // ');
 
         return $grid;
     }
