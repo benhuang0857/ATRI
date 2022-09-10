@@ -50,7 +50,11 @@ class AwardController extends AdminController
         ], '未知');
 
         $grid->column('cid', '自然人/組織/公司名稱')->display(function($cid){
-            return CompanyBasicInfo::where('cid', $cid)->first()->company_name;
+            try {
+                return CompanyBasicInfo::where('cid', $cid)->first()->company_name;
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
         });
         $grid->column('award_name', '獎項名稱');
         $grid->column('application_time', '申請日期')->display(function($application_time){
