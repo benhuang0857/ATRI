@@ -82,7 +82,11 @@ class GovGrantController extends AdminController
             'agricultural'  => '農科院',
         ], '未知');
         $grid->column('cid', '自然人/組織/公司名稱')->display(function($cid){
-            return CompanyBasicInfo::where('cid', $cid)->first()->company_name;
+            try {
+                return CompanyBasicInfo::where('cid', $cid)->first()->company_name;
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
         });
         $grid->column('gov_grant_name', '政府補助資源名稱');
         $grid->column('plan_name', '計畫名稱');
