@@ -61,7 +61,11 @@ class CompanyStatusController extends AdminController
         $grid->column('tmp', '編號');
         
         $grid->column('cid', '自然人/組織/公司名稱')->display(function($cid){
-            return CompanyBasicInfo::where('cid', $cid)->first()->company_name;
+            try {
+                return CompanyBasicInfo::where('cid', $cid)->first()->company_name;
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
         });
         // $grid->column('cid', __('Cid'));
         $grid->column('status', __('異動狀態'))->using([
@@ -116,12 +120,7 @@ class CompanyStatusController extends AdminController
         $_companiesArr = array();
         foreach($_companies as $item)
         {
-            try {
-                $_companiesArr[$item->cid] = $item->company_name;
-            } catch (\Throwable $th) {
-                //throw $th;
-            }
-            
+            $_companiesArr[$item->cid] = $item->company_name;
         }
         $form->select('cid', '自然人/組織/公司名稱')->options($_companiesArr);
         $form->select('status', __('異動狀態'))->options([
