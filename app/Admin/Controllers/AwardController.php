@@ -28,6 +28,10 @@ class AwardController extends AdminController
     {
         $grid = new Grid(new Award());
 
+        $grid->actions(function ($actions) {
+            $actions->disableView();
+        });
+
         $grid->model()->collection(function (Collection $collection) {
             foreach($collection as $index => $item) {
                 $item->tmp = $index + 1;
@@ -50,7 +54,9 @@ class AwardController extends AdminController
         });
         $grid->column('award_name', '獎項名稱');
         $grid->column('application_time', '申請日期')->display(function($application_time){
-            return date("Y-m-d", strtotime($application_time));  
+            $start_time = date("Y", strtotime($application_time));
+            $start_year = $start_time - 1911;
+            return $start_year.date("-m-d", strtotime($application_time)); 
         });
         $grid->column('application_status', '申請狀態')->using([
             'pending'   => '申請中',
@@ -62,7 +68,9 @@ class AwardController extends AdminController
             'yes'   => '獲獎',
         ]);
         $grid->column('award_time', '獲獎日期')->display(function($award_time){
-            return date("Y-m-d", strtotime($award_time));  
+            $start_time = date("Y", strtotime($award_time));
+            $start_year = $start_time - 1911;
+            return $start_year.date("-m-d", strtotime($award_time)); 
         });
         $grid->column('document', '佐證文件');
 

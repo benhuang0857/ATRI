@@ -35,10 +35,14 @@ class CompanyBasicInfoController extends Controller
                 <tbody>";
             foreach ($additionInvest as $case) 
             {
+                $year_time = date("Y", strtotime($case->date_time));
+                $roc_year = $year_time - 1911;
+                $roc_time = $roc_year.date("-m-d", strtotime($case->date_time));
+
                 $invest_table .= "
                     <tr>
                         <td>".$case->type."</td>
-                        <td>".$case->date_time."</td>
+                        <td>".$roc_time."</td>
                         <td>".$case->price."</td>
                         <td>".$case->reason."</td>
                         <td>".$case->note."</td>
@@ -73,12 +77,20 @@ class CompanyBasicInfoController extends Controller
 
             foreach ($additionGovGrant as $case) 
             {
+                $year_time = date("Y", strtotime($case->application_time));
+                $roc_year = $year_time - 1911;
+                $roc_application_time = $roc_year.date("-m-d", strtotime($case->application_time));
+
+                $year_time = date("Y", strtotime($case->grant_time));
+                $roc_year = $year_time - 1911;
+                $roc_grant_time = $roc_year.date("-m-d", strtotime($case->grant_time));
+
                 $govgrant_table .= "
                     <tr>
                         <td>".$case->gov_grant_name."</td>
                         <td>".$case->plan_name."</td>
-                        <td>".$case->application_time."</td>
-                        <td>".$case->grant_time."</td>
+                        <td>".$roc_application_time."</td>
+                        <td>".$roc_grant_time."</td>
                         <td>".$case->note."</td>
                     </tr>";
             }
@@ -110,11 +122,19 @@ class CompanyBasicInfoController extends Controller
 
             foreach ($additionAward as $case) 
             {
+                $year_time = date("Y", strtotime($case->application_time));
+                $roc_year = $year_time - 1911;
+                $roc_application_time = $roc_year.date("-m-d", strtotime($case->application_time));
+
+                $year_time = date("Y", strtotime($case->award_time));
+                $roc_year = $year_time - 1911;
+                $roc_award_time = $roc_year.date("-m-d", strtotime($case->award_time));
+
                 $award_table .= "
                     <tr>
                         <td>".$case->award_name."</td>
-                        <td>".$case->application_time."</td>
-                        <td>".$case->award_time."</td>
+                        <td>".$roc_application_time."</td>
+                        <td>".$roc_award_time."</td>
                         <td>".$case->note."</td>
                     </tr>";
             }
@@ -147,12 +167,20 @@ class CompanyBasicInfoController extends Controller
 
             foreach ($additionTechTransfer as $case) 
             {
+                $year_time = date("Y", strtotime($case->start_time));
+                $roc_year = $year_time - 1911;
+                $roc_start_time = $roc_year.date("-m-d", strtotime($case->start_time));
+
+                $year_time = date("Y", strtotime($case->end_time));
+                $roc_year = $year_time - 1911;
+                $roc_end_time = $roc_year.date("-m-d", strtotime($case->end_time));
+
                 $techtransfer_table .= "
                     <tr>
                         <td>".$case->tech_transfer_name."</td>
                         <td>".$case->price."</td>
-                        <td>".$case->start_time."</td>
-                        <td>".$case->end_time."</td>
+                        <td>".$roc_start_time."</td>
+                        <td>".$roc_end_time."</td>
                         <td>".$case->note."</td>
                     </tr>";
             }
@@ -186,13 +214,21 @@ class CompanyBasicInfoController extends Controller
 
             foreach ($additionIndustryAcademiaCoop as $case) 
             {
+                $year_time = date("Y", strtotime($case->start_time));
+                $roc_year = $year_time - 1911;
+                $roc_start_time = $roc_year.date("-m-d", strtotime($case->start_time));
+
+                $year_time = date("Y", strtotime($case->end_time));
+                $roc_year = $year_time - 1911;
+                $roc_end_time = $roc_year.date("-m-d", strtotime($case->end_time));
+
                 $industryAcademia_table .= "
                     <tr>
                         <td>".$case->project_name."</td>
                         <td>".$case->project_category."</td>
                         <td>".$case->price."</td>
-                        <td>".$case->start_time."</td>
-                        <td>".$case->end_time."</td>
+                        <td>".$roc_start_time."</td>
+                        <td>".$roc_end_time."</td>
                         <td>".$case->note."</td>
                     </tr>";
             }
@@ -241,23 +277,21 @@ class CompanyBasicInfoController extends Controller
         $industryAcademia_table = $this->IndustryAcademiaCoopTableRender($additionIndustryAcademiaCoop);
         
         try {
+
+            // $year_time = date("Y", strtotime($graduateStatus->date_time));
+            // $roc_year = $year_time - 1911;
+            // $roc_graduate_time = $roc_year.date("-m-d", strtotime($graduateStatus->date_time));
+
+            // $year_time = date("Y", strtotime($leaveStatus->date_time));
+            // $roc_year = $year_time - 1911;
+            // $roc_leave_time = $roc_year.date("-m-d", strtotime($leaveStatus->date_time));
+
             $group_name  = $groupCategory->name;
-            $graduate_date  = $graduateStatus->date_time;
-            $leave_date     = $leaveStatus->date_time;
+            $graduate_date  = $roc_graduate_time;
+            $leave_date     = $roc_leave_time;
         } catch (\Throwable $th) {
             //throw $th;
-        }
-        // return view('companypdf', array(
-        //     'company'           => $company,
-        //     'groupName'         => $group_name,
-        //     'graduateDate'      => $graduate_date,
-        //     'leaveDate'         => $leave_date,
-        //     'investTable'       => $invest_table,
-        //     'govgrantTable'     => $govgrant_table,
-        //     'awardTable'        => $award_table,
-        //     'techTransferTable' => $techtransfer_table,
-        //     'industryAcademiaTable' => $industryAcademia_table
-        // ));     
+        }  
 
         $pdf = PDF::loadView('companypdf', array(
             'company'           => $company,

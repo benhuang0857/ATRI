@@ -13,7 +13,7 @@ Route::group([
 
     $router->get('/', 'HomeController@index')->name('home');
     $router->resource('company-basic-infos', CompanyBasicInfoController::class);
-    $router->resource('foster-lists', FosterListController::class);
+    // $router->resource('foster-lists', FosterListController::class); //長官要求合併，故隱藏
     $router->resource('group-categories', GroupCategoryController::class);
     $router->resource('project-categories', ProjectCategoryController::class);
     $router->resource('company-statuses', CompanyStatusController::class);

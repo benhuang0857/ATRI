@@ -16,6 +16,13 @@
     <div style="text-align:center">
         <h2>農業創新育成中心</h2>
         <h4>{{$company->company_name}}基本資料表暨輔導歷程</h4>
+        <table style="text-align: center;table-layout:fixed; width:800px;font-size:10px" cellspacing=0 cellpadding=0>
+            <td>
+            </td>
+            <td>
+                資料日期：{{now()}}
+            </td>
+        </table>
     </div>
 
     <table style="text-align: center;table-layout:fixed; width:700px;font-size:10px" border=1 cellspacing=0 cellpadding=0>
@@ -82,7 +89,16 @@
                 合約日期
             </td>
             <td width=440 colspan=5 valign=center>
-                {{$company->contract_start_time}}至{{$company->contract_end_time}}
+                <?php
+                $year_time = date("Y", strtotime($company->contract_start_time));
+                $roc_year = $year_time - 1911;
+                $roc_start_time = $roc_year.date("-m-d", strtotime($company->contract_start_time));
+
+                $year_time = date("Y", strtotime($company->contract_end_time));
+                $roc_year = $year_time - 1911;
+                $roc_end_time = $roc_year.date("-m-d", strtotime($company->contract_end_time));
+                ?>
+                {{$roc_start_time}}至{{$roc_end_time}}
             </td>
         </tr>
         <tr style="background-color:#D9D8D8; height:35px">
@@ -93,7 +109,7 @@
                 進駐時
             </td>
             <td colspan=3 valign=center>
-                畢業或遷離時
+                目前/畢業/遷離時
             </td>
         </tr>
         <tr style="height:35px">

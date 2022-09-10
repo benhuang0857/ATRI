@@ -40,24 +40,24 @@ class TechTransferController extends AdminController
 
             $filter->disableIdFilter();
             $filter->in('CompanyBasicInfo.group_category', '進駐單位')->multipleSelect($_option);
-            $filter->equal('CompanyBasicInfo.real_or_virtula', '進駐方式')->select([
-                'real' => '實質進駐',
-                'virtual' => '虛擬進駐'
-            ]);
+            // $filter->equal('CompanyBasicInfo.real_or_virtula', '進駐方式')->select([
+            //     'real' => '實質進駐',
+            //     'virtual' => '虛擬進駐'
+            // ]);
             $filter->like('CompanyBasicInfo.company_name', '自然人/組織/公司名稱');
-            $filter->like('CompanyBasicInfo.identity_code', '身分證/統一編號');
-            $filter->where(function ($query) {
-                $query->where('CompanyBasicInfo.contact_name', 'like', "%{$this->input}%")
-                    ->orWhere('CompanyBasicInfo.owner_name', 'like', "%{$this->input}%");
-            }, '聯絡人/負責人姓名');
-            $filter->where(function ($query) {
-                $query->where('CompanyBasicInfo.contact_email', 'like', "%{$this->input}%")
-                    ->orWhere('CompanyBasicInfo.owner_email', 'like', "%{$this->input}%");
-            }, '聯絡人/負責人Email');
-            $filter->where(function ($query) {
-                $query->where('CompanyBasicInfo.contact_phone', 'like', "%{$this->input}%")
-                    ->orWhere('CompanyBasicInfo.owner_phone', 'like', "%{$this->input}%");
-            }, '聯絡人/負責人電話');
+            // $filter->like('CompanyBasicInfo.identity_code', '身分證/統一編號');
+            // $filter->where(function ($query) {
+            //     $query->where('CompanyBasicInfo.contact_name', 'like', "%{$this->input}%")
+            //         ->orWhere('CompanyBasicInfo.owner_name', 'like', "%{$this->input}%");
+            // }, '聯絡人/負責人姓名');
+            // $filter->where(function ($query) {
+            //     $query->where('CompanyBasicInfo.contact_email', 'like', "%{$this->input}%")
+            //         ->orWhere('CompanyBasicInfo.owner_email', 'like', "%{$this->input}%");
+            // }, '聯絡人/負責人Email');
+            // $filter->where(function ($query) {
+            //     $query->where('CompanyBasicInfo.contact_phone', 'like', "%{$this->input}%")
+            //         ->orWhere('CompanyBasicInfo.owner_phone', 'like', "%{$this->input}%");
+            // }, '聯絡人/負責人電話');
 
             $filter->between('start_time', '合約開始時間')->datetime();
         });
@@ -84,10 +84,14 @@ class TechTransferController extends AdminController
         $grid->column('tech_transfer_name', '技轉名稱');
         $grid->column('price', '技轉金額(元)');
         $grid->column('start_time', '合約起始日期')->display(function($start_time){
-            return date("Y-m-d", strtotime($start_time));  
+            $start_time = date("Y", strtotime($start_time));
+            $start_year = $start_time - 1911;
+            return $start_year.date("-m-d", strtotime($start_time));  
         });
         $grid->column('end_time', '合約終止日期')->display(function($end_time){
-            return date("Y-m-d", strtotime($end_time));  
+            $start_time = date("Y", strtotime($start_time));
+            $start_year = $start_time - 1911;
+            return $start_year.date("-m-d", strtotime($start_time));   
         });
         $grid->column('document', '佐證文件');
         

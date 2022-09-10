@@ -29,6 +29,10 @@ class CompanyStatusController extends AdminController
     {
         $grid = new Grid(new CompanyStatus());
 
+        $grid->actions(function ($actions) {
+            $actions->disableView();
+        });
+
         $grid->filter(function($filter){
 
             $_option = array();
@@ -39,11 +43,12 @@ class CompanyStatusController extends AdminController
 
             $filter->disableIdFilter();
             $filter->equal('CompanyBasicInfo.group_category', '進駐單位')->select($_option);
-            $filter->equal('CompanyBasicInfo.real_or_virtula', '進駐方式')->select([
-                'real' => '實質進駐',
-                'virtual' => '虛擬進駐'
-            ]);
+            // $filter->equal('CompanyBasicInfo.real_or_virtula', '進駐方式')->select([
+            //     'real' => '實質進駐',
+            //     'virtual' => '虛擬進駐'
+            // ]);
             $filter->like('CompanyBasicInfo.company_name', '自然人/組織/公司名稱');
+            $filter->between('date_time', '異動日期')->datetime();
         });
 
         $grid->model()->collection(function (Collection $collection) {
@@ -67,7 +72,9 @@ class CompanyStatusController extends AdminController
         ]);
         $grid->column('note', __('異動原因'));
         $grid->column('date_time', __('異動日期'))->display(function($date_time){
-            return date("Y-m-d", strtotime($date_time));  
+            $start_time = date("Y", strtotime($date_time));
+            $start_year = $start_time - 1911;
+            return $start_year.date("-m-d", strtotime($date_time)); 
         });
         // $grid->column('created_at', __('Created at'));
         // $grid->column('updated_at', __('Updated at'));

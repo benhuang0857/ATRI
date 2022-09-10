@@ -19,6 +19,8 @@ class HomeController extends Controller
     public function index(Content $content)
     {
 
+        return redirect('/admin/gov-support-projects'); 
+        
         $datasets       = array();
         $colorSet = ['blue', 'red', 'green'];
         $groups = AdditionRevenue::select('group_category')->distinct()->get();
@@ -57,18 +59,6 @@ class HomeController extends Controller
                             //pointBorderColor: '#007bff',
                             fill: false
                         },";
-
-            // $datasetsArray = [
-            //     'type' => 'line',
-            //     'data' => $revenuesQueue,                
-            //     'backgroundColor' => 'transparent',
-            //     'borderColor' => '#007bff',
-            //     'pointBorderColor' => '#007bff',
-            //     'pointBackgroundColor' => '#007bff',
-            //     'fill' => false
-            // ];
-
-            // array_push($datasets, json_encode($datasetsArray));
         }
 
         $jscode .= "

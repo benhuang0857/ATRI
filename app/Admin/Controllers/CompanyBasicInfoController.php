@@ -31,6 +31,12 @@ class CompanyBasicInfoController extends AdminController
     {
         $grid = new Grid(new CompanyBasicInfo());
 
+        $grid->fixColumns(4, 0);
+
+        $grid->actions(function ($actions) {
+            $actions->disableView();
+        });
+        
         $grid->filter(function($filter){
 
             $_option = array();
@@ -41,24 +47,26 @@ class CompanyBasicInfoController extends AdminController
 
             $filter->disableIdFilter();
             $filter->in('group_category', '進駐單位')->multipleSelect($_option);
-            $filter->equal('real_or_virtula', '進駐方式')->select([
-                'real' => '實質進駐',
-                'virtual' => '虛擬進駐'
-            ]);
+            // $filter->equal('real_or_virtula', '進駐方式')->select([
+            //     'real' => '實質進駐',
+            //     'virtual' => '虛擬進駐'
+            // ]);
             $filter->like('company_name', '自然人/組織/公司名稱');
-            $filter->like('identity_code', '身分證/統一編號');
-            $filter->where(function ($query) {
-                $query->where('contact_name', 'like', "%{$this->input}%")
-                    ->orWhere('owner_name', 'like', "%{$this->input}%");
-            }, '聯絡人/負責人姓名');
-            $filter->where(function ($query) {
-                $query->where('contact_email', 'like', "%{$this->input}%")
-                    ->orWhere('owner_email', 'like', "%{$this->input}%");
-            }, '聯絡人/負責人Email');
-            $filter->where(function ($query) {
-                $query->where('contact_phone', 'like', "%{$this->input}%")
-                    ->orWhere('owner_phone', 'like', "%{$this->input}%");
-            }, '聯絡人/負責人電話');
+            // $filter->like('identity_code', '身分證/統一編號');
+            // $filter->where(function ($query) {
+            //     $query->where('contact_name', 'like', "%{$this->input}%")
+            //         ->orWhere('owner_name', 'like', "%{$this->input}%");
+            // }, '聯絡人/負責人姓名');
+            // $filter->where(function ($query) {
+            //     $query->where('contact_email', 'like', "%{$this->input}%")
+            //         ->orWhere('owner_email', 'like', "%{$this->input}%");
+            // }, '聯絡人/負責人Email');
+            // $filter->where(function ($query) {
+            //     $query->where('contact_phone', 'like', "%{$this->input}%")
+            //         ->orWhere('owner_phone', 'like', "%{$this->input}%");
+            // }, '聯絡人/負責人電話');
+
+            $filter->between('date_time', '時間')->datetime();
         });
 
         $grid->export(function ($export) {
@@ -83,7 +91,7 @@ class CompanyBasicInfoController extends AdminController
             'water'         => '水試所',
             'livestock'     => '畜試所',
             'agricultural'  => '農科院',
-        ], '未知');
+        ], '未知')->sortable();
 
         $grid->column('company_name', '自然人/組織/公司名稱')->display(function($company_name){
             return "<a target='_blank' href=/company-info-view/".$this->cid.">".$company_name."</a>";
@@ -105,10 +113,14 @@ class CompanyBasicInfoController extends AdminController
         $grid->column('project_name', __('營運專案名稱'));
         $grid->column('service', __('主要產品/服務項目'));
         $grid->column('contract_start_time', __('合約開始日期'))->display(function($contract_start_time){
-            return date("Y-m-d", strtotime($contract_start_time));  
+            $start_time = date("Y", strtotime($contract_start_time));
+            $start_year = $start_time - 1911;
+            return $start_year.date("-m-d", strtotime($contract_start_time));
         });
-        $grid->column('contract_end_time', __('合約結束日期'))->display(function($contract_end_time){
-            return date("Y-m-d", strtotime($contract_end_time));  
+        $grid->column('contract_end_time', __('合約結束日期'))->display(function($contract_end_time){ 
+            $start_time = date("Y", strtotime($contract_end_time));
+            $start_year = $start_time - 1911;
+            return $start_year.date("-m-d", strtotime($contract_end_time));
         });
         $grid->column('capital', __('進駐時實收資本額'))->display(function($capital){
             return number_format($capital);
