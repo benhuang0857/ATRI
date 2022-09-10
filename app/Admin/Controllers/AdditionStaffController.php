@@ -68,21 +68,21 @@ class AdditionStaffController extends AdminController
             $filter->between('date_time', '時間')->datetime();
         });
 
-        $grid->model()->collection(function (Collection $collection) {
+        // $grid->model()->collection(function (Collection $collection) {
             
-            foreach($collection as $index => $item) {
+        //     foreach($collection as $index => $item) {
 
-                $company = CompanyBasicInfo::where('cid', $item->cid)->first();
-                $oStaff = $company->staff;
+        //         $company = CompanyBasicInfo::where('cid', $item->cid)->first();
+        //         $oStaff = $company->staff;
 
-                $item->tmp = $index + 1;
-                $item->cid = $item->staff - $oStaff;
-            }
+        //         $item->tmp = $index + 1;
+        //         $item->cid = $item->staff - $oStaff;
+        //     }
 
-            return $collection;
-        });
+        //     return $collection;
+        // });
         
-        $grid->column('tmp', '編號');
+        // $grid->column('tmp', '編號');
         
         $grid->column('CompanyBasicInfo.group_category', '進駐單位')->using([
             'farmer'        => '農試所',
