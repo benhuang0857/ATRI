@@ -93,7 +93,7 @@ class AdditionStaffController extends AdminController
         ], '未知');
         $grid->column('CompanyBasicInfo.company_name', '自然人/組織/公司名稱');
         $grid->column('CompanyBasicInfo.staff', __('進駐員工人數'));
-        $grid->column('staff', __('員工人數異動'))->totalRow();
+        // $grid->column('staff', __('員工人數異動'))->totalRow();
         $grid->column('date_time', __('日期'))->display(function($date_time){
             $start_time = date("Y", strtotime($date_time));
             $start_year = $start_time - 1911;
