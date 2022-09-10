@@ -79,7 +79,11 @@ class TechTransferController extends AdminController
             'agricultural'  => '農科院',
         ], '未知');
         $grid->column('cid', '自然人/組織/公司名稱')->display(function($cid){
-            return CompanyBasicInfo::where('cid', $cid)->first()->company_name;
+            try {
+                return CompanyBasicInfo::where('cid', $cid)->first()->company_name;
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
         });
         $grid->column('tech_transfer_name', '技轉名稱');
         $grid->column('price', '技轉金額(元)');
