@@ -116,7 +116,12 @@ class CompanyStatusController extends AdminController
         $_companiesArr = array();
         foreach($_companies as $item)
         {
-            $_companiesArr[$item->cid] = $item->company_name;
+            try {
+                $_companiesArr[$item->cid] = $item->company_name;
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
+            
         }
         $form->select('cid', '自然人/組織/公司名稱')->options($_companiesArr);
         $form->select('status', __('異動狀態'))->options([
