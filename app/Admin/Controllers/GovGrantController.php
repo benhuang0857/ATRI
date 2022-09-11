@@ -153,13 +153,13 @@ class GovGrantController extends AdminController
         $form->select('cid', '自然人/組織/公司名稱')->options($_companiesArr);
         $form->text('gov_grant_name', '政府補助資源名稱');
         $form->text('plan_name', '計畫名稱');
-        $form->datetime('application_time', '申請日期')->default(date('Y-m-d H:i:s'));
+        $form->date('application_time', '申請日期')->default(date('Y-m-d'));
         $form->select('application_status', '申請狀態')->options([
             'pending'   => '申請中',
             'no'        => '未通過',
             'yes'       => '通過'
         ]);
-        $form->datetime('grant_time', '補助核定日期')->default(date('Y-m-d H:i:s'));
+        $form->date('grant_time', '補助核定日期')->default(date('Y-m-d'));
         $form->number('grant_price', '核定補助金額');
         $form->textarea('note', __('輔導內容'));
         $form->file('document', '佐證文件');

@@ -133,7 +133,7 @@ class AwardController extends AdminController
             'no' => '未獲獎',
             'yes' => '獲獎'
         ]);
-        $form->datetime('award_time', '獲獎日期')->default(date('Y-m-d H:i:s'));
+        $form->date('award_time', '獲獎日期')->default(date('Y-m-d H:i:s'));
         $form->textarea('note', __('輔導內容'));
         $form->file('document', '佐證文件');
 

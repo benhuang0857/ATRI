@@ -11,7 +11,10 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Show;
 Use Encore\Admin\Widgets\Table;
-use Grid\Displayers\Actions;
+use App\Admin\Actions\Post\Replicate;
+use App\Admin\Actions\MyAddition\MyAdditionInvest;
+use App\Admin\Actions\MyAddition\MyAdditionRevenue;
+use App\Admin\Actions\MyAddition\MyAdditionStaff;
 
 class CompanyBasicInfoController extends AdminController
 {
@@ -30,11 +33,14 @@ class CompanyBasicInfoController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new CompanyBasicInfo());
-
+        
         $grid->fixColumns(4, 0);
 
         $grid->actions(function ($actions) {
             $actions->disableView();
+            $actions->add(new MyAdditionInvest);
+            $actions->add(new MyAdditionRevenue);
+            $actions->add(new MyAdditionStaff);
         });
         
         $grid->filter(function($filter){
@@ -208,9 +214,9 @@ class CompanyBasicInfoController extends AdminController
             $form->text('owner_email', '負責人Email');
             $form->text('owner_phone', '負責人電話');
             $form->text('service', '主要產品/服務項目');
-            $form->datetime('established_time', '設立日期')->default(date('Y-m-d'));
-            $form->datetime('contract_start_time', '合約開始日期')->default(date('Y-m-d'));
-            $form->datetime('contract_end_time', '合約結束日期')->default(date('Y-m-d'));
+            $form->date('established_time', '設立日期')->default(date('Y-m-d'));
+            $form->date('contract_start_time', '合約開始日期')->default(date('Y-m-d'));
+            $form->date('contract_end_time', '合約結束日期')->default(date('Y-m-d'));
         });
 
         $form->saving(function (Form $form) {

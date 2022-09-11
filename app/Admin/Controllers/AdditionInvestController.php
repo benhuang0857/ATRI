@@ -19,7 +19,7 @@ class AdditionInvestController extends AdminController
      *
      * @var string
      */
-    protected $title = '投增資額明細表';
+    protected $title = '投增資金額細表';
 
     /**
      * Make a grid builder.
@@ -177,7 +177,7 @@ class AdditionInvestController extends AdminController
         ]);
         $form->number('price', __('金額'));
         $form->textarea('reason', __('用途'));
-        $form->datetime('date_time', __('日期'))->default(date('Y-m-d'));
+        $form->date('date_time', __('日期'))->default(date('Y-m-d'));
         $form->file('document', __('佐證文件'));
         $form->textarea('note', __('輔導內容'));
 

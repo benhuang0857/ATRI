@@ -155,7 +155,7 @@ class AdditionRevenueController extends AdminController
         $form->hidden('group_category');
         $form->select('cid', '自然人/組織/公司名稱')->options($_companiesArr);
         $form->number('price', __('營業額'))->default(0);
-        $form->datetime('date_time', __('日期'))->default(date('Y-m-d'));
+        $form->date('date_time', __('日期'))->default(date('Y-m-d'));
         $form->textarea('note', __('註記'));
 
         $form->saving(function (Form $form) {

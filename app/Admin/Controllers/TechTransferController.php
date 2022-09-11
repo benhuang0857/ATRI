@@ -169,8 +169,8 @@ class TechTransferController extends AdminController
         $form->select('cid', '自然人/組織/公司名稱')->options($_companiesArr);
         $form->text('tech_transfer_name', '技轉名稱');
         $form->number('price', '技轉金額(元)');
-        $form->datetime('start_time', '合約起始日期')->default(date('Y-m-d H:i:s'));
-        $form->datetime('end_time', '合約終止日期')->default(date('Y-m-d H:i:s'));
+        $form->date('start_time', '合約起始日期')->default(date('Y-m-d'));
+        $form->date('end_time', '合約終止日期')->default(date('Y-m-d'));
         $form->textarea('note', __('輔導內容'));
         $form->file('document', '佐證文件');
 

@@ -163,7 +163,7 @@ class AdditionStaffController extends AdminController
         }
         $form->select('cid', '自然人/組織/公司名稱')->options($_companiesArr);
         $form->number('staff', __('員工人數'))->default(0);
-        $form->datetime('date_time', __('日期'))->default(date('Y-m-d'));
+        $form->date('date_time', __('日期'))->default(date('Y-m-d'));
         $form->textarea('note', __('輔導內容'));
 
         return $form;

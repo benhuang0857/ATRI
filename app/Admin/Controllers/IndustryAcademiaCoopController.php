@@ -183,8 +183,8 @@ class IndustryAcademiaCoopController extends AdminController
         $form->text('project_name', '計畫名稱');
         $form->select('project_category', '計畫類別')->options($_pCategoriesArr);
         $form->number('price', '金額(元)');
-        $form->datetime('start_time', '開始時間')->default(date('Y-m-d H:i:s'));
-        $form->datetime('end_time', '結束時間')->default(date('Y-m-d H:i:s'));
+        $form->date('start_time', '開始時間')->default(date('Y-m-d'));
+        $form->date('end_time', '結束時間')->default(date('Y-m-d'));
         $form->textarea('note', __('輔導內容'));
         $form->file('document', '佐證文件');
 

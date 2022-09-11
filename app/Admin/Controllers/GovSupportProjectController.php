@@ -169,8 +169,8 @@ class GovSupportProjectController extends AdminController
         $form->ckeditor('industry_description', __('產業別/屬性'));
         $form->ckeditor('review_point_description', __('審查重點'));
         $form->ckeditor('amount_description', __('獎勵方式'));
-        $form->datetime('date_start_time', __('申請起始時間'))->default(date('Y-m-d'));
-        $form->datetime('date_end_time', __('申請截止時間'))->default(date('Y-m-d'));
+        $form->date('date_start_time', __('申請起始時間'))->default(date('Y-m-d'));
+        $form->date('date_end_time', __('申請截止時間'))->default(date('Y-m-d'));
         $form->text('web', __('網站連結'));
 
         return $form;
