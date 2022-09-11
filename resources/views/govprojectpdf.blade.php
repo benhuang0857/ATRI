@@ -31,7 +31,7 @@
                 <p>計畫名稱</p>
             </td>
             <td colspan=3>
-                <a href="/gov-project-view-pdf/{{$cid}}">{{$case->plan_title}}</a>
+                {{$case->plan_title}}
             </td>
         </tr>
 

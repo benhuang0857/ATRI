@@ -34,12 +34,29 @@ class GovSupportProjectController extends AdminController
 
         $grid->filter(function($filter){
 
+            $_optionOrganizer = array();
+            $_optionCoorganizer = array();
+            $GovSupportProject = GovSupportProject::all();
+            foreach ($GovSupportProject as $key => $item) {
+                $_optionOrganizer[$item->organizer] = $item->organizer;
+                $_optionCoorganizer[$item->coorganizer] = $item->coorganizer;
+            }
+
             $filter->disableIdFilter();
+            $filter->where(function ($query) {
+                $query->where('plan_title', 'like', "%{$this->input}%")
+                    ->orWhere('qualification_description', 'like', "%{$this->input}%")
+                    ->orWhere('plan_description', 'like', "%{$this->input}%")
+                    ->orWhere('industry_description', 'like', "%{$this->input}%")
+                    ->orWhere('amount_description', 'like', "%{$this->input}%");
+            }, '關鍵字');
+            $filter->in('organizer', __('主辦單位'))->checkbox($_optionOrganizer);
+            $filter->in('coorganizer', __('執行單位'))->checkbox($_optionCoorganizer);
             $filter->equal('status', '狀態')->select([
                 'no' => '未通過',
                 'yes' => '通過'
             ]);
-            $filter->equal('price', '資金額度')->select([
+            $filter->in('price', '資金額度')->checkbox([
                 'all'    => '不限',
                 '1M'    => '100萬(含)以下',
                 '1M3M'  => '100-300萬(含)以下',

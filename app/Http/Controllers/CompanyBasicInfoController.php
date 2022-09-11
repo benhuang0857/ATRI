@@ -313,11 +313,20 @@ class CompanyBasicInfoController extends Controller
     {       
         $govProject = GovSupportProject::where('id', $cid)->first();
 
-        $pdf = PDF::loadView('govproject', ['case' => $govProject]);
+        return view('govproject', ['case' => $govProject, 'cid' => $cid]);
+
+        // $pdf = PDF::loadView('govproject', ['case' => $govProject]);
+        // $pdf->setPaper('A4', 'portrait');
+        // return $pdf->stream('gov-project.pdf');
+    }
+
+    public function GovProjectViewPdf($cid)
+    {       
+        $govProject = GovSupportProject::where('id', $cid)->first();
+
+        $pdf = PDF::loadView('govprojectpdf', ['case' => $govProject]);
         $pdf->setPaper('A4', 'portrait');
         return $pdf->stream('gov-project.pdf');
-        // return view('govproject', ['case' => $govProject]);
-
     }
 
 }
