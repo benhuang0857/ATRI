@@ -30,6 +30,7 @@ class IndustryAcademiaCoopController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new IndustryAcademiaCoop());
+        $grid->expandFilter();
 
         $grid->actions(function ($actions) {
             $actions->disableView();

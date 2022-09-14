@@ -31,6 +31,7 @@ class AdditionStaffController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new AdditionStaff());
+        $grid->expandFilter();
 
         $grid->actions(function ($actions) {
             $actions->disableView();

@@ -26,6 +26,7 @@ class GovSupportProjectController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new GovSupportProject());
+        $grid->expandFilter();
         $grid->fixColumns(4, 0);
 
         $grid->actions(function ($actions) {

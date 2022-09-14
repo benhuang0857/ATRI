@@ -25,6 +25,7 @@ class RegionController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Region());
+        $grid->expandFilter();
 
         $grid->column('name', __('區域'));
         $grid->column('slug', __('區域英文簡稱'));

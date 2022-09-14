@@ -29,6 +29,7 @@ class AdditionInvestController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new AdditionInvest());
+        $grid->expandFilter();
 
         $grid->actions(function ($actions) {
             $actions->disableView();

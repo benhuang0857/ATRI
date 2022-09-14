@@ -25,6 +25,7 @@ class ProjectCategoryController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new ProjectCategory());
+        $grid->expandFilter();
 
         $grid->column('name', __('計畫類型'));
         $grid->column('slug', __('計畫類型英文名稱'));

@@ -28,6 +28,7 @@ class GovGrantController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new GovGrant());
+        $grid->expandFilter();
 
         $grid->actions(function ($actions) {
             $actions->disableView();

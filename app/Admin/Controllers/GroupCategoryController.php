@@ -25,6 +25,7 @@ class GroupCategoryController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new GroupCategory());
+        $grid->expandFilter();
 
         $grid->column('name', __('進駐單位名稱'));
         $grid->column('slug', __('進駐單位英文簡稱'));

@@ -29,6 +29,7 @@ class TechTransferController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new TechTransfer());
+        $grid->expandFilter();
 
         $grid->filter(function($filter){
 

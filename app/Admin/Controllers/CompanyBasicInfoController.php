@@ -33,6 +33,7 @@ class CompanyBasicInfoController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new CompanyBasicInfo());
+        $grid->expandFilter();
         
         $grid->fixColumns(4, 0);
 

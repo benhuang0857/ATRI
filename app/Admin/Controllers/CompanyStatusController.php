@@ -28,6 +28,7 @@ class CompanyStatusController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new CompanyStatus());
+        $grid->expandFilter();
 
         $grid->actions(function ($actions) {
             $actions->disableView();

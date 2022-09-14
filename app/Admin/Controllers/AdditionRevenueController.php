@@ -29,6 +29,7 @@ class AdditionRevenueController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new AdditionRevenue());
+        $grid->expandFilter();
 
         $grid->actions(function ($actions) {
             $actions->disableView();
