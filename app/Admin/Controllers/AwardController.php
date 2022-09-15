@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use App\Award;
 use App\CompanyBasicInfo;
+use App\GroupCategory;
 use Encore\Admin\Controllers\AdminController;
 use Illuminate\Database\Eloquent\Collection;
 use Encore\Admin\Form;
@@ -31,6 +32,38 @@ class AwardController extends AdminController
 
         $grid->actions(function ($actions) {
             $actions->disableView();
+        });
+
+        $grid->filter(function($filter){
+
+            $_option = array();
+            $GroupOptions = GroupCategory::all();
+            foreach ($GroupOptions as $item) {
+                $_option[$item->slug] = $item->name;
+            }
+
+            $filter->disableIdFilter();
+            $filter->in('CompanyBasicInfo.group_category', '進駐單位')->multipleSelect($_option);
+            // $filter->equal('CompanyBasicInfo.real_or_virtula', '進駐方式')->select([
+            //     'real' => '實質進駐',
+            //     'virtual' => '虛擬進駐'
+            // ]);
+            $filter->like('CompanyBasicInfo.company_name', '自然人/組織/公司名稱');
+            // $filter->like('CompanyBasicInfo.identity_code', '身分證/統一編號');
+            // $filter->where(function ($query) {
+            //     $query->where('CompanyBasicInfo.contact_name', 'like', "%{$this->input}%")
+            //         ->orWhere('CompanyBasicInfo.owner_name', 'like', "%{$this->input}%");
+            // }, '聯絡人/負責人姓名');
+            // $filter->where(function ($query) {
+            //     $query->where('CompanyBasicInfo.contact_email', 'like', "%{$this->input}%")
+            //         ->orWhere('CompanyBasicInfo.owner_email', 'like', "%{$this->input}%");
+            // }, '聯絡人/負責人Email');
+            // $filter->where(function ($query) {
+            //     $query->where('CompanyBasicInfo.contact_phone', 'like', "%{$this->input}%")
+            //         ->orWhere('CompanyBasicInfo.owner_phone', 'like', "%{$this->input}%");
+            // }, '聯絡人/負責人電話');
+
+            $filter->between('award_time', '獲獎時間')->datetime();
         });
 
         $grid->model()->collection(function (Collection $collection) {

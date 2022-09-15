@@ -73,7 +73,7 @@ class CompanyBasicInfoController extends AdminController
             //         ->orWhere('owner_phone', 'like', "%{$this->input}%");
             // }, '聯絡人/負責人電話');
 
-            $filter->between('date_time', '時間')->datetime();
+            $filter->between('contract_start_time', '時間')->datetime();
         });
 
         $grid->export(function ($export) {
