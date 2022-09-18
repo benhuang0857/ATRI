@@ -57,6 +57,15 @@ class GovSupportProjectController extends AdminController
                 'no' => '未通過',
                 'yes' => '通過'
             ]);
+            $filter->in('resource_cat', '資源類別')->checkbox([
+                '農業聯合資源'  => '農業聯合資源',
+                '創業育成'      => '創業育成',
+                '創新研究'      => '創新研究',
+                '資金融通'      => '資金融通',
+                '行銷推廣'       => '行銷推廣',
+                '升級轉型'       => '升級轉型',
+                '獎項'       => '獎項',
+            ]);
             $filter->in('price', '資金額度')->checkbox([
                 'all'    => '不限',
                 '1M'    => '100萬(含)以下',
@@ -77,6 +86,16 @@ class GovSupportProjectController extends AdminController
         $grid->column('status', __('狀態'))->using([
             'no' => '下架',
             'yes' => '上架'
+        ]);
+        $grid->column('resource_cat', __('資源類別'))->using([
+            null           => '尚未設定',
+            '農業聯合資源'  => '農業聯合資源',
+            '創業育成'      => '創業育成',
+            '創新研究'      => '創新研究',
+            '資金融通'      => '資金融通',
+            '行銷推廣'      => '行銷推廣',
+            '升級轉型'      => '升級轉型',
+            '獎項'          => '獎項',
         ]);
         $grid->column('price', __('資金額度'))->using([
             'all'       => '不限',
@@ -166,6 +185,15 @@ class GovSupportProjectController extends AdminController
             '1M3M'  => '100-300萬(含)以下',
             '3M10M' => '300-1000萬',
             'more10M'  => '100萬(含)以下',
+        ]);
+        $form->select('resource_cat', __('資源類別'))->options([
+            '農業聯合資源'  => '農業聯合資源',
+            '創業育成'      => '創業育成',
+            '創新研究'      => '創新研究',
+            '資金融通'      => '資金融通',
+            '行銷推廣'      => '行銷推廣',
+            '升級轉型'      => '升級轉型',
+            '獎項'          => '獎項',
         ]);
         $form->select('status', __('狀態'))->options([
             'no' => '下架',
