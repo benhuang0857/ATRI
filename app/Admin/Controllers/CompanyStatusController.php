@@ -49,7 +49,7 @@ class CompanyStatusController extends AdminController
             //     'virtual' => '虛擬進駐'
             // ]);
             $filter->like('CompanyBasicInfo.company_name', '自然人/組織/公司名稱');
-            $filter->between('date_time', '異動日期')->datetime();
+            $filter->between('date_time', '異動日期')->date();
         });
 
         $grid->model()->collection(function (Collection $collection) {

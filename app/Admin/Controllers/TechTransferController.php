@@ -60,7 +60,7 @@ class TechTransferController extends AdminController
             //         ->orWhere('CompanyBasicInfo.owner_phone', 'like', "%{$this->input}%");
             // }, '聯絡人/負責人電話');
 
-            $filter->between('start_time', '合約開始時間')->datetime();
+            $filter->between('start_time', '合約開始時間')->date();
         });
 
         $grid->model()->collection(function (Collection $collection) {
