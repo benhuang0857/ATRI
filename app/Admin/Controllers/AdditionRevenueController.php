@@ -19,7 +19,7 @@ class AdditionRevenueController extends AdminController
      *
      * @var string
      */
-    protected $title = '營業額異動';
+    protected $title = '營業額查詢及維護';
 
     /**
      * Make a grid builder.
@@ -49,7 +49,7 @@ class AdditionRevenueController extends AdminController
             //     'real' => '實質進駐',
             //     'virtual' => '虛擬進駐'
             // ]);
-            $filter->like('company_name', '自然人/組織/公司名稱');
+            $filter->like('CompanyBasicInfo.company_name', '自然人/組織/公司名稱');
             // $filter->like('identity_code', '身分證/統一編號');
             // $filter->where(function ($query) {
             //     $query->where('contact_name', 'like', "%{$this->input}%")
@@ -64,7 +64,7 @@ class AdditionRevenueController extends AdminController
             //         ->orWhere('owner_phone', 'like', "%{$this->input}%");
             // }, '聯絡人/負責人電話');
 
-            $filter->between('date_time', '時間')->datetime();
+            $filter->between('date_time', '時間')->date();
         });
         
         $grid->model()->collection(function (Collection $collection) {
@@ -89,7 +89,7 @@ class AdditionRevenueController extends AdminController
             $start_year = $start_time - 1911;
             return $start_year.date("-m-d", strtotime($date_time));
         });
-        $grid->column('note', __('註記'));
+        $grid->column('note', __('備註'));
 
         $grid->tools(function ($tools) {
             $tools->append('<a href="" target="_blank" id="advexcel" class="btn btn-sm btn-info" ><i class="fa fa-download"></i>彙總匯出</a>');
@@ -157,7 +157,7 @@ class AdditionRevenueController extends AdminController
         $form->select('cid', '自然人/組織/公司名稱')->options($_companiesArr);
         $form->number('price', __('營業額'))->default(0);
         $form->date('date_time', __('日期'))->default(date('Y-m-d'));
-        $form->textarea('note', __('註記'));
+        $form->textarea('note', __('備註'));
 
         $form->saving(function (Form $form) {
             $_company = CompanyBasicInfo::where('cid', $form->cid)->first();

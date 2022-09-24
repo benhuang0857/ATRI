@@ -18,7 +18,7 @@ class AwardController extends AdminController
      *
      * @var string
      */
-    protected $title = '取得獎項';
+    protected $title = '申請/取得獎項';
 
     /**
      * Make a grid builder.
@@ -168,7 +168,7 @@ class AwardController extends AdminController
             'yes' => '獲獎'
         ]);
         $form->date('award_time', '獲獎日期')->default(date('Y-m-d H:i:s'));
-        $form->textarea('note', __('輔導內容'));
+        $form->textarea('note', __('備註'));
         $form->file('document', '佐證文件');
 
         return $form;

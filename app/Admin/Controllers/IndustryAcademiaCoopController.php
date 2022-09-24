@@ -44,12 +44,20 @@ class IndustryAcademiaCoopController extends AdminController
                 $_option[$item->slug] = $item->name;
             }
 
+            $_pCategoriesArr = array();
+            $_pCategories = ProjectCategory::all();
+            foreach($_pCategories as $item)
+            {
+                $_pCategoriesArr[$item->slug] = $item->name;
+            }
+
             $filter->disableIdFilter();
             $filter->in('CompanyBasicInfo.group_category', '進駐單位')->multipleSelect($_option);
             // $filter->equal('CompanyBasicInfo.real_or_virtula', '進駐方式')->select([
             //     'real' => '實質進駐',
             //     'virtual' => '虛擬進駐'
             // ]);
+            $filter->equal('project_category', '計畫類別')->select($_pCategoriesArr);
             $filter->like('CompanyBasicInfo.company_name', '自然人/組織/公司名稱');
             // $filter->like('CompanyBasicInfo.identity_code', '身分證/統一編號');
             // $filter->where(function ($query) {
@@ -92,10 +100,11 @@ class IndustryAcademiaCoopController extends AdminController
             }
         });
         $grid->column('project_name', '計畫名稱');
-        $grid->column('project_category', '計畫類別')->using([
-            'industry_academia' => '產學',
-            'entrust' => '委託'
-        ]);
+        // $grid->column('project_category', '計畫類別')->using([
+        //     'industry_academia' => '產學',
+        //     'entrust' => '委託'
+        // ]);
+        $grid->column('project_category', '計畫類別');
         $grid->column('price', '金額(元)');
         $grid->column('start_time', '開始時間')->display(function($start_time){
             $start_time = date("Y", strtotime($start_time));
@@ -184,9 +193,9 @@ class IndustryAcademiaCoopController extends AdminController
         $form->text('project_name', '計畫名稱');
         $form->select('project_category', '計畫類別')->options($_pCategoriesArr);
         $form->number('price', '金額(元)');
-        $form->date('start_time', '開始時間')->default(date('Y-m-d'));
-        $form->date('end_time', '結束時間')->default(date('Y-m-d'));
-        $form->textarea('note', __('輔導內容'));
+        $form->date('start_time', '合約起約日')->default(date('Y-m-d'));
+        $form->date('end_time', '合約到期日')->default(date('Y-m-d'));
+        $form->textarea('note', __('備註'));
         $form->file('document', '佐證文件');
 
         return $form;

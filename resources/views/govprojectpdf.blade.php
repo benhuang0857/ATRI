@@ -149,12 +149,21 @@
                 <p>{!!$case->amount_description!!}</p>
             </td>
         </tr>
+        <?php
+            $start_time = date("Y", strtotime($case->date_start_time));
+            $start_year = $start_time - 1911;
+            $date_start_time = $start_year.date("-m-d", strtotime($case->date_start_time));
+
+            $end_time = date("Y", strtotime($case->date_end_time));
+            $end_year = $end_time - 1911;
+            $date_end_time = $end_year.date("-m-d", strtotime($case->date_end_time));
+        ?>
         <tr>
             <td style="text-align:center">
                 <p>申請日期</p>
             </td>
             <td colspan=3 style="padding-left:10px">
-                <p>自{{$case->date_start_time}}至{{$case->date_end_time}}截止</p>
+                <p>自{{$date_start_time}}至{{$date_end_time}}截止</p>
             </td>
         </tr>
         <tr>

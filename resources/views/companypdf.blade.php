@@ -150,7 +150,7 @@
         </tr>
         <tr style="height:35px">
             <td colspan=6 valign=center>
-                <span style="color:red">條列式 列出投資、增資額明細表、申請暨取得政府補助資源、獎項、技術移轉、產學合作等績效資料表含說明</span>
+                
                 <BR>
                 <p>投增資金額</p>
                 {!!$investTable!!}

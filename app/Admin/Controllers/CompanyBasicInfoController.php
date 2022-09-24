@@ -54,10 +54,10 @@ class CompanyBasicInfoController extends AdminController
 
             $filter->disableIdFilter();
             $filter->in('group_category', '進駐單位')->multipleSelect($_option);
-            // $filter->equal('real_or_virtula', '進駐方式')->select([
-            //     'real' => '實質進駐',
-            //     'virtual' => '虛擬進駐'
-            // ]);
+            $filter->equal('real_or_virtula', '進駐方式')->select([
+                'real' => '實質進駐',
+                'virtual' => '虛擬進駐'
+            ]);
             $filter->like('company_name', '自然人/組織/公司名稱');
             // $filter->like('identity_code', '身分證/統一編號');
             // $filter->where(function ($query) {
@@ -73,7 +73,7 @@ class CompanyBasicInfoController extends AdminController
             //         ->orWhere('owner_phone', 'like', "%{$this->input}%");
             // }, '聯絡人/負責人電話');
 
-            $filter->between('contract_start_time', '時間')->datetime();
+            $filter->between('contract_start_time', '時間')->date();
         });
 
         $grid->export(function ($export) {
@@ -210,7 +210,9 @@ class CompanyBasicInfoController extends AdminController
                 'virtual' => '虛擬進駐'
             ]);
 
-            $form->text('identity_code', '身分證/統一編號');
+            $form->text('identity_code', '身分證/統一編號')->rules('required|regex:/(^([a-zA-Z]+)(\d+)?$)/u', [
+                'regex' => '只允許英數',
+            ]);
             $form->text('owner_name', '負責人');
             $form->text('owner_email', '負責人Email');
             $form->text('owner_phone', '負責人電話');

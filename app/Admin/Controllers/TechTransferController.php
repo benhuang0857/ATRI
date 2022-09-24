@@ -172,7 +172,7 @@ class TechTransferController extends AdminController
         $form->number('price', '技轉金額(元)');
         $form->date('start_time', '合約起始日期')->default(date('Y-m-d'));
         $form->date('end_time', '合約終止日期')->default(date('Y-m-d'));
-        $form->textarea('note', __('輔導內容'));
+        $form->textarea('note', __('備註'));
         $form->file('document', '佐證文件');
 
         return $form;

@@ -18,7 +18,7 @@ class GovGrantController extends AdminController
      *
      * @var string
      */
-    protected $title = '取得政府補助資源';
+    protected $title = '申請/取得政府補助資源';
 
     /**
      * Make a grid builder.
@@ -44,10 +44,10 @@ class GovGrantController extends AdminController
 
             $filter->disableIdFilter();
             $filter->in('CompanyBasicInfo.group_category', '進駐單位')->multipleSelect($_option);
-            // $filter->equal('CompanyBasicInfo.real_or_virtula', '進駐方式')->select([
-            //     'real' => '實質進駐',
-            //     'virtual' => '虛擬進駐'
-            // ]);
+            $filter->equal('CompanyBasicInfo.real_or_virtula', '進駐方式')->select([
+                'real' => '實質進駐',
+                'virtual' => '虛擬進駐'
+            ]);
             $filter->like('CompanyBasicInfo.company_name', '自然人/組織/公司名稱');
             // $filter->like('CompanyBasicInfo.identity_code', '身分證/統一編號');
             // $filter->where(function ($query) {
@@ -63,7 +63,7 @@ class GovGrantController extends AdminController
             //         ->orWhere('CompanyBasicInfo.owner_phone', 'like', "%{$this->input}%");
             // }, '聯絡人/負責人電話');
 
-            $filter->between('application_time', '申請日期')->datetime();
+            $filter->between('application_time', '申請日期')->date();
         });
 
         $grid->model()->collection(function (Collection $collection) {
@@ -94,7 +94,7 @@ class GovGrantController extends AdminController
         $grid->column('application_time', '申請日期')->display(function($application_time){
             return date("Y-m-d", strtotime($application_time));  
         });
-        $grid->column('application_status', '申請狀態')->using([
+        $grid->column('application_status', '狀態')->using([
             'pending'   => '申請中',
             'no'        => '未通過',
             'yes'       => '通過'
@@ -162,7 +162,7 @@ class GovGrantController extends AdminController
         ]);
         $form->date('grant_time', '補助核定日期')->default(date('Y-m-d'));
         $form->number('grant_price', '核定補助金額');
-        $form->textarea('note', __('輔導內容'));
+        $form->textarea('note', __('備註'));
         $form->file('document', '佐證文件');
 
         return $form;

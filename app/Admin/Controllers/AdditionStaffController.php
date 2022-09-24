@@ -21,7 +21,7 @@ class AdditionStaffController extends AdminController
      *
      * @var string
      */
-    protected $title = '就業人數';
+    protected $title = '就業人數查詢及維護';
 
     /**
      * Make a grid builder.
@@ -46,12 +46,12 @@ class AdditionStaffController extends AdminController
             }
 
             $filter->disableIdFilter();
-            $filter->equal('group_category', '進駐單位')->select($_option);
+            $filter->equal('CompanyBasicInfo.group_category', '進駐單位')->select($_option);
             // $filter->equal('real_or_virtula', '進駐方式')->select([
             //     'real' => '實質進駐',
             //     'virtual' => '虛擬進駐'
             // ]);
-            $filter->like('company_name', '自然人/組織/公司名稱');
+            $filter->like('CompanyBasicInfo.company_name', '自然人/組織/公司名稱');
             // $filter->like('identity_code', '身分證/統一編號');
             // $filter->where(function ($query) {
             //     $query->where('contact_name', 'like', "%{$this->input}%")
@@ -66,7 +66,7 @@ class AdditionStaffController extends AdminController
             //         ->orWhere('owner_phone', 'like', "%{$this->input}%");
             // }, '聯絡人/負責人電話');
 
-            $filter->between('date_time', '時間')->datetime();
+            $filter->between('date_time', '時間')->date();
         });
 
         $grid->model()->collection(function (Collection $collection) {
@@ -100,7 +100,7 @@ class AdditionStaffController extends AdminController
             $start_year = $start_time - 1911;
             return $start_year.date("-m-d", strtotime($date_time));
         });
-        $grid->column('note', __('輔導內容'));
+        $grid->column('note', __('備註'));
 
         $grid->tools(function ($tools) {
             $tools->append('<a href="" target="_blank" id="advexcel" class="btn btn-sm btn-info" ><i class="fa fa-download"></i>彙總匯出</a>');
@@ -165,7 +165,7 @@ class AdditionStaffController extends AdminController
         $form->select('cid', '自然人/組織/公司名稱')->options($_companiesArr);
         $form->number('staff', __('員工人數'))->default(0);
         $form->date('date_time', __('日期'))->default(date('Y-m-d'));
-        $form->textarea('note', __('輔導內容'));
+        $form->textarea('note', __('備註'));
 
         return $form;
     }

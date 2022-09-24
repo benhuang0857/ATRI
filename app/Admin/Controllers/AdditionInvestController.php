@@ -19,7 +19,7 @@ class AdditionInvestController extends AdminController
      *
      * @var string
      */
-    protected $title = '投增資金額細表';
+    protected $title = '投增資金額查詢及維護';
 
     /**
      * Make a grid builder.
@@ -106,7 +106,7 @@ class AdditionInvestController extends AdminController
             return $start_year.date("-m-d", strtotime($date_time));
         });
         $grid->column('document', __('佐證文件'));
-        $grid->column('note', __('輔導內容'));
+        $grid->column('note', __('備註'));
 
         $grid->tools(function ($tools) {
             $tools->append('<a href="" target="_blank" id="advexcel" class="btn btn-sm btn-info" ><i class="fa fa-download"></i>彙總匯出</a>');
@@ -171,16 +171,18 @@ class AdditionInvestController extends AdminController
         {
             $_companiesArr[$item->cid] = $item->company_name;
         }
+
         $form->select('cid', '自然人/組織/公司名稱')->options($_companiesArr);
         $form->select('type', __('投資/增資'))->options([
             'invest'      => '投資', 
             'increase'    => '增資'
         ]);
+        $form->html('<span style="color:red">增資為現金增資，投資為購買機器設備、種苗之支出</span>', '');
         $form->number('price', __('金額'));
         $form->textarea('reason', __('用途'));
         $form->date('date_time', __('日期'))->default(date('Y-m-d'));
         $form->file('document', __('佐證文件'));
-        $form->textarea('note', __('輔導內容'));
+        $form->textarea('note', __('備註'));
 
         return $form;
     }
