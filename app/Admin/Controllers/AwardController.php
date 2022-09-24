@@ -63,7 +63,7 @@ class AwardController extends AdminController
             //         ->orWhere('CompanyBasicInfo.owner_phone', 'like', "%{$this->input}%");
             // }, '聯絡人/負責人電話');
 
-            $filter->between('award_time', '獲獎時間')->datetime();
+            $filter->between('award_time', '獲獎時間')->date();
         });
 
         $grid->model()->collection(function (Collection $collection) {
