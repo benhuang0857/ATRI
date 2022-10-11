@@ -210,9 +210,10 @@ class CompanyBasicInfoController extends AdminController
                 'virtual' => '虛擬進駐'
             ]);
 
-            $form->text('identity_code', '身分證/統一編號')->rules('required|regex:/(^([a-zA-Z]+)(\d+)?$)/u', [
-                'regex' => '只允許英數',
-            ]);
+            // $form->text('identity_code', '身分證/統一編號')->rules('required|regex:/(^([a-zA-Z]+)(\d+)?$)/u', [
+            //     'regex' => '只允許英數',
+            // ]);
+            $form->text('identity_code', '身分證/統一編號');
             $form->text('owner_name', '負責人');
             $form->text('owner_email', '負責人Email');
             $form->text('owner_phone', '負責人電話');
