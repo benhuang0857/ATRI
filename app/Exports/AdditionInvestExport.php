@@ -10,12 +10,9 @@ use Maatwebsite\Excel\Concerns\FromView;
 
 use DB;
 
-class MyCase {
+class CaseCompany {
     public $group   = '';
-    public $company = '';
-    public $type    = '';
-    public $price   = 0;
-    public $date_time  = '';
+    public $name = '';
 };
 
 class groupTotalPrice {
@@ -25,15 +22,16 @@ class groupTotalPrice {
 
 class AdditionInvestExport implements FromView
 {
-    protected $cases1;
-    protected $cases2;
+    protected $cids;
+    protected $cases;
 
-    public function __construct($cases1, $cases2)
+    public function __construct($cids, $cases)
     {
-        $this->cases1 = $cases1;
-        $this->cases2 = $cases2;
+        $this->cids = $cids;
+        $this->cases = $cases;
     }
 
+    /*
     public function view(): View
     {
         // Group by data to table
@@ -88,6 +86,47 @@ class AdditionInvestExport implements FromView
             'cases'     => $cellData,
             'groupCase' => $groupTotalPriceData,
             'resultSum' => $resultSum  
+        ]);
+    }
+    */
+
+    public function view(): View
+    {
+        // Group by data to table
+        $setMonth = date('m');
+
+        $cidsArray = array();
+        foreach ($this->cids as $_cid) 
+        {
+            array_push($cidsArray, $_cid->cid);
+        }
+
+        foreach ($cidsArray as $key => $_cid) 
+        {
+            $CaseCompany = new CaseCompany();
+            $Company = CompanyBasicInfo::where('cid', $_cid)->first();
+            $groupName = GroupCategory::where('slug', $Company->group_category)->first()->name;
+            $CaseCompany->name = $Company->company_name;
+            $CaseCompany->group = $groupName;
+
+            $company[$key][0] = $CaseCompany;
+            for ($i=1; $i <= $setMonth; $i++) 
+            { 
+                $company[$key][$i] = 0;
+            }
+            foreach ($this->cases as $_case) 
+            {
+                if ($_case->cid == $_cid) 
+                {
+                    $caseMonth = (int)date_format(date_create($_case->date_time), 'm');
+                    $company[$key][$caseMonth] = $_case->price;
+                }
+            }  
+        }
+
+        return view('adv-excel.invest', [
+            'month' => $setMonth,
+            'cases' => $company
         ]);
     }
 }

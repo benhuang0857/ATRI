@@ -17,64 +17,44 @@ class AdditionInvestController extends Controller
     {
         $start_time = $req->start_time;
         $end_time   = $req->end_time;
-
-        if($start_time == null || $end_time == null)
-        {
-            $cases1 = DB::select("
-                SELECT 
-                    *
-                FROM addition_invest AS X
-                LEFT JOIN 
-                company_basic_info AS Y 
-                ON X.cid = Y.cid
-                WHERE 1 = 1
-                ORDER BY Y.group_category DESC
-            ");
-
-            $cases2 = DB::select("
-                SELECT 
-                    Y.group_category AS GroupName,
-                    SUM(X.price) AS Price
-                FROM addition_invest AS X
-                LEFT JOIN 
-                company_basic_info AS Y 
-                ON X.cid = Y.cid
-                WHERE 1
-                GROUP BY Y.group_category
-                ORDER BY Y.group_category DESC
-            ");
-        }
-        else 
-        {
-            $cases1 = DB::select("
-                SELECT 
-                    *
-                FROM addition_invest AS X
-                LEFT JOIN 
-                company_basic_info AS Y 
-                ON X.cid = Y.cid
-                WHERE 1 = 1
-                AND date_time >= '".$start_time."'
-                AND date_time <= '".$end_time."' 
-                ORDER BY Y.group_category DESC
-            ");
-
-            $cases2 = DB::select("
-                SELECT 
-                    Y.group_category AS GroupName,
-                    SUM(X.price) AS Price
-                FROM addition_invest AS X
-                LEFT JOIN 
-                company_basic_info AS Y 
-                ON X.cid = Y.cid
-                WHERE 1
-                AND date_time >= '".$start_time."'
-                AND date_time <= '".$end_time."' 
-                GROUP BY Y.group_category
-                ORDER BY Y.group_category DESC
-            ");
-        }
         
-        return Excel::download(new AdditionInvestExport($cases1, $cases2), 'Invest.xlsx');
+        $cids = DB::select("
+            SELECT 
+                distinct(cid)
+            FROM addition_invest AS X
+            WHERE 1 = 1
+            AND date_time >= '".$start_time."'
+            AND date_time <= '".$end_time."' 
+        ");
+
+        $cases = DB::select("
+            SELECT 
+                *
+            FROM addition_invest AS X
+            LEFT JOIN 
+            company_basic_info AS Y 
+            ON X.cid = Y.cid
+            WHERE 1 = 1
+            AND date_time >= '".$start_time."'
+            AND date_time <= '".$end_time."' 
+            ORDER BY Y.group_category DESC
+        ");
+
+        // $cases2 = DB::select("
+        //     SELECT 
+        //         Y.group_category AS GroupName,
+        //         SUM(X.price) AS Price
+        //     FROM addition_invest AS X
+        //     LEFT JOIN 
+        //     company_basic_info AS Y 
+        //     ON X.cid = Y.cid
+        //     WHERE 1
+        //     AND date_time >= '".$start_time."'
+        //     AND date_time <= '".$end_time."' 
+        //     GROUP BY Y.group_category
+        //     ORDER BY Y.group_category DESC
+        // ");
+        
+        return Excel::download(new AdditionInvestExport($cids, $cases), '投增資金額查詢及維護.xlsx');
     }
 }

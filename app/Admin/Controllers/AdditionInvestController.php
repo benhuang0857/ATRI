@@ -63,8 +63,7 @@ class AdditionInvestController extends AdminController
             //     $query->where('CompanyBasicInfo.contact_phone', 'like', "%{$this->input}%")
             //         ->orWhere('CompanyBasicInfo.owner_phone', 'like', "%{$this->input}%");
             // }, '聯絡人/負責人電話');
-
-            $filter->between('date_time', '時間')->datetime();
+            $filter->between('date_time', '時間')->date();
         });
         
         $grid->export(function ($export) {
