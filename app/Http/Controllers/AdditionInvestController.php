@@ -37,24 +37,24 @@ class AdditionInvestController extends Controller
             WHERE 1 = 1
             AND date_time >= '".$start_time."'
             AND date_time <= '".$end_time."' 
-            ORDER BY Y.group_category DESC
+            -- ORDER BY Y.group_category DESC
         ");
 
-        // $cases2 = DB::select("
-        //     SELECT 
-        //         Y.group_category AS GroupName,
-        //         SUM(X.price) AS Price
-        //     FROM addition_invest AS X
-        //     LEFT JOIN 
-        //     company_basic_info AS Y 
-        //     ON X.cid = Y.cid
-        //     WHERE 1
-        //     AND date_time >= '".$start_time."'
-        //     AND date_time <= '".$end_time."' 
-        //     GROUP BY Y.group_category
-        //     ORDER BY Y.group_category DESC
-        // ");
-        
-        return Excel::download(new AdditionInvestExport($cids, $cases), '投增資金額查詢及維護.xlsx');
+        $cals = DB::select("
+            SELECT 
+                Y.group_category AS GroupName,
+                SUM(X.price) AS Price
+            FROM addition_invest AS X
+            LEFT JOIN 
+            company_basic_info AS Y 
+            ON X.cid = Y.cid
+            WHERE 1
+            AND date_time >= '".$start_time."'
+            AND date_time <= '".$end_time."' 
+            GROUP BY Y.group_category
+            -- ORDER BY Y.group_category DESC
+        ");
+
+        return Excel::download(new AdditionInvestExport($cids, $cases, $cals), '投增資金額查詢及維護.xlsx');
     }
 }

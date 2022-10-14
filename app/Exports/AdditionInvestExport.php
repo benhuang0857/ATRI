@@ -24,11 +24,13 @@ class AdditionInvestExport implements FromView
 {
     protected $cids;
     protected $cases;
+    protected $cals;
 
-    public function __construct($cids, $cases)
+    public function __construct($cids, $cases, $cals)
     {
         $this->cids = $cids;
         $this->cases = $cases;
+        $this->cals = $cals;
     }
 
     /*
@@ -93,6 +95,7 @@ class AdditionInvestExport implements FromView
     public function view(): View
     {
         // Group by data to table
+        $company = array();
         $setMonth = date('m');
 
         $cidsArray = array();
@@ -110,7 +113,7 @@ class AdditionInvestExport implements FromView
             $CaseCompany->group = $groupName;
 
             $company[$key][0] = $CaseCompany;
-            for ($i=1; $i <= $setMonth; $i++) 
+            for ($i=1; $i <= 12; $i++) 
             { 
                 $company[$key][$i] = 0;
             }
@@ -124,9 +127,30 @@ class AdditionInvestExport implements FromView
             }  
         }
 
+        // Caculate each group total price
+        $groupTotalPriceData = array();
+
+        $sum = 0;
+        foreach ($this->cals as $case) {
+            
+            $groupTotalPrice = new groupTotalPrice();
+
+            $groupName = GroupCategory::where('slug', $case->GroupName)->first()->name;
+
+            $groupTotalPrice->group = $groupName;
+            $groupTotalPrice->sum = $case->Price;
+
+            array_push($groupTotalPriceData, $groupTotalPrice);
+
+            $sum += intval($case->Price);
+        }
+
+        $resultSum = $sum;
+
         return view('adv-excel.invest', [
-            'month' => $setMonth,
-            'cases' => $company
+            'month' => 12,
+            'cases' => $company,
+            'groupCals' => $groupTotalPriceData  
         ]);
     }
 }

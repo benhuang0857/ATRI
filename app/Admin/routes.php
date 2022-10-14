@@ -18,6 +18,8 @@ Route::group([
     $router->resource('project-categories', ProjectCategoryController::class);
     $router->resource('company-statuses', CompanyStatusController::class);
     $router->resource('addition-invests', AdditionInvestController::class);
+    $router->resource('addition-invests-ex', AdditionInvestExcelController::class);
+
     $router->resource('addition-revenues', AdditionRevenueController::class);
     $router->resource('addition-staffs', AdditionStaffController::class);
     
