@@ -53,7 +53,7 @@ class AdditionInvestExcelController extends Controller
         foreach ($groups as $key => $group) {
             $total = 0;
             $revenuesQueue  = array();
-            for ($i=1; $i <= 12 ; $i++) { 
+            for ($i=1; $i < 12 ; $i++) { 
                 $calPrice = DB::select("
                     SELECT 
                         sum(price) price
