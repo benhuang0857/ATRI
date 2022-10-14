@@ -53,7 +53,14 @@ class AdditionInvestExcelController extends Controller
         foreach ($groups as $key => $group) {
             $total = 0;
             $revenuesQueue  = array();
-            for ($i=1; $i < 12 ; $i++) { 
+            for ($i=1; $i <= 12 ; $i++) { 
+                
+                $D1 = $setYear.'-'.$i.'-01';
+                $D2 = $setYear.'-'.($i+1).'-01';
+                if ($i == 12) {
+                    $D2 = $setYear.'-'.($i).'-31';
+                }
+
                 $calPrice = DB::select("
                     SELECT 
                         sum(price) price
@@ -63,9 +70,10 @@ class AdditionInvestExcelController extends Controller
                     ON X.cid = Y.cid
                     WHERE 1 = 1
                     AND group_category = '".$group."'
-                    AND date_time >= '".$setYear.'-'.$i.'-01'."'
-                    AND date_time < '".$setYear.'-'.($i+1).'-01'."' 
+                    AND date_time >= '".$D1."'
+                    AND date_time < '".$D2."' 
                 ");
+                
 
                 $sum = (int)array_pop($calPrice)->price;
                 if ($sum == null) {
