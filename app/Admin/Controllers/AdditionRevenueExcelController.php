@@ -20,7 +20,7 @@ use Encore\Admin\Grid;
 use Encore\Admin\Show;
 use DB;
 
-class AdditionInvestExcelController extends Controller
+class AdditionRevenueExcelController extends Controller
 {
     public function index(Request $req)
     {
@@ -31,7 +31,7 @@ class AdditionInvestExcelController extends Controller
 
         $datasets       = array();
         $colorSet = ['blue', 'red', 'green', 'yellow', 'orange'];
-        $companies = AdditionInvest::with('CompanyBasicInfo')->get();
+        $companies = AdditionRevenue::with('CompanyBasicInfo')->get();
 
         $groups = array();
         foreach($companies as $key => $c)
@@ -63,12 +63,12 @@ class AdditionInvestExcelController extends Controller
                 $calPrice = DB::select("
                     SELECT 
                         sum(price) price
-                    FROM addition_invest AS X
+                    FROM addition_revenue AS X
                     LEFT JOIN 
                     company_basic_info AS Y 
                     ON X.cid = Y.cid
                     WHERE 1 = 1
-                    AND group_category = '".$group."'
+                    AND Y.group_category = '".$group."'
                     AND date_time >= '".$D1."'
                     AND date_time < '".$D2."' 
                 ");
@@ -130,7 +130,7 @@ class AdditionInvestExcelController extends Controller
             data: {
                 labels: [".implode(',', $groupNames)."],
                 datasets: [{
-                    label: '投增資金額管理',
+                    label: '營業額管理',
                     data: [".implode(',', $totalList)."],
                     borderWidth: 1,
                     backgroundColor: ['Red', 'Blue', 'Yellow'],
@@ -152,10 +152,10 @@ class AdditionInvestExcelController extends Controller
 
         $content = new Content();
         return $content
-            ->title('投增資金額管理')
-            ->description('統計各所投增資金額')
-            ->view('adv-excel.invests-export', [
-                'title' => '營業額明細表',
+            ->title('營業額異動管理')
+            ->description('統計各所營業額')
+            ->view('adv-excel.revenue-export', [
+                'title' => '營業額異動明細表',
                 'dataset' => $datasets,
                 'jscode'  => $jscode
             ]);;

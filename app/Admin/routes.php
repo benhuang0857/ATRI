@@ -17,11 +17,15 @@ Route::group([
     $router->resource('group-categories', GroupCategoryController::class);
     $router->resource('project-categories', ProjectCategoryController::class);
     $router->resource('company-statuses', CompanyStatusController::class);
+    
     $router->resource('addition-invests', AdditionInvestController::class);
     $router->resource('addition-invests-ex', AdditionInvestExcelController::class);
 
     $router->resource('addition-revenues', AdditionRevenueController::class);
+    $router->resource('addition-revenues-ex', AdditionRevenueExcelController::class);
+
     $router->resource('addition-staffs', AdditionStaffController::class);
+    $router->resource('addition-staffs-ex', AdditionStaffExcelController::class);
     
     $router->resource('awards', AwardController::class);
     $router->resource('gov-grants', GovGrantController::class);
