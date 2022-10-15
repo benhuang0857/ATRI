@@ -19,7 +19,7 @@ class HomeController extends Controller
     public function index(Content $content)
     {
 
-        // return redirect('/admin/gov-support-projects'); 
+        return redirect('/admin/gov-support-projects'); 
         
         $datasets       = array();
         $colorSet = ['blue', 'red', 'green'];
