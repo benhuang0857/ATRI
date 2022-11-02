@@ -59,7 +59,7 @@ class CompanyBasicInfoController extends AdminController
                 'virtual' => '遠端進駐'
             ]);
             $filter->like('company_name', '自然人/組織/公司名稱');
-            $filter->between('contract_start_time', '時間')->date();
+            $filter->between('contract_start_time', '進駐時間')->date();
         });
 
         $grid->export(function ($export) {
