@@ -118,7 +118,9 @@ class CompanyBasicInfoController extends AdminController
         $grid->column('capital', __('進駐時實收資本額'))->display(function($capital){
             return number_format($capital);
         });
-        $grid->column('revenue', __('進駐時年營業額'));
+        $grid->column('revenue', __('進駐時年營業額'))->display(function($revenue){
+            return number_format($revenue);
+        });
         $grid->column('staff', __('進駐時員工人數'));
 
         // $grid->column('created_at', __('Created at'));
