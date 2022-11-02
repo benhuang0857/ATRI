@@ -31,7 +31,10 @@ class AdditionInvestExcelController extends Controller
 
         $datasets       = array();
         $colorSet = ['blue', 'red', 'green', 'yellow', 'orange'];
-        $companies = AdditionInvest::with('CompanyBasicInfo')->get();
+        $companies = AdditionInvest::with('CompanyBasicInfo')
+                                    ->where('date_time', '>=',  $setYear.'-01-01')
+                                    ->where('date_time', '<=',  $setYear.'-12-31')
+                                    ->get();
 
         $groups = array();
         foreach($companies as $key => $c)

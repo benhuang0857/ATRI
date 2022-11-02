@@ -49,20 +49,6 @@ class GovGrantController extends AdminController
                 'virtual' => '虛擬進駐'
             ]);
             $filter->like('CompanyBasicInfo.company_name', '自然人/組織/公司名稱');
-            // $filter->like('CompanyBasicInfo.identity_code', '身分證/統一編號');
-            // $filter->where(function ($query) {
-            //     $query->where('CompanyBasicInfo.contact_name', 'like', "%{$this->input}%")
-            //         ->orWhere('CompanyBasicInfo.owner_name', 'like', "%{$this->input}%");
-            // }, '聯絡人/負責人姓名');
-            // $filter->where(function ($query) {
-            //     $query->where('CompanyBasicInfo.contact_email', 'like', "%{$this->input}%")
-            //         ->orWhere('CompanyBasicInfo.owner_email', 'like', "%{$this->input}%");
-            // }, '聯絡人/負責人Email');
-            // $filter->where(function ($query) {
-            //     $query->where('CompanyBasicInfo.contact_phone', 'like', "%{$this->input}%")
-            //         ->orWhere('CompanyBasicInfo.owner_phone', 'like', "%{$this->input}%");
-            // }, '聯絡人/負責人電話');
-
             $filter->between('application_time', '申請日期')->date();
         });
 
@@ -71,6 +57,12 @@ class GovGrantController extends AdminController
                 $item->tmp = $index + 1;
             }
             return $collection;
+        });
+
+        
+        $grid->export(function ($export) {
+            $export->filename('申請/取得政府補助資源.csv');
+            $export->except(['tmp', 'document']);
         });
         
         $grid->column('tmp', '編號');

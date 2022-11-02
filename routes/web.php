@@ -24,3 +24,6 @@ Route::get('excel/tech-transfer', 'TechTransferController@Export');
 Route::get('excel/industry-academia-coop', 'IndustryAcademiaCoopController@Export');
 Route::get('excel/addition-staff', 'AdditionStaffController@Export');
 Route::get('excel/addition-revenue', 'AdditionRevenueController@Export');
+
+Route::get('excel/gov-grant', 'GovGrantController@Export');
+Route::get('excel/award', 'AwardController@Export');

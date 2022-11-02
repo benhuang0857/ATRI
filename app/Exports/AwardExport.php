@@ -2,29 +2,19 @@
 
 namespace App\Exports;
 
-use App\AdditionStaff;
+use App\AdditionInvest;
 use App\CompanyBasicInfo;
 use App\GroupCategory;
+use App\Award;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 
 use DB;
 
-// class MyCase {
-//     public $group   = '';
-//     public $company = '';
-//     public $ini_staff = 0;
-//     public $diff_staff = 0;
-// };
-
-// class groupTotalPrice {
-//     public $group = '';
-//     public $sum   = 0;
-// }
-
 class CaseCompany {
     public $group   = '';
     public $name = '';
+    public $award;
 };
 
 class groupTotalPrice {
@@ -32,7 +22,7 @@ class groupTotalPrice {
     public $sum   = 0;
 }
 
-class AdditionStaffExport implements FromView
+class AwardExport implements FromView
 {
     protected $cids;
     protected $cases;
@@ -48,7 +38,7 @@ class AdditionStaffExport implements FromView
     public function view(): View
     {
         // Group by data to table
-        $company = array();
+        $companies = array();
         $setMonth = date('m');
 
         $cidsArray = array();
@@ -57,6 +47,7 @@ class AdditionStaffExport implements FromView
             array_push($cidsArray, $_cid->cid);
         }
 
+        
         foreach ($cidsArray as $key => $_cid) 
         {
             $CaseCompany = new CaseCompany();
@@ -64,20 +55,9 @@ class AdditionStaffExport implements FromView
             $groupName = GroupCategory::where('slug', $Company->group_category)->first()->name;
             $CaseCompany->name = $Company->company_name;
             $CaseCompany->group = $groupName;
+            $CaseCompany->award = Award::where('cid', $_cid)->first();
 
-            $company[$key][0] = $CaseCompany;
-            for ($i=1; $i <= 12; $i++) 
-            { 
-                $company[$key][$i] = 0;
-            }
-            foreach ($this->cases as $_case) 
-            {
-                if ($_case->cid == $_cid) 
-                {
-                    $caseMonth = (int)date_format(date_create($_case->date_time), 'm');
-                    $company[$key][$caseMonth] = $_case->staff;
-                }
-            }  
+            array_push($companies, $CaseCompany);
         }
 
         // Caculate each group total price
@@ -91,18 +71,18 @@ class AdditionStaffExport implements FromView
             $groupName = GroupCategory::where('slug', $case->GroupName)->first()->name;
 
             $groupTotalPrice->group = $groupName;
-            $groupTotalPrice->sum = $case->Staff;
+            $groupTotalPrice->sum = $case->Price;
 
             array_push($groupTotalPriceData, $groupTotalPrice);
 
-            $sum += intval($case->Staff);
+            $sum += intval($case->Price);
         }
 
         $resultSum = $sum;
 
-        return view('adv-excel.staff', [
+        return view('adv-excel.award', [
             'month' => 12,
-            'cases' => $company,
+            'cases' => $companies,
             'groupCals' => $groupTotalPriceData  
         ]);
     }

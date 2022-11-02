@@ -26,9 +26,13 @@ Route::group([
 
     $router->resource('addition-staffs', AdditionStaffController::class);
     $router->resource('addition-staffs-ex', AdditionStaffExcelController::class);
-    
-    $router->resource('awards', AwardController::class);
+
     $router->resource('gov-grants', GovGrantController::class);
+    $router->resource('gov-grants-ex', GovGrantExcelController::class);
+
+    $router->resource('awards', AwardController::class);
+    $router->resource('awards-ex', AwardExcelController::class);
+    
     $router->resource('industry-academia-coops', IndustryAcademiaCoopController::class);
     $router->resource('tech-transfers', TechTransferController::class);
     $router->resource('gov-support-projects', GovSupportProjectController::class);

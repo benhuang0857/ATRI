@@ -31,7 +31,10 @@ class AdditionRevenueExcelController extends Controller
 
         $datasets       = array();
         $colorSet = ['blue', 'red', 'green', 'yellow', 'orange'];
-        $companies = AdditionRevenue::with('CompanyBasicInfo')->get();
+        $companies = AdditionRevenue::with('CompanyBasicInfo')
+                                    ->where('date_time', '>=',  $setYear.'-01-01')
+                                    ->where('date_time', '<=',  $setYear.'-12-31')
+                                    ->get();
 
         $groups = array();
         foreach($companies as $key => $c)
