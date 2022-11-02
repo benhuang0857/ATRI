@@ -53,26 +53,8 @@ class IndustryAcademiaCoopController extends AdminController
 
             $filter->disableIdFilter();
             $filter->in('CompanyBasicInfo.group_category', '進駐單位')->multipleSelect($_option);
-            // $filter->equal('CompanyBasicInfo.real_or_virtula', '進駐方式')->select([
-            //     'real' => '實質進駐',
-            //     'virtual' => '虛擬進駐'
-            // ]);
             $filter->equal('project_category', '計畫類別')->select($_pCategoriesArr);
             $filter->like('CompanyBasicInfo.company_name', '自然人/組織/公司名稱');
-            // $filter->like('CompanyBasicInfo.identity_code', '身分證/統一編號');
-            // $filter->where(function ($query) {
-            //     $query->where('CompanyBasicInfo.contact_name', 'like', "%{$this->input}%")
-            //         ->orWhere('CompanyBasicInfo.owner_name', 'like', "%{$this->input}%");
-            // }, '聯絡人/負責人姓名');
-            // $filter->where(function ($query) {
-            //     $query->where('CompanyBasicInfo.contact_email', 'like', "%{$this->input}%")
-            //         ->orWhere('CompanyBasicInfo.owner_email', 'like', "%{$this->input}%");
-            // }, '聯絡人/負責人Email');
-            // $filter->where(function ($query) {
-            //     $query->where('CompanyBasicInfo.contact_phone', 'like', "%{$this->input}%")
-            //         ->orWhere('CompanyBasicInfo.owner_phone', 'like', "%{$this->input}%");
-            // }, '聯絡人/負責人電話');
-
             $filter->between('start_time', '合約開始時間')->date();
         });
 
@@ -83,7 +65,7 @@ class IndustryAcademiaCoopController extends AdminController
             return $collection;
         });
         
-        $grid->column('tmp', '編號');
+        // $grid->column('tmp', '編號');
         
         $grid->column('CompanyBasicInfo.group_category', '進駐單位')->using([
             'farmer'        => '農試所',
@@ -100,11 +82,17 @@ class IndustryAcademiaCoopController extends AdminController
             }
         });
         $grid->column('project_name', '計畫名稱');
-        // $grid->column('project_category', '計畫類別')->using([
-        //     'industry_academia' => '產學',
-        //     'entrust' => '委託'
-        // ]);
-        $grid->column('project_category', '計畫類別');
+
+        $_pCategoriesArr = array();
+        $_pCategories = ProjectCategory::all();
+        foreach($_pCategories as $item)
+        {
+            $_pCategoriesArr[$item->slug] = $item->name;
+        }
+
+        $grid->column('project_category', '計畫類別')->using($_pCategoriesArr);
+
+        // $grid->column('project_category', '計畫類別');
         $grid->column('price', '金額(元)');
         $grid->column('start_time', '開始時間')->display(function($start_time){
             $start_time = date("Y", strtotime($start_time));
