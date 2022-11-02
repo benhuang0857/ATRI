@@ -68,7 +68,9 @@ class AdditionRevenueController extends AdminController
             'agricultural'  => '農科院',
         ], '未知');
         $grid->column('CompanyBasicInfo.company_name', '自然人/組織/公司名稱');
-        $grid->column('price', __('營業額'))->totalRow();
+        $grid->column('price', __('營業額'))->display(function($price){
+            return number_format($price);
+        });
         $grid->column('date_time', __('日期'))->display(function($date_time){
             $start_time = date("Y", strtotime($date_time));
             $start_year = $start_time - 1911;
