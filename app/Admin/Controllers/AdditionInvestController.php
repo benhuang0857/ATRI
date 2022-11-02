@@ -86,7 +86,7 @@ class AdditionInvestController extends AdminController
             $start_time = date("Y", strtotime($date_time));
             $start_year = $start_time - 1911;
             return $start_year.date("-m-d", strtotime($date_time));
-        });
+        })->width(150);
         $grid->column('document', __('佐證文件'));
         $grid->column('note', __('備註'));
 
