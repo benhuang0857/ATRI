@@ -152,6 +152,7 @@ class GovGrantController extends AdminController
 
         $form->select('cid', '自然人/組織/公司名稱')->options($_companiesArr);
         $form->text('gov_grant_name', '政府補助資源名稱');
+        $form->html('<span style="color:red">例：經濟部－ＳＢＩＲ</span>', '');
         $form->text('plan_name', '計畫名稱');
         $form->date('application_time', '申請日期')->default(date('Y-m-d'));
         $form->select('application_status', '狀態')->options([
