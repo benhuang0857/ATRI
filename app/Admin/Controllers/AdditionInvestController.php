@@ -82,7 +82,7 @@ class AdditionInvestController extends AdminController
         ]);
         $grid->column('price', __('金額'))->totalRow();
         $grid->column('reason', __('用途'));
-        $grid->column('date_time', __('日期'))->display(function($date_time){
+        $grid->column('date_time', __('投增資時間'))->display(function($date_time){
             $start_time = date("Y", strtotime($date_time));
             $start_year = $start_time - 1911;
             return $start_year.date("-m-d", strtotime($date_time));
