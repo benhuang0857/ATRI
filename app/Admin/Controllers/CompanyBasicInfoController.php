@@ -123,9 +123,6 @@ class CompanyBasicInfoController extends AdminController
         });
         $grid->column('staff', __('進駐時員工人數'));
 
-        // $grid->column('created_at', __('Created at'));
-        // $grid->column('updated_at', __('Updated at'));
-
         return $grid;
     }
 
