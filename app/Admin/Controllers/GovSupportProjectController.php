@@ -27,7 +27,7 @@ class GovSupportProjectController extends AdminController
     {
         $grid = new Grid(new GovSupportProject());
         $grid->expandFilter();
-        $grid->fixColumns(4, 0);
+        $grid->fixColumns(3, 0);
 
         $grid->actions(function ($actions) {
             $actions->disableView();
@@ -51,13 +51,11 @@ class GovSupportProjectController extends AdminController
                     ->orWhere('industry_description', 'like', "%{$this->input}%")
                     ->orWhere('amount_description', 'like', "%{$this->input}%");
             }, '關鍵字');
-            // $filter->in('organizer', __('主辦單位'))->checkbox($_optionOrganizer);
-            // $filter->in('coorganizer', __('執行單位'))->checkbox($_optionCoorganizer);
-            $filter->equal('status', '狀態')->select([
-                '尚未開放申請' => '尚未開放申請',
-                '公告中' => '公告中',
-                '已截止' => '已截止'
-            ]);
+            // $filter->equal('status', '狀態')->select([
+            //     '尚未開放申請' => '尚未開放申請',
+            //     '公告中' => '公告中',
+            //     '已截止' => '已截止'
+            // ]);
             $filter->in('resource_cat', '資源類別')->checkbox([
                 '農業聯合資源'  => '農業聯合資源',
                 '創業育成'      => '創業育成',
@@ -89,20 +87,6 @@ class GovSupportProjectController extends AdminController
         $grid->column('plan_title', __('計畫名稱'))->display(function($plan_title){
             return "<a target='_blank' href=/gov-project-view/".$this->id.">".$plan_title."</a>";
         });
-        // $grid->column('status', __('狀態'))->using([
-        //     'no' => '下架',
-        //     'yes' => '上架'
-        // ]);
-        // $grid->column('resource_cat', __('資源類別'))->using([
-        //     null           => '尚未設定',
-        //     '農業聯合資源'  => '農業聯合資源',
-        //     '創業育成'      => '創業育成',
-        //     '創新研究'      => '創新研究',
-        //     '資金融通'      => '資金融通',
-        //     '行銷推廣'      => '行銷推廣',
-        //     '升級轉型'      => '升級轉型',
-        //     '獎項'          => '獎項',
-        // ]);
         $grid->column('organizer', __('主辦單位'));
         $grid->column('coorganizer', __('執行單位'));
         $grid->column('price', __('資金額度'))->using([
@@ -122,28 +106,6 @@ class GovSupportProjectController extends AdminController
             $start_year = $start_time - 1911;
             return $start_year.date("-m-d", strtotime($date_end_time));
         });
-
-        
-        // $grid->column('organizer_contact_name', __('主辦方聯絡人'));
-        // $grid->column('organizer_phone', __('主辦方電話'));
-        // $grid->column('organizer_email', __('主辦方Email'));
-        // $grid->column('organizer_fax', __('主辦方傳真'));
-        
-        // $grid->column('coorganizer_contact_name', __('執行方聯絡人'));
-        // $grid->column('coorganizer_phone', __('執行方'));
-        // $grid->column('coorganizer_email', __('執行方Email'));
-        // $grid->column('coorganizer_fax', __('執行方傳真'));
-        // $grid->column('qualification_description', __('Qualification description'));
-        // $grid->column('plan_description', __('Plan description'));
-        // $grid->column('industry_description', __('Industry description'));
-        // $grid->column('review_point_description', __('Review point description'));
-        // $grid->column('amount_description', __('Amount description'));
-        // $grid->column('date_start_time', __('Date start time'));
-        // $grid->column('date_end_time', __('Date end time'));
-        // $grid->column('web', __('Web'));
-        // $grid->column('created_at', __('Created at'));
-        // $grid->column('updated_at', __('Updated at'));
-
         return $grid;
     }
 

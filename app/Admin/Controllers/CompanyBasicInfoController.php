@@ -59,20 +59,6 @@ class CompanyBasicInfoController extends AdminController
                 'virtual' => '虛擬進駐'
             ]);
             $filter->like('company_name', '自然人/組織/公司名稱');
-            // $filter->like('identity_code', '身分證/統一編號');
-            // $filter->where(function ($query) {
-            //     $query->where('contact_name', 'like', "%{$this->input}%")
-            //         ->orWhere('owner_name', 'like', "%{$this->input}%");
-            // }, '聯絡人/負責人姓名');
-            // $filter->where(function ($query) {
-            //     $query->where('contact_email', 'like', "%{$this->input}%")
-            //         ->orWhere('owner_email', 'like', "%{$this->input}%");
-            // }, '聯絡人/負責人Email');
-            // $filter->where(function ($query) {
-            //     $query->where('contact_phone', 'like', "%{$this->input}%")
-            //         ->orWhere('owner_phone', 'like', "%{$this->input}%");
-            // }, '聯絡人/負責人電話');
-
             $filter->between('contract_start_time', '時間')->date();
         });
 
