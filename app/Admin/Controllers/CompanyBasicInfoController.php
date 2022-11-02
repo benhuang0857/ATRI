@@ -56,7 +56,7 @@ class CompanyBasicInfoController extends AdminController
             $filter->in('group_category', '進駐單位')->multipleSelect($_option);
             $filter->equal('real_or_virtula', '進駐方式')->select([
                 'real' => '實質進駐',
-                'virtual' => '虛擬進駐'
+                'virtual' => '遠端進駐'
             ]);
             $filter->like('company_name', '自然人/組織/公司名稱');
             $filter->between('contract_start_time', '時間')->date();
@@ -93,9 +93,9 @@ class CompanyBasicInfoController extends AdminController
         $grid->column('established_time', '設立日期')->display(function($established_time){
             return date("Y-m-d", strtotime($established_time));  
         });
-        $grid->column('real_or_virtula', '遠端')->using([
+        $grid->column('real_or_virtula', '進駐方式')->using([
             'real'      => '實質進駐', 
-            'virtual'    => '虛擬進駐'
+            'virtual'    => '遠端進駐'
         ]);
         $grid->column('contact_name', '聯絡人');
         $grid->column('contact_email', '聯絡人Email');
