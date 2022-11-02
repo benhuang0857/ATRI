@@ -52,7 +52,7 @@ class TechTransferController extends AdminController
             return $collection;
         });
         
-        $grid->column('tmp', '編號');
+        // $grid->column('tmp', '編號');
         
         $grid->column('CompanyBasicInfo.group_category', '進駐單位')->using([
             'farmer'        => '農試所',
