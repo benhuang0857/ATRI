@@ -77,9 +77,9 @@ class TechTransferController extends AdminController
         });
         $grid->column('end_time', '合約終止日期')->display(function($end_time){
             try {
-                $start_time = date("Y", strtotime($start_time));
-                $start_year = $start_time - 1911;
-                return $start_year.date("-m-d", strtotime($start_time));   
+                $end_time = date("Y", strtotime($end_time));
+                $end_time = $end_time - 1911;
+                return $end_time.date("-m-d", strtotime($end_time));   
             } catch (\Throwable $th) {
                 //throw $th;
             }
