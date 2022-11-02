@@ -41,25 +41,7 @@ class TechTransferController extends AdminController
 
             $filter->disableIdFilter();
             $filter->in('CompanyBasicInfo.group_category', '進駐單位')->multipleSelect($_option);
-            // $filter->equal('CompanyBasicInfo.real_or_virtula', '進駐方式')->select([
-            //     'real' => '實質進駐',
-            //     'virtual' => '虛擬進駐'
-            // ]);
             $filter->like('CompanyBasicInfo.company_name', '自然人/組織/公司名稱');
-            // $filter->like('CompanyBasicInfo.identity_code', '身分證/統一編號');
-            // $filter->where(function ($query) {
-            //     $query->where('CompanyBasicInfo.contact_name', 'like', "%{$this->input}%")
-            //         ->orWhere('CompanyBasicInfo.owner_name', 'like', "%{$this->input}%");
-            // }, '聯絡人/負責人姓名');
-            // $filter->where(function ($query) {
-            //     $query->where('CompanyBasicInfo.contact_email', 'like', "%{$this->input}%")
-            //         ->orWhere('CompanyBasicInfo.owner_email', 'like', "%{$this->input}%");
-            // }, '聯絡人/負責人Email');
-            // $filter->where(function ($query) {
-            //     $query->where('CompanyBasicInfo.contact_phone', 'like', "%{$this->input}%")
-            //         ->orWhere('CompanyBasicInfo.owner_phone', 'like', "%{$this->input}%");
-            // }, '聯絡人/負責人電話');
-
             $filter->between('start_time', '合約開始時間')->date();
         });
 
@@ -103,6 +85,7 @@ class TechTransferController extends AdminController
             }
         });
         $grid->column('document', '佐證文件');
+        $grid->column('note', __('輔導內容'));
         
         $grid->tools(function ($tools) {
             $tools->append('<a href="" target="_blank" id="advexcel" class="btn btn-sm btn-info" ><i class="fa fa-download"></i>彙總匯出</a>');
@@ -172,7 +155,7 @@ class TechTransferController extends AdminController
         $form->number('price', '技轉金額(元)');
         $form->date('start_time', '合約起始日期')->default(date('Y-m-d'));
         $form->date('end_time', '合約終止日期')->default(date('Y-m-d'));
-        $form->textarea('note', __('備註'));
+        $form->textarea('note', __('輔導內容'));
         $form->file('document', '佐證文件');
 
         return $form;
