@@ -93,7 +93,7 @@ class CompanyBasicInfoController extends AdminController
         $grid->column('established_time', '設立日期')->display(function($established_time){
             return date("Y-m-d", strtotime($established_time));  
         });
-        $grid->column('real_or_virtula', '進駐方式')->using([
+        $grid->column('real_or_virtula', '遠端')->using([
             'real'      => '實質進駐', 
             'virtual'    => '虛擬進駐'
         ]);
