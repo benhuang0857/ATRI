@@ -94,7 +94,7 @@ class AwardController extends AdminController
             return $start_year.date("-m-d", strtotime($award_time)); 
         });
         $grid->column('document', '佐證文件');
-        $grid->column('note', __('輔導紀錄'));
+        $grid->column('note', __('輔導紀錄'))->width(200);
 
         return $grid;
     }
