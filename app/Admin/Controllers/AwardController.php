@@ -45,6 +45,7 @@ class AwardController extends AdminController
             $filter->disableIdFilter();
             $filter->in('CompanyBasicInfo.group_category', '進駐單位')->multipleSelect($_option);
             $filter->like('CompanyBasicInfo.company_name', '自然人/組織/公司名稱');
+            $filter->between('application_time', '申請時間')->date();
             $filter->between('award_time', '獲獎時間')->date();
         });
 
@@ -93,6 +94,7 @@ class AwardController extends AdminController
             return $start_year.date("-m-d", strtotime($award_time)); 
         });
         $grid->column('document', '佐證文件');
+        $grid->column('note', __('輔導紀錄'));
 
         return $grid;
     }
@@ -150,7 +152,7 @@ class AwardController extends AdminController
             'yes' => '獲獎'
         ]);
         $form->date('award_time', '獲獎日期')->default(date('Y-m-d H:i:s'));
-        $form->textarea('note', __('備註'));
+        $form->textarea('note', __('輔導紀錄'));
         $form->file('document', '佐證文件');
 
         return $form;
