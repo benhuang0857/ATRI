@@ -85,7 +85,7 @@ class TechTransferController extends AdminController
             }
         });
         $grid->column('document', '佐證文件');
-        $grid->column('note', __('輔導內容'));
+        $grid->column('note', __('輔導內容'))->width(200);
         
         $grid->tools(function ($tools) {
             $tools->append('<a href="" target="_blank" id="advexcel" class="btn btn-sm btn-info" ><i class="fa fa-download"></i>彙總匯出</a>');
