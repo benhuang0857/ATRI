@@ -96,9 +96,10 @@ class GovGrantController extends AdminController
             $start_year = $start_time - 1911;
             return $start_year.date("-m-d", strtotime($grant_time));
         });
-        $grid->column('note', '輔導內容');
+        
         $grid->column('grant_price', '核定補助金額');
         $grid->column('document', '佐證文件');
+        $grid->column('note', '輔導內容')->width(200);
 
         return $grid;
     }
