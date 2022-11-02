@@ -48,6 +48,11 @@ class GovGrantController extends AdminController
                 'real' => '實質進駐',
                 'virtual' => '虛擬進駐'
             ]);
+            $filter->column('application_status', '狀態')->using([
+                'pending'   => '申請中',
+                'no'        => '未通過',
+                'yes'       => '通過'
+            ]);
             $filter->like('CompanyBasicInfo.company_name', '自然人/組織/公司名稱');
             $filter->between('application_time', '申請日期')->date();
         });
