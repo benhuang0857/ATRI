@@ -80,7 +80,9 @@ class AdditionInvestController extends AdminController
             'invest'      => '投資', 
             'increase'    => '增資'
         ]);
-        $grid->column('price', __('金額'))->totalRow();
+        $grid->column('price', __('金額'))->display(function($price){
+            return number_format($price);
+        });
         $grid->column('reason', __('用途'));
         $grid->column('date_time', __('投增資時間'))->display(function($date_time){
             $start_time = date("Y", strtotime($date_time));
