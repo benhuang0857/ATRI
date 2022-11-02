@@ -48,7 +48,7 @@ class GovGrantController extends AdminController
                 'real' => '實質進駐',
                 'virtual' => '虛擬進駐'
             ]);
-            $filter->column('application_status', '狀態')->using([
+            $filter->equal('application_status', '狀態')->select([
                 'pending'   => '申請中',
                 'no'        => '未通過',
                 'yes'       => '通過'
