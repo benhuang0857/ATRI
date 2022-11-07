@@ -76,10 +76,10 @@ class CompanyStatusController extends AdminController
             'leave'     => '離駐'
         ]);
         $grid->column('note', __('異動原因'));
-        $grid->column('date_time', __('異動日期'))->display(function($date_time){
-            $start_time = date("Y", strtotime($date_time));
-            $start_year = $start_time - 1911;
-            return $start_year.date("-m-d", strtotime($date_time)); 
+        $grid->column('date_time', __('異動日期'))->display(function($myTime){
+            $myTime_year = date("Y", strtotime($myTime));
+            $myTime_year = intval($myTime_year) - 1911;
+            return $myTime_year.date("-m-d", strtotime($myTime)); 
         });
         // $grid->column('created_at', __('Created at'));
         // $grid->column('updated_at', __('Updated at'));

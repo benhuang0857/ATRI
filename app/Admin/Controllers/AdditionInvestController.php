@@ -84,10 +84,10 @@ class AdditionInvestController extends AdminController
             return number_format($price);
         });
         $grid->column('reason', __('用途'));
-        $grid->column('date_time', __('投增資時間'))->display(function($date_time){
-            $start_time = date("Y", strtotime($date_time));
-            $start_year = $start_time - 1911;
-            return $start_year.date("-m-d", strtotime($date_time));
+        $grid->column('date_time', __('投增資時間'))->display(function($myTime){
+            $myTime_year = date("Y", strtotime($myTime));
+            $myTime_year = intval($myTime_year) - 1911;
+            return $myTime_year.date("-m-d", strtotime($myTime)); 
         })->width(150);
         $grid->column('document', __('佐證文件'));
         $grid->column('note', __('備註'));

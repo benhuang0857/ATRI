@@ -94,15 +94,15 @@ class IndustryAcademiaCoopController extends AdminController
 
         // $grid->column('project_category', '計畫類別');
         $grid->column('price', '金額(元)');
-        $grid->column('start_time', '開始時間')->display(function($start_time){
-            $start_time = date("Y", strtotime($start_time));
-            $start_year = $start_time - 1911;
-            return $start_year.date("-m-d", strtotime($start_time)); 
+        $grid->column('start_time', '開始時間')->display(function($myTime){
+            $myTime_year = date("Y", strtotime($myTime));
+            $myTime_year = intval($myTime_year) - 1911;
+            return $myTime_year.date("-m-d", strtotime($myTime)); 
         });
-        $grid->column('end_time', '結束時間')->display(function($end_time){
-            $start_time = date("Y", strtotime($end_time));
-            $start_year = $start_time - 1911;
-            return $start_year.date("-m-d", strtotime($end_time));  
+        $grid->column('end_time', '結束時間')->display(function($myTime){
+            $myTime_year = date("Y", strtotime($myTime));
+            $myTime_year = intval($myTime_year) - 1911;
+            return $myTime_year.date("-m-d", strtotime($myTime)); 
         });
         $grid->column('document', '佐證文件');
         

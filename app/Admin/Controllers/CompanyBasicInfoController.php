@@ -108,15 +108,15 @@ class CompanyBasicInfoController extends AdminController
         $grid->column('owner_phone', __('負責人電話'));
         $grid->column('project_name', __('營運專案名稱'));
         $grid->column('service', __('主要產品/服務項目'));
-        $grid->column('contract_start_time', __('合約開始日期'))->display(function($contract_start_time){
-            $start_time = date("Y", strtotime($contract_start_time));
-            $start_year = $start_time - 1911;
-            return $start_year.date("-m-d", strtotime($contract_start_time));
+        $grid->column('contract_start_time', __('合約開始日期'))->display(function($myTime){
+            $myTime_year = date("Y", strtotime($myTime));
+            $myTime_year = intval($myTime_year) - 1911;
+            return $myTime_year.date("-m-d", strtotime($myTime)); 
         });
-        $grid->column('contract_end_time', __('合約結束日期'))->display(function($contract_end_time){ 
-            $start_time = date("Y", strtotime($contract_end_time));
-            $start_year = $start_time - 1911;
-            return $start_year.date("-m-d", strtotime($contract_end_time));
+        $grid->column('contract_end_time', __('合約結束日期'))->display(function($myTime){ 
+            $myTime_year = date("Y", strtotime($myTime));
+            $myTime_year = intval($myTime_year) - 1911;
+            return $myTime_year.date("-m-d", strtotime($myTime)); 
         });
         $grid->column('capital', __('進駐時實收資本額'))->display(function($capital){
             return number_format($capital);

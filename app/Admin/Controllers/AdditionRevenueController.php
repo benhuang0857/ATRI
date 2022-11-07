@@ -71,10 +71,10 @@ class AdditionRevenueController extends AdminController
         $grid->column('price', __('營業額'))->display(function($price){
             return number_format($price);
         });
-        $grid->column('date_time', __('日期'))->display(function($date_time){
-            $start_time = date("Y", strtotime($date_time));
-            $start_year = $start_time - 1911;
-            return $start_year.date("-m-d", strtotime($date_time));
+        $grid->column('date_time', __('日期'))->display(function($myTime){
+            $myTime_year = date("Y", strtotime($myTime));
+            $myTime_year = intval($myTime_year) - 1911;
+            return $myTime_year.date("-m-d", strtotime($myTime)); 
         });
         $grid->column('note', __('備註'));
 

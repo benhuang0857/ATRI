@@ -96,15 +96,15 @@ class GovSupportProjectController extends AdminController
             '3M10M'     => '300-1000萬',
             'more10M'  => '100萬(含)以下',
         ]);
-        $grid->column('date_start_time', __('申請起始時間'))->display(function($date_start_time){ 
-            $start_time = date("Y", strtotime($date_start_time));
-            $start_year = $start_time - 1911;
-            return $start_year.date("-m-d", strtotime($date_start_time));
+        $grid->column('date_start_time', __('申請起始時間'))->display(function($myTime){ 
+            $myTime_year = date("Y", strtotime($myTime));
+            $myTime_year = intval($myTime_year) - 1911;
+            return $myTime_year.date("-m-d", strtotime($myTime)); 
         });
-        $grid->column('date_end_time', __('申請截止時間'))->display(function($date_end_time){ 
-            $start_time = date("Y", strtotime($date_end_time));
-            $start_year = $start_time - 1911;
-            return $start_year.date("-m-d", strtotime($date_end_time));
+        $grid->column('date_end_time', __('申請截止時間'))->display(function($myTime){ 
+            $myTime_year = date("Y", strtotime($myTime));
+            $myTime_year = intval($myTime_year) - 1911;
+            return $myTime_year.date("-m-d", strtotime($myTime)); 
         });
         return $grid;
     }
