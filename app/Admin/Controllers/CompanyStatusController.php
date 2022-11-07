@@ -131,7 +131,7 @@ class CompanyStatusController extends AdminController
             'leave' => '離駐'
         ]);
         $form->textarea('note', __('異動原因'));
-        $form->date('date_time', __('異動日期'))->default(date('Y-m-d H:i:s'));
+        $form->date('date_time', __('異動日期'))->default(date('Y-m-d'));
 
         return $form;
     }

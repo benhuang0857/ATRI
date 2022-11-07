@@ -5,6 +5,7 @@ namespace App\Admin\Controllers;
 use App\CompanyBasicInfo;
 use App\CompanyStatus;
 use App\GroupCategory;
+use App\ContractRecord;
 use Encore\Admin\Controllers\AdminController;
 use Illuminate\Database\Eloquent\Collection;
 use Encore\Admin\Form;
@@ -15,6 +16,7 @@ use App\Admin\Actions\Post\Replicate;
 use App\Admin\Actions\MyAddition\MyAdditionInvest;
 use App\Admin\Actions\MyAddition\MyAdditionRevenue;
 use App\Admin\Actions\MyAddition\MyAdditionStaff;
+use App\Admin\Actions\MyAddition\MyCompanyStatus;
 
 class CompanyBasicInfoController extends AdminController
 {
@@ -42,6 +44,7 @@ class CompanyBasicInfoController extends AdminController
             $actions->add(new MyAdditionInvest);
             $actions->add(new MyAdditionRevenue);
             $actions->add(new MyAdditionStaff);
+            $actions->add(new MyCompanyStatus);
         });
         
         $grid->filter(function($filter){
@@ -183,9 +186,9 @@ class CompanyBasicInfoController extends AdminController
             $form->text('contact_email', '聯絡人Email');
             $form->text('contact_phone', '聯絡人電話');
             $form->text('project_name', '營運專案名稱');
-            $form->number('capital', '進駐時實收資本額');
-            $form->number('revenue', '進駐時年營業額');
-            $form->number('staff', '進駐時員工人數');
+            $form->number('capital', '進駐時實收資本額')->default(0);
+            $form->number('revenue', '進駐時年營業額')->default(0);
+            $form->number('staff', '進駐時員工人數')->default(0);
 
         });
 
@@ -209,12 +212,21 @@ class CompanyBasicInfoController extends AdminController
         });
 
         $form->saving(function (Form $form) {
-            $companyStatus = new CompanyStatus();
-            $companyStatus->cid = $form->cid;
-            $companyStatus->status = 'stationed';
-            $companyStatus->note = '初次進駐';
-            $companyStatus->date_time = $form->contract_start_time;
-            $companyStatus->save();
+            if (CompanyStatus::where('cid', $form->cid)->where('status', 'stationed')->first() == NULL) {
+                $companyStatus = new CompanyStatus();
+                $companyStatus->cid = $form->cid;
+                $companyStatus->status = 'stationed';
+                $companyStatus->note = '初次進駐';
+                $companyStatus->date_time = $form->contract_start_time;
+                $companyStatus->save();
+
+                $contractRecord = new ContractRecord();
+                $contractRecord->cid = $form->cid;
+                $contractRecord->start_time = $form->contract_start_time;
+                $contractRecord->end_time = $form->contract_end_time;
+                $contractRecord->note = '初次進駐';
+                $contractRecord->save();
+            }
         });
 
         return $form;

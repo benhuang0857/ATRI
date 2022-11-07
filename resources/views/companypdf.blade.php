@@ -20,7 +20,7 @@
             <td>
             </td>
             <td>
-                資料日期：{{now()}}
+                資料日期：{{date_format($company->created_at,"Y/m/d")}}
             </td>
         </table>
     </div>
@@ -90,13 +90,26 @@
             </td>
             <td width=440 colspan=5 valign=center>
                 <?php
-                $year_time = date("Y", strtotime($company->contract_start_time));
-                $roc_year = $year_time - 1911;
-                $roc_start_time = $roc_year.date("-m-d", strtotime($company->contract_start_time));
+                $roc_start_time = '';
+                $roc_end_time = '';
+                try {
+                    $year_time = date("Y", strtotime($contractRecord->start_time));
+                    $roc_year = $year_time - 1911;
+                    $roc_start_time = $roc_year.date("-m-d", strtotime($contractRecord->start_time));
 
-                $year_time = date("Y", strtotime($company->contract_end_time));
-                $roc_year = $year_time - 1911;
-                $roc_end_time = $roc_year.date("-m-d", strtotime($company->contract_end_time));
+                    $year_time = date("Y", strtotime($contractRecord->end_time));
+                    $roc_year = $year_time - 1911;
+                    $roc_end_time = $roc_year.date("-m-d", strtotime($contractRecord->end_time));
+                } catch (Exception $e) {
+                    $year_time = date("Y", strtotime($company->contract_start_time));
+                    $roc_year = $year_time - 1911;
+                    $roc_start_time = $roc_year.date("-m-d", strtotime($company->contract_start_time));
+
+                    $year_time = date("Y", strtotime($company->contract_end_time));
+                    $roc_year = $year_time - 1911;
+                    $roc_end_time = $roc_year.date("-m-d", strtotime($company->contract_end_time));
+                }
+                
                 ?>
                 {{$roc_start_time}}至{{$roc_end_time}}
             </td>
@@ -150,18 +163,27 @@
         </tr>
         <tr style="height:35px">
             <td colspan=6 valign=center>
-
                 <BR>
-                <p>投增資金額</p>
-                {!!$investTable!!}
-                <p>政府補助資源</p>
-                {!!$govgrantTable!!}
-                <p>獎項</p>
-                {!!$awardTable!!}
-                <p>技術轉移</p>
-                {!!$techTransferTable!!}
-                <p>產學合作</p>
-                {!!$industryAcademiaTable!!}
+                @if ($investTable != '')
+                    <p>投增資金額</p>
+                    {!!$investTable!!}
+                @endif
+                @if ($govgrantTable != '')
+                    <p>政府補助資源</p>
+                    {!!$govgrantTable!!}
+                @endif
+                @if ($awardTable != '')
+                    <p>獎項</p>
+                    {!!$awardTable!!}
+                @endif
+                @if ($techTransferTable != '')
+                    <p>技術轉移</p>
+                    {!!$techTransferTable!!}
+                @endif
+                @if ($industryAcademiaTable != '')
+                    <p>產學合作</p>
+                    {!!$industryAcademiaTable!!}
+                @endif
             </td>
         </tr>
 
