@@ -35,6 +35,10 @@ class AdditionInvestController extends AdminController
             $actions->disableView();
         });
 
+        // $grid->quickSearch(function ($model, $query) {
+        //     $model->where('title', $query)->orWhere('desc', 'like', "%{$query}%");
+        // });
+
         $grid->filter(function($filter){
 
             $_option = array();
@@ -104,7 +108,8 @@ class AdditionInvestController extends AdminController
 
                 if(date_time_start == "" || date_time_end == "")
                 {
-                    $("#advexcel").attr("href", "/excel/addition-invest");
+                    alert("請填時間");
+                    return;
                 }
                 else
                 {
@@ -156,17 +161,31 @@ class AdditionInvestController extends AdminController
             $_companiesArr[$item->cid] = $item->company_name;
         }
 
-        $form->select('cid', '自然人/組織/公司名稱')->options($_companiesArr);
+        $tmp_date_arr = [];
+        $nowMonth = (int)date_format(now(), 'm');
+        $tmpMonth = $nowMonth;
+        for ($i=1; $i < 3; $i++) { 
+            $tmp_date_arr[($tmpMonth-2).'-01 00:00:00'] = ($tmpMonth-2).'月-'.($tmpMonth-1).'月';
+            $tmpMonth -= 2;
+        }
+
+        $form->select('cid', '自然人/組織/公司名稱')->options($_companiesArr)->required();
         $form->select('type', __('投資/增資'))->options([
             'invest'      => '投資', 
             'increase'    => '增資'
-        ]);
+        ])->required();
         $form->html('<span style="color:red">增資為現金增資，投資為購買機器設備、種苗之支出</span>', '');
-        $form->number('price', __('金額'));
+        $form->number('price', __('金額'))->default(0)->required();
         $form->textarea('reason', __('用途'));
-        $form->date('date_time', __('日期'))->default(date('Y-m-d'));
+        $form->year('tmp_year', __('年度'))->default(now('Y'))->required();
+        $form->select('tmp_date', __('月份'))->options($tmp_date_arr)->required();
+        $form->hidden('date_time', __('日期'));
         $form->file('document', __('佐證文件'));
         $form->textarea('note', __('備註'));
+
+        $form->saving(function (Form $form) {
+            $form->date_time = $form->tmp_year.'-'.$form->tmp_date;
+        });
 
         return $form;
     }

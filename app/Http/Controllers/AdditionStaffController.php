@@ -41,7 +41,7 @@ class AdditionStaffController extends Controller
 
         $cases = DB::select("
             SELECT 
-                *
+                *, X.staff as monthStaff
             FROM addition_staff AS X
             LEFT JOIN 
             company_basic_info AS Y 
@@ -66,7 +66,6 @@ class AdditionStaffController extends Controller
             GROUP BY Y.group_category
             -- ORDER BY Y.group_category DESC
         ");
-
         return Excel::download(new AdditionStaffExport($cids, $cases, $cals), '就業人數查詢及維護.xlsx');
     }
 }

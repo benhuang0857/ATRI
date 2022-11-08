@@ -66,16 +66,18 @@ class AdditionStaffExport implements FromView
             $CaseCompany->group = $groupName;
 
             $company[$key][0] = $CaseCompany;
-            for ($i=1; $i <= 12; $i++) 
+            for ($i=1; $i <= 6; $i++) 
             { 
                 $company[$key][$i] = 0;
             }
+
             foreach ($this->cases as $_case) 
             {
                 if ($_case->cid == $_cid) 
                 {
-                    $caseMonth = (int)date_format(date_create($_case->date_time), 'm');
-                    $company[$key][$caseMonth] = $_case->staff;
+                    $caseMonth = (int)date_format(date_create($_case->date_time), 'm')/2;
+                    $caseMonth = intval(ceil($caseMonth));
+                    $company[$key][$caseMonth] += intval($_case->monthStaff);
                 }
             }  
         }
@@ -101,7 +103,7 @@ class AdditionStaffExport implements FromView
         $resultSum = $sum;
 
         return view('adv-excel.staff', [
-            'month' => 12,
+            'month' => 6,
             'cases' => $company,
             'groupCals' => $groupTotalPriceData  
         ]);

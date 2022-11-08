@@ -3,8 +3,10 @@
     <tr>
         <th>進駐單位</th>
         <th>自然人/組織/公司名稱</th>
-        @for ($i = 1; $i < $month; $i++)
-            <th>{{$i}}月-{{$i+1}}月</th>
+        @for ($i = 1; $i <= $month; $i++)
+            @for ($k = $i - 1; $k < $i; $k++)
+                <th>{{$i+$k}}月-{{$i+$k+1}}月</th>
+            @endfor
         @endfor
         <th>總計</th>
     </tr>
@@ -15,7 +17,7 @@
         <?php 
             $sum = 0;
         ?>
-        @for ($i = 0; $i < $month; $i++)
+        @for ($i = 0; $i <= $month; $i++)
             @if ($i==0)
             
                 <td>{{ $case[$i]->group }}</td>
