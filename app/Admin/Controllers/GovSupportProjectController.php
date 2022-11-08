@@ -29,6 +29,8 @@ class GovSupportProjectController extends AdminController
         $grid->expandFilter();
         $grid->fixColumns(3, 0);
 
+        $grid->disableExport();
+
         $grid->actions(function ($actions) {
             $actions->disableView();
         });
