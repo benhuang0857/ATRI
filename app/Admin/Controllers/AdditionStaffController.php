@@ -46,25 +46,8 @@ class AdditionStaffController extends AdminController
             }
 
             $filter->disableIdFilter();
-            $filter->equal('CompanyBasicInfo.group_category', '進駐單位')->select($_option);
-            // $filter->equal('real_or_virtula', '進駐方式')->select([
-            //     'real' => '實質進駐',
-            //     'virtual' => '虛擬進駐'
-            // ]);
+            $filter->in('CompanyBasicInfo.group_category', '進駐單位')->checkbox($_option);
             $filter->like('CompanyBasicInfo.company_name', '自然人/組織/公司名稱');
-            // $filter->like('identity_code', '身分證/統一編號');
-            // $filter->where(function ($query) {
-            //     $query->where('contact_name', 'like', "%{$this->input}%")
-            //         ->orWhere('owner_name', 'like', "%{$this->input}%");
-            // }, '聯絡人/負責人姓名');
-            // $filter->where(function ($query) {
-            //     $query->where('contact_email', 'like', "%{$this->input}%")
-            //         ->orWhere('owner_email', 'like', "%{$this->input}%");
-            // }, '聯絡人/負責人Email');
-            // $filter->where(function ($query) {
-            //     $query->where('contact_phone', 'like', "%{$this->input}%")
-            //         ->orWhere('owner_phone', 'like', "%{$this->input}%");
-            // }, '聯絡人/負責人電話');
 
             $filter->between('date_time', '時間')->date();
         });

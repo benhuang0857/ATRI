@@ -52,7 +52,7 @@ class IndustryAcademiaCoopController extends AdminController
             }
 
             $filter->disableIdFilter();
-            $filter->in('CompanyBasicInfo.group_category', '進駐單位')->multipleSelect($_option);
+            $filter->in('CompanyBasicInfo.group_category', '進駐單位')->checkbox($_option);
             $filter->equal('project_category', '計畫類別')->select($_pCategoriesArr);
             $filter->like('CompanyBasicInfo.company_name', '自然人/組織/公司名稱');
             $filter->between('start_time', '合約開始時間')->date();

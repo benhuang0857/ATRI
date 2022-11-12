@@ -43,7 +43,7 @@ class GovGrantController extends AdminController
             }
 
             $filter->disableIdFilter();
-            $filter->in('CompanyBasicInfo.group_category', '進駐單位')->multipleSelect($_option);
+            $filter->in('CompanyBasicInfo.group_category', '進駐單位')->checkbox($_option);
             $filter->equal('CompanyBasicInfo.real_or_virtula', '進駐方式')->select([
                 'real' => '實質進駐',
                 'virtual' => '虛擬進駐'

@@ -53,11 +53,6 @@ class GovSupportProjectController extends AdminController
                     ->orWhere('industry_description', 'like', "%{$this->input}%")
                     ->orWhere('amount_description', 'like', "%{$this->input}%");
             }, '關鍵字');
-            // $filter->equal('status', '狀態')->select([
-            //     '尚未開放申請' => '尚未開放申請',
-            //     '公告中' => '公告中',
-            //     '已截止' => '已截止'
-            // ]);
             $filter->in('resource_cat', '資源類別')->checkbox([
                 '農業聯合資源'  => '農業聯合資源',
                 '創業育成'      => '創業育成',
