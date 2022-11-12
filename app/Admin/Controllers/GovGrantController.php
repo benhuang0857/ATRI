@@ -44,11 +44,11 @@ class GovGrantController extends AdminController
 
             $filter->disableIdFilter();
             $filter->in('CompanyBasicInfo.group_category', '進駐單位')->checkbox($_option);
-            $filter->equal('CompanyBasicInfo.real_or_virtula', '進駐方式')->select([
+            $filter->in('CompanyBasicInfo.real_or_virtula', '進駐方式')->checkbox([
                 'real' => '實質進駐',
                 'virtual' => '虛擬進駐'
             ]);
-            $filter->equal('application_status', '狀態')->select([
+            $filter->in('application_status', '狀態')->checkbox([
                 'pending'   => '申請中',
                 'no'        => '未通過',
                 'yes'       => '通過'

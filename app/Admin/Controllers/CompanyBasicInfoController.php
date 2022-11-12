@@ -58,7 +58,7 @@ class CompanyBasicInfoController extends AdminController
 
             $filter->disableIdFilter();
             $filter->in('group_category', '進駐單位')->checkbox($_option);
-            $filter->equal('real_or_virtula', '進駐方式')->select([
+            $filter->in('real_or_virtula', '進駐方式')->checkbox([
                 'real' => '實質進駐',
                 'virtual' => '遠端進駐'
             ]);

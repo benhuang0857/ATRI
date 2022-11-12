@@ -43,11 +43,7 @@ class CompanyStatusController extends AdminController
             }
 
             $filter->disableIdFilter();
-            $filter->equal('CompanyBasicInfo.group_category', '進駐單位')->select($_option);
-            // $filter->equal('CompanyBasicInfo.real_or_virtula', '進駐方式')->select([
-            //     'real' => '實質進駐',
-            //     'virtual' => '虛擬進駐'
-            // ]);
+            $filter->in('CompanyBasicInfo.group_category', '進駐單位')->checkbox($_option);
             $filter->like('CompanyBasicInfo.company_name', '自然人/組織/公司名稱');
             $filter->between('date_time', '異動日期')->date();
         });
