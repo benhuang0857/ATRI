@@ -15,7 +15,7 @@
             <td>{{ $case->company }}</td>
             <td>{{ $case->tech_transfer_name }}</td>
             <td>{{ $case->date_time }}</td>
-            <td>{{ $case->price }}</td>
+            <td>{{ number_format($case->price) }}</td>
         </tr>
     @endforeach
     </tbody>
@@ -28,7 +28,7 @@
             <td>{{ $case->group }}</td>
             <td></td>
             <td></td>
-            <td>{{ $case->sum }}</td>
+            <td>{{ number_format($case->sum) }}</td>
             <td></td>
         </tr>
     @endforeach
@@ -41,7 +41,7 @@
             <td>總計</td>
             <td></td>
             <td></td>
-            <td>{{ $resultSum }}</td>
+            <td>{{ number_format($resultSum) }}</td>
             <td></td>
         </tr>
     </tbody>

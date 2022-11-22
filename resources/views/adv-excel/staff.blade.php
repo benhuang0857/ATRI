@@ -26,10 +26,10 @@
                 <?php
                     $sum += (int)$case[$i];
                 ?>
-                <td>{{ $case[$i] }}</td>
+                <td>{{ number_format($case[$i]) }}</td>
             @endif
         @endfor
-            <td>{{ $sum }}</td>
+            <td>{{ number_format($sum) }}</td>
     </tr>
     @endforeach
     </tbody>
@@ -46,7 +46,7 @@
     @foreach($groupCals as $key => $cal)
     <tr>
         <td>{{ $cal->group }}</td>
-        <td>{{ $cal->sum }}</td>
+        <td>{{ number_format($cal->sum) }}</td>
     </tr>
     @endforeach
     </tbody>

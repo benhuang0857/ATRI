@@ -93,7 +93,9 @@ class IndustryAcademiaCoopController extends AdminController
         $grid->column('project_category', '計畫類別')->using($_pCategoriesArr);
 
         // $grid->column('project_category', '計畫類別');
-        $grid->column('price', '金額(元)');
+        $grid->column('price', '金額(元)')->display(function($price){
+            return number_format($price);
+        });
         $grid->column('start_time', '開始時間')->display(function($myTime){
             $myTime_year = date("Y", strtotime($myTime));
             $myTime_year = intval($myTime_year) - 1911;

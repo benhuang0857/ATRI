@@ -24,7 +24,7 @@
         <td>{{ $case->govgrant['application_time'] }}</td>
         <td>{{ $case->govgrant['application_status'] }}</td>
         <td>{{ $case->govgrant['grant_time'] }}</td>
-        <td>{{ $case->govgrant['grant_price'] }}</td>
+        <td>{{ number_format($case->govgrant['grant_price']) }}</td>
         <td>{{ $case->govgrant['document'] }}</td>
     </tr>
     @endforeach
@@ -42,7 +42,7 @@
     @foreach($groupCals as $key => $cal)
     <tr>
         <td>{{ $cal->group }}</td>
-        <td>{{ $cal->sum }}</td>
+        <td>{{ number_format($cal->sum) }}</td>
     </tr>
     @endforeach
     </tbody>

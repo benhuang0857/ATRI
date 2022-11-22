@@ -69,7 +69,9 @@ class TechTransferController extends AdminController
             }
         });
         $grid->column('tech_transfer_name', '技轉名稱');
-        $grid->column('price', '技轉金額(元)');
+        $grid->column('price', '技轉金額(元)')->display(function($price){
+            return number_format($price);
+        });
         $grid->column('start_time', '合約起始日期')->display(function($myTime){
             $myTime_year = date("Y", strtotime($myTime));
             $myTime_year = intval($myTime_year) - 1911;

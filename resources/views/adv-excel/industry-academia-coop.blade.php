@@ -17,7 +17,7 @@
             <td>{{ $case->project_category }}</td>
             <td>{{ $case->project_name }}</td>
             <td>{{ $case->date_time }}</td>
-            <td>{{ $case->price }}</td>
+            <td>{{ number_format($case->price) }}</td>
         </tr>
     @endforeach
     </tbody>
@@ -30,7 +30,7 @@
             <td>{{ $case->group }}</td>
             <td></td>
             <td></td>
-            <td>{{ $case->sum }}</td>
+            <td>{{ number_format($case->sum) }}</td>
             <td></td>
         </tr>
     @endforeach

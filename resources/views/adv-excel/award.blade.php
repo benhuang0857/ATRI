@@ -39,7 +39,7 @@
     @foreach($groupCals as $key => $cal)
     <tr>
         <td>{{ $cal->group }}</td>
-        <td>{{ $cal->sum }}</td>
+        <td>{{ number_format($cal->sum) }}</td>
     </tr>
     @endforeach
     </tbody>
