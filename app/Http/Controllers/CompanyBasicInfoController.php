@@ -13,6 +13,7 @@ use App\GovSupportProject;
 use App\IndustryAcademiaCoop;
 use App\TechTransfer;
 use App\ContractRecord;
+use App\ProjectCategory;
 
 use PDF;
 
@@ -247,7 +248,7 @@ class CompanyBasicInfoController extends Controller
                     $industryAcademia_table .= "
                         <tr>
                             <td>".$case->project_name."</td>
-                            <td>".$case->project_category."</td>
+                            <td>".ProjectCategory::where('slug', $case->project_category)->name."</td>
                             <td>".number_format($case->price)."</td>
                             <td>".$roc_start_time."</td>
                             <td>".$roc_end_time."</td>
