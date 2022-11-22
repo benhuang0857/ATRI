@@ -130,7 +130,7 @@
                 實收資本額(元)
             </td>
             <td colspan=2 valign=center>
-                {{$company->capital}}
+                {{number_format($company->capital)}}
             </td>
             <td colspan=3 valign=center>
             </td>
@@ -150,7 +150,7 @@
                 年營業額(元)
             </td>
             <td colspan=2 valign=center>
-                {{$company->revenue}}
+                {{number_format($company->revenue)}}
             </td>
             <td colspan=3 valign=center>
             </td>

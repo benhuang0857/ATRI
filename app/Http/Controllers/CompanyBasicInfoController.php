@@ -50,9 +50,9 @@ class CompanyBasicInfoController extends Controller
                         <tr>
                             <td>".$investType[$case->type]."</td>
                             <td>".$roc_time."</td>
-                            <td>".$case->price."</td>
-                            <td>".$case->reason."</td>
-                            <td>".$case->note."</td>
+                            <td>".number_format($case->price)."</td>
+                            <td>".(($case->reason===null)?'--':$case->reason)."</td>
+                            <td>".(($case->note===null)?'--':$case->note)."</td>
                         </tr>";
                 }
 
@@ -101,7 +101,7 @@ class CompanyBasicInfoController extends Controller
                             <td>".$case->plan_name."</td>
                             <td>".$roc_application_time."</td>
                             <td>".$roc_grant_time."</td>
-                            <td>".$case->note."</td>
+                            <td>".(($case->note===null)?'--':$case->note)."</td>
                         </tr>";
                 }
 
@@ -149,7 +149,7 @@ class CompanyBasicInfoController extends Controller
                             <td>".$case->award_name."</td>
                             <td>".$roc_application_time."</td>
                             <td>".$roc_award_time."</td>
-                            <td>".$case->note."</td>
+                            <td>".(($case->note===null)?'--':$case->note)."</td>
                         </tr>";
                 }
     
@@ -196,10 +196,10 @@ class CompanyBasicInfoController extends Controller
                     $techtransfer_table .= "
                         <tr>
                             <td>".$case->tech_transfer_name."</td>
-                            <td>".$case->price."</td>
+                            <td>".number_format($case->price)."</td>
                             <td>".$roc_start_time."</td>
                             <td>".$roc_end_time."</td>
-                            <td>".$case->note."</td>
+                            <td>".(($case->note===null)?'--':$case->note)."</td>
                         </tr>";
                 }
     
@@ -248,10 +248,10 @@ class CompanyBasicInfoController extends Controller
                         <tr>
                             <td>".$case->project_name."</td>
                             <td>".$case->project_category."</td>
-                            <td>".$case->price."</td>
+                            <td>".number_format($case->price)."</td>
                             <td>".$roc_start_time."</td>
                             <td>".$roc_end_time."</td>
-                            <td>".$case->note."</td>
+                            <td>".(($case->note===null)?'--':$case->note)."</td>
                         </tr>";
                 }
     
@@ -300,22 +300,39 @@ class CompanyBasicInfoController extends Controller
         $techtransfer_table = $this->TechTransferTableRender($additionTechTransfer);
         $industryAcademia_table = $this->IndustryAcademiaCoopTableRender($additionIndustryAcademiaCoop);
         
+        // try {
+        //     $year_time = date("Y", strtotime($graduateStatus->date_time));
+        //     $roc_year = $year_time - 1911;
+        //     $roc_graduate_time = $roc_year.date("-m-d", strtotime($graduateStatus->date_time));
+
+        //     $year_time = date("Y", strtotime($leaveStatus->date_time));
+        //     $roc_year = $year_time - 1911;
+        //     $roc_leave_time = $roc_year.date("-m-d", strtotime($leaveStatus->date_time));
+
+        //     $group_name  = $groupCategory->name;
+        //     $graduate_date  = $roc_graduate_time;
+        //     $leave_date     = $roc_leave_time;
+        // } catch (\Throwable $th) {
+        //     //throw $th;
+        // }  
+
+        $roc_graduate_time = '--';
+        $roc_leave_time = '--';
         try {
+            $year_time = date("Y", strtotime($graduateStatus->date_time));
+            $roc_year = $year_time - 1911;
+            $roc_graduate_time = $roc_year.date("-m-d", strtotime($graduateStatus->date_time));
 
-            // $year_time = date("Y", strtotime($graduateStatus->date_time));
-            // $roc_year = $year_time - 1911;
-            // $roc_graduate_time = $roc_year.date("-m-d", strtotime($graduateStatus->date_time));
-
-            // $year_time = date("Y", strtotime($leaveStatus->date_time));
-            // $roc_year = $year_time - 1911;
-            // $roc_leave_time = $roc_year.date("-m-d", strtotime($leaveStatus->date_time));
-
-            $group_name  = $groupCategory->name;
-            $graduate_date  = $roc_graduate_time;
-            $leave_date     = $roc_leave_time;
+            $year_time = date("Y", strtotime($leaveStatus->date_time));
+            $roc_year = $year_time - 1911;
+            $roc_leave_time = $roc_year.date("-m-d", strtotime($leaveStatus->date_time));
         } catch (\Throwable $th) {
             //throw $th;
-        }  
+        }
+
+        $group_name  = $groupCategory->name;
+        $graduate_date  = $roc_graduate_time;
+        $leave_date     = $roc_leave_time;
 
         $pdf = PDF::loadView('companypdf', array(
             'company'           => $company,
