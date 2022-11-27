@@ -150,7 +150,7 @@ class AdditionStaffController extends AdminController
         $tmp_date_arr = [];
         $nowMonth = (int)date_format(now(), 'm');
         $tmpMonth = $nowMonth;
-        for ($i=1; $i <= 12; $i++) { 
+        for ($i=1; $i <= 6; $i++) { 
             $tmp_date_arr[($tmpMonth-2).'-01 00:00:00'] = ($tmpMonth-2).'月-'.($tmpMonth-1).'月';
             $tmpMonth -= 2;
         }
