@@ -148,11 +148,17 @@ class AdditionStaffController extends AdminController
         }
 
         $tmp_date_arr = [];
-        $nowMonth = (int)date_format(now(), 'm');
-        $tmpMonth = $nowMonth;
-        for ($i=1; $i < 3; $i++) { 
-            $tmp_date_arr[($tmpMonth-2).'-01 00:00:00'] = ($tmpMonth-2).'月-'.($tmpMonth-1).'月';
-            $tmpMonth -= 2;
+        // $nowMonth = (int)date_format(now(), 'm');
+        // $tmpMonth = $nowMonth;
+        // for ($i=1; $i < 3; $i++) { 
+        //     $tmp_date_arr[($tmpMonth-2).'-01 00:00:00'] = ($tmpMonth-2).'月-'.($tmpMonth-1).'月';
+        //     $tmpMonth -= 2;
+        // }
+
+        $tmpMonth = 1;
+        for ($i=1; $i < 7; $i++) { 
+            $tmp_date_arr[($tmpMonth).'-01 00:00:00'] = ($tmpMonth).'月-'.($tmpMonth+1).'月';
+            $tmpMonth += 2;
         }
 
         $form->select('cid', '自然人/組織/公司名稱')->options($_companiesArr);
