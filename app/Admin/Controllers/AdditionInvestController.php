@@ -169,7 +169,7 @@ class AdditionInvestController extends AdminController
         //     $tmpMonth -= 2;
         // }
 
-        for ($i=1; $i < 7; $i++) { 
+        for ($i=1; $i < 6; $i++) { 
             $tmp_date_arr[($tmpMonth).'-01 00:00:00'] = ($tmpMonth-1).'月-'.($tmpMonth).'月';
             $tmpMonth -= 2;
         }
