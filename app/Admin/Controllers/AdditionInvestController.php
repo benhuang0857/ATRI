@@ -31,6 +31,8 @@ class AdditionInvestController extends AdminController
         $grid = new Grid(new AdditionInvest());
         $grid->expandFilter();
 
+        $grid->disableExport();
+
         $grid->actions(function ($actions) {
             $actions->disableView();
         });
@@ -158,7 +160,15 @@ class AdditionInvestController extends AdminController
         $_companiesArr = array();
         foreach($_companies as $item)
         {
-            $_companiesArr[$item->cid] = $item->company_name;
+            $groupCategory = [
+                'farmer'        => '農試所',
+                'forestry'      => '林試所',
+                'water'         => '水試所',
+                'livestock'     => '畜試所',
+                'agricultural'  => '農科院',
+            ];
+
+            $_companiesArr[$item->cid] = "(".$groupCategory[$item->group_category].")".$item->company_name;
         }
 
         $tmp_date_arr = [];

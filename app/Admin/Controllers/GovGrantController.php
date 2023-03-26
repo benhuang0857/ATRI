@@ -30,6 +30,8 @@ class GovGrantController extends AdminController
         $grid = new Grid(new GovGrant());
         $grid->expandFilter();
 
+        $grid->disableExport();
+
         $grid->actions(function ($actions) {
             $actions->disableView();
         });

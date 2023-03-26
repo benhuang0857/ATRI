@@ -38,7 +38,7 @@ class CompanyBasicInfoController extends AdminController
         $grid->expandFilter();
         $grid->fixColumns(4, 0);
 
-        $grid->disableExport();
+        //$grid->disableExport();
 
         $grid->actions(function ($actions) {
             $actions->disableView();
