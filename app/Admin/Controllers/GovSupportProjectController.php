@@ -58,9 +58,10 @@ class GovSupportProjectController extends AdminController
                 '創業育成'      => '創業育成',
                 '創新研究'      => '創新研究',
                 '資金融通'      => '資金融通',
-                '行銷推廣'       => '行銷推廣',
-                '升級轉型'       => '升級轉型',
-                '獎項'       => '獎項',
+                '行銷推廣'      => '行銷推廣',
+                '升級轉型'      => '升級轉型',
+                '獎項'          => '獎項',
+                '其他資源'      => '其他資源'
             ]);
             $filter->in('price', '資金額度')->checkbox([
                 'all'    => '不限',
@@ -168,6 +169,7 @@ class GovSupportProjectController extends AdminController
             '行銷推廣'      => '行銷推廣',
             '升級轉型'      => '升級轉型',
             '獎項'          => '獎項',
+            '其他資源'      => '其他資源'
         ]);
         $form->select('status', __('狀態'))->options([
             '尚未開放申請' => '尚未開放申請',
