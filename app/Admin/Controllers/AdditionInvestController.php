@@ -196,7 +196,7 @@ class AdditionInvestController extends AdminController
         $form->year('tmp_year', __('年度'))->default(now('Y'))->required();
         $form->select('tmp_date', __('月份'))->options($tmp_date_arr)->required();
         $form->hidden('date_time', __('日期'));
-        $form->file('document', __('佐證文件'));
+        $form->file('document', __('佐證文件'))->rules('required');
         $form->textarea('note', __('備註'));
 
         $form->saving(function (Form $form) {

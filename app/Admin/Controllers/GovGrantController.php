@@ -167,7 +167,7 @@ class GovGrantController extends AdminController
         $form->date('grant_time', '補助核定日期')->default(date('Y-m-d'));
         $form->number('grant_price', '核定補助金額')->default(0);
         $form->textarea('note', __('輔導內容'));
-        $form->file('document', '佐證文件');
+        $form->file('document', '佐證文件')->rules('required');
 
         return $form;
     }

@@ -37,7 +37,7 @@ class MyAdditionInvest extends RowAction
         ])->rules('required');
         $this->text('price', '金額')->rules('required');
         $this->textarea('reason', '用途')->rules('required');
-        $this->file('document', '佐證文件');
+        $this->file('document', '佐證文件')->rules('required');
         $this->date('date_time','時間')->rules('required');
         $this->textarea('note', '備註');
     }

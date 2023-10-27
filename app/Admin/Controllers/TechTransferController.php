@@ -165,7 +165,7 @@ class TechTransferController extends AdminController
         $form->date('start_time', '合約起始日期')->default(date('Y-m-d'));
         $form->date('end_time', '合約終止日期')->default(date('Y-m-d'));
         $form->textarea('note', __('輔導內容'));
-        $form->file('document', '佐證文件');
+        $form->file('document', '佐證文件')->rules('required');
 
         return $form;
     }

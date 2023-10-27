@@ -194,7 +194,7 @@ class IndustryAcademiaCoopController extends AdminController
         $form->date('start_time', '合約起約日')->default(date('Y-m-d'));
         $form->date('end_time', '合約到期日')->default(date('Y-m-d'));
         $form->textarea('note', __('備註'));
-        $form->file('document', '佐證文件');
+        $form->file('document', '佐證文件')->rules('required');
 
         return $form;
     }
