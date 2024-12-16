@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use Mews\Captcha\Facades\Captcha;
+
 class AuthController extends BaseAuthController
 {
     public function getLogin()
@@ -27,14 +29,12 @@ class AuthController extends BaseAuthController
 
     public function postLogin(Request $request)
     {
-        $credentials = $request->only(['username', 'password', 'captcha']);
-
+        $credentials = $request->only(['username', 'password','captcha']);
         $validator = Validator::make($credentials, [
             'username' => 'required',
             'password' => 'required',
             'captcha' => 'required|captcha'
         ]);
-
         if ($validator->fails()) {
             return Redirect::back()->withInput()->withErrors($validator);
         }

@@ -193,7 +193,7 @@ class AdditionInvestController extends AdminController
         $form->html('<span style="color:red">增資為現金增資，投資為購買機器設備、種苗之支出</span>', '');
         $form->number('price', __('金額'))->default(0)->required();
         $form->textarea('reason', __('用途'));
-        $form->year('tmp_year', __('年度'))->default(now('Y'))->required();
+        $form->year('tmp_year', __('年度'))->required();
         $form->select('tmp_date', __('月份'))->options($tmp_date_arr)->required();
         $form->hidden('date_time', __('日期'));
         $form->file('document', __('佐證文件'))->rules('required');

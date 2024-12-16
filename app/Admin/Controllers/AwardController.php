@@ -136,7 +136,15 @@ class AwardController extends AdminController
         $_companiesArr = array();
         foreach($_companies as $item)
         {
-            $_companiesArr[$item->cid] = $item->company_name;
+            $groupCategory = [
+                'farmer'        => '農試所',
+                'forestry'      => '林試所',
+                'water'         => '水試所',
+                'livestock'     => '畜試所',
+                'agricultural'  => '農科院',
+            ];
+
+            $_companiesArr[$item->cid] = "(".$groupCategory[$item->group_category].")".$item->company_name;
         }
 
         $form->select('cid', '自然人/組織/公司名稱')->options($_companiesArr);

@@ -120,14 +120,14 @@ class CompanyStatusController extends AdminController
             $_companiesArr[$item->cid] = $item->company_name;
         }
         $form->select('cid', '自然人/組織/公司名稱')->options($_companiesArr);
-        $form->select('status', __('異動狀態'))->options([
+        $form->select('status', __('狀態'))->options([
             'stationed' => '進駐',
             'extend' => '展延',
             'graduate' => '畢業',
             'leave' => '離駐'
         ]);
-        $form->textarea('note', __('異動原因'));
-        $form->date('date_time', __('異動日期'))->default(date('Y-m-d'));
+        $form->textarea('note', __('原因'));
+        $form->date('date_time', __('日期'))->default(date('Y-m-d'));
 
         return $form;
     }
