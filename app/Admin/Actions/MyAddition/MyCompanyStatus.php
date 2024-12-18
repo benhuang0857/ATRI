@@ -19,7 +19,7 @@ class MyCompanyStatus extends RowAction
         $CompanyStatus = new CompanyStatus();
         $CompanyStatus->cid = $request->get('cid');
         $CompanyStatus->status = $request->get('status');
-        $CompanyStatus->date_time = $request->get('date_time');
+        $CompanyStatus->date_time = $request->get('date_timestamp');
         $CompanyStatus->note = $request->get('note');
         $CompanyStatus->save();
 
@@ -44,7 +44,7 @@ class MyCompanyStatus extends RowAction
             'graduate' => '畢業',
             'leave' => '離駐'
         ]);
-        $this->date('date_time','時間')->rules('required');
+        $this->date('date_timestamp','時間')->rules('required');
         $this->date('start_time','合約開始時間');
         $this->date('end_time','合約結束時間');
         $this->textarea('note', '異動原因');

@@ -18,7 +18,7 @@ class CompanyStatusController extends AdminController
      *
      * @var string
      */
-    protected $title = '進駐狀態異動';
+    protected $title = '進駐狀態';
 
     /**
      * Make a grid builder.
@@ -45,7 +45,7 @@ class CompanyStatusController extends AdminController
             $filter->disableIdFilter();
             $filter->in('CompanyBasicInfo.group_category', '進駐單位')->checkbox($_option);
             $filter->like('CompanyBasicInfo.company_name', '自然人/組織/公司名稱');
-            $filter->between('date_time', '異動日期')->date();
+            $filter->between('date_time', '日期')->date();
         });
 
         $grid->model()->collection(function (Collection $collection) {
@@ -65,14 +65,14 @@ class CompanyStatusController extends AdminController
             }
         });
         // $grid->column('cid', __('Cid'));
-        $grid->column('status', __('異動狀態'))->using([
+        $grid->column('status', __('狀態'))->using([
             'stationed' => '進駐', 
             'extend'    => '展延',
             'graduate'  => '畢業',
             'leave'     => '離駐'
         ]);
-        $grid->column('note', __('異動原因'));
-        $grid->column('date_time', __('異動日期'))->display(function($myTime){
+        $grid->column('note', __('原因'));
+        $grid->column('date_time', __('日期'))->display(function($myTime){
             $myTime_year = date("Y", strtotime($myTime));
             $myTime_year = intval($myTime_year) - 1911;
             return $myTime_year.date("-m-d", strtotime($myTime)); 
