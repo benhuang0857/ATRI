@@ -40,7 +40,7 @@ class MyAdditionStaff extends RowAction
         $currentYear = Carbon::now()->year;
 
         $this->text('cid', '公司ID')->value($model->cid);
-        $this->text('staff', '員工人數')->rules('required');
+        $this->text('staff', '員工人數')->rules('required|integer|min:0');
         $this->select('date_time', '時間')
             ->options([
                 "$currentYear-01-01 00:00:00" => '1月~2月',
