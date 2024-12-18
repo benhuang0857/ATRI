@@ -13,7 +13,7 @@
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
         "maatwebsite/excel": "^3.1",
-        "mews/captcha": "^3.2",
+        "mews/captcha": "~2.0",
         "super-eggs/laravel-admin-tinymce": "^0.0.2"
     },
     "require-dev": {
